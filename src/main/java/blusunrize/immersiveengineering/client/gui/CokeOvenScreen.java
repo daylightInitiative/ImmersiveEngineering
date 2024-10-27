@@ -28,7 +28,7 @@ public class CokeOvenScreen extends IEContainerScreen<CokeOvenMenu>
 {
 	private static final ResourceLocation TEXTURE = makeTextureLocation("coke_oven");
 	private static final ResourceLocation TANK = ieLoc("coke_oven/tank_overlay");
-	private static final ResourceLocation FLAME = ieLoc("coke_oven/tank_overlay");
+	private static final ResourceLocation FLAME = ieLoc("coke_oven/flame");
 
 	public CokeOvenScreen(CokeOvenMenu container, Inventory inventoryPlayer, Component title)
 	{
