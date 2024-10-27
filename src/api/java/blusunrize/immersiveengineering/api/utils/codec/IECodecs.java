@@ -14,6 +14,8 @@ import com.mojang.serialization.DataResult;
 import com.mojang.serialization.DynamicOps;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.crafting.Ingredient;
 
 import java.util.*;
@@ -110,5 +112,15 @@ public class IECodecs
 	List<Pair<K, T>> mapToList(Map<K, T> m)
 	{
 		return m.entrySet().stream().map(e -> Pair.of(e.getKey(), e.getValue())).toList();
+	}
+
+	public static <T> T fromNbtOrThrow(Codec<T> codec, Tag data)
+	{
+		return codec.decode(NbtOps.INSTANCE, data).getOrThrow().getFirst();
+	}
+
+	public static <T> Tag toNbtOrThrow(Codec<T> codec, T object)
+	{
+		return codec.encodeStart(NbtOps.INSTANCE, object).getOrThrow();
 	}
 }

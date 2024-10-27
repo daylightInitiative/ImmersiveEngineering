@@ -10,6 +10,7 @@ package blusunrize.immersiveengineering.common.blocks.metal;
 
 import blusunrize.immersiveengineering.api.IEApi;
 import blusunrize.immersiveengineering.api.IEProperties;
+import blusunrize.immersiveengineering.api.utils.codec.IECodecs;
 import blusunrize.immersiveengineering.common.blocks.IEBaseBlockEntity;
 import blusunrize.immersiveengineering.common.blocks.IEBlockInterfaces.*;
 import blusunrize.immersiveengineering.common.blocks.PlacementLimitation;
@@ -27,7 +28,6 @@ import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.ContainerHelper;
@@ -38,6 +38,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.storage.loot.LootContext;
@@ -57,7 +58,7 @@ public class ToolboxBlockEntity extends IEBaseBlockEntity implements IStateBased
 {
 	private final NonNullList<ItemStack> inventory = NonNullList.withSize(ToolboxItem.SLOT_COUNT, ItemStack.EMPTY);
 	public Component name;
-	private ListTag enchantments;
+	private ItemEnchantments enchantments = ItemEnchantments.EMPTY;
 
 	public ToolboxBlockEntity(BlockPos pos, BlockState state)
 	{
@@ -69,8 +70,7 @@ public class ToolboxBlockEntity extends IEBaseBlockEntity implements IStateBased
 	{
 		if(nbt.contains("name", Tag.TAG_STRING))
 			this.name = Component.Serializer.fromJson(nbt.getString("name"), provider);
-		if(nbt.contains("enchantments", Tag.TAG_LIST))
-			this.enchantments = nbt.getList("enchantments", Tag.TAG_COMPOUND);
+		this.enchantments = IECodecs.fromNbtOrThrow(ItemEnchantments.CODEC, nbt.get("enchantments"));
 		if(!descPacket)
 			ContainerHelper.loadAllItems(nbt, inventory, provider);
 	}
@@ -80,8 +80,7 @@ public class ToolboxBlockEntity extends IEBaseBlockEntity implements IStateBased
 	{
 		if(this.name!=null)
 			nbt.putString("name", Component.Serializer.toJson(this.name, provider));
-		if(this.enchantments!=null)
-			nbt.put("enchantments", this.enchantments);
+		nbt.put("enchantments", IECodecs.toNbtOrThrow(ItemEnchantments.CODEC, this.enchantments));
 		if(!descPacket)
 			ContainerHelper.saveAllItems(nbt, inventory, provider);
 	}
@@ -104,13 +103,11 @@ public class ToolboxBlockEntity extends IEBaseBlockEntity implements IStateBased
 		return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 	}
 
-	//TODO
-	//@Override
-	//@Nullable
-	//public ITextComponent getDisplayName()
-	//{
-	//	return name!=null?new TextComponentString(name): new TextComponentTranslation("item.immersiveengineering.toolbox.name");
-	//}
+	@Override
+	public Component getDisplayName()
+	{
+		return name!=null?name: Component.translatable("item.immersiveengineering.toolbox.name");
+	}
 
 	@Override
 	public boolean canUseGui(Player player)
@@ -161,9 +158,8 @@ public class ToolboxBlockEntity extends IEBaseBlockEntity implements IStateBased
 		Tools.TOOLBOX.get().setContainedItems(stack, inventory);
 		if(this.name!=null)
 			stack.set(DataComponents.CUSTOM_NAME, this.name);
-		if(true) throw new IllegalStateException();
-		//if(enchantments!=null)
-		//	stack.set(DataComponents.ENCHANTMENTS, enchantments);
+		if(enchantments!=null)
+			stack.set(DataComponents.ENCHANTMENTS, enchantments);
 		drop.accept(stack);
 	}
 
@@ -181,10 +177,9 @@ public class ToolboxBlockEntity extends IEBaseBlockEntity implements IStateBased
 				this.setChanged();
 			}
 
-			if(true) throw new IllegalStateException();
-			//if(stack.hasCustomHoverName())
-			//	this.name = stack.getHoverName();
-			//enchantments = stack.getEnchantmentTags();
+			if(stack.has(DataComponents.CUSTOM_NAME))
+				this.name = stack.getHoverName();
+			enchantments = stack.getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY);
 		}
 	}
 
