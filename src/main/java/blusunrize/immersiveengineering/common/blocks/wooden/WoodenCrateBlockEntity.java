@@ -11,6 +11,7 @@ package blusunrize.immersiveengineering.common.blocks.wooden;
 import blusunrize.immersiveengineering.api.IEApi;
 import blusunrize.immersiveengineering.api.IETags;
 import blusunrize.immersiveengineering.api.Lib;
+import blusunrize.immersiveengineering.api.utils.codec.IECodecs;
 import blusunrize.immersiveengineering.common.blocks.BlockCapabilityRegistration.BECapabilityRegistrar;
 import blusunrize.immersiveengineering.common.blocks.IEBlockInterfaces.IBlockEntityDrop;
 import blusunrize.immersiveengineering.common.blocks.IEBlockInterfaces.IBlockOverlayText;
@@ -19,9 +20,7 @@ import blusunrize.immersiveengineering.common.blocks.IEBlockInterfaces.IPlayerIn
 import blusunrize.immersiveengineering.common.gui.CrateMenu;
 import blusunrize.immersiveengineering.common.register.IEBlockEntities;
 import blusunrize.immersiveengineering.common.register.IEBlocks.WoodenDevices;
-import blusunrize.immersiveengineering.common.register.IEDataComponents;
 import blusunrize.immersiveengineering.common.register.IEMenuTypes;
-import blusunrize.immersiveengineering.common.util.ListUtils;
 import blusunrize.immersiveengineering.common.util.Utils;
 import blusunrize.immersiveengineering.common.util.inventory.IEInventoryHandler;
 import blusunrize.immersiveengineering.common.util.inventory.IIEInventory;
@@ -32,7 +31,6 @@ import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -66,7 +64,7 @@ public class WoodenCrateBlockEntity extends RandomizableContainerBlockEntity
 	public static final int CONTAINER_SIZE = 27;
 	public static final int HITS_TO_SEAL = 6;
 	private NonNullList<ItemStack> inventory = NonNullList.withSize(CONTAINER_SIZE, ItemStack.EMPTY);
-	private ItemEnchantments enchantments;
+	private ItemEnchantments enchantments = ItemEnchantments.EMPTY;
 
 	private int sealingProgress = 0;
 
@@ -85,9 +83,9 @@ public class WoodenCrateBlockEntity extends RandomizableContainerBlockEntity
 	private void loadIEData(CompoundTag nbt, Provider provider)
 	{
 		if(nbt.contains("enchantments"))
-			this.enchantments = ItemEnchantments.CODEC.decode(NbtOps.INSTANCE, nbt.get("enchantments"))
-					.getOrThrow()
-					.getFirst();
+			this.enchantments = IECodecs.fromNbtOrThrow(ItemEnchantments.CODEC, nbt.get("enchantments"));
+		else
+			this.enchantments = ItemEnchantments.EMPTY;
 		if(!tryLoadLootTable(nbt))
 			ContainerHelper.loadAllItems(nbt, inventory, provider);
 		this.sealingProgress = nbt.getInt("sealingProgress");
@@ -97,8 +95,7 @@ public class WoodenCrateBlockEntity extends RandomizableContainerBlockEntity
 	protected void saveAdditional(CompoundTag nbt, Provider provider)
 	{
 		super.saveAdditional(nbt, provider);
-		if(this.enchantments!=null&&this.enchantments.size() > 0)
-			nbt.put("enchantments", ItemEnchantments.CODEC.encodeStart(NbtOps.INSTANCE, this.enchantments).getOrThrow());
+		nbt.put("enchantments", IECodecs.toNbtOrThrow(ItemEnchantments.CODEC, enchantments));
 		if(!trySaveLootTable(nbt))
 			ContainerHelper.saveAllItems(nbt, inventory, provider);
 		nbt.putInt("sealingProgress", this.sealingProgress);
@@ -195,13 +192,10 @@ public class WoodenCrateBlockEntity extends RandomizableContainerBlockEntity
 	public void getBlockEntityDrop(LootContext context, Consumer<ItemStack> drop)
 	{
 		ItemStack stack = new ItemStack(getBlockState().getBlock(), 1);
-		CompoundTag tag = new CompoundTag();
 		if(isSealed())
-			stack.set(IEDataComponents.GENERIC_ITEMS, ItemContainerContents.fromItems(this.inventory));
+			stack.set(DataComponents.CONTAINER, ItemContainerContents.fromItems(this.inventory));
 		else
 			this.inventory.forEach(drop);
-		if(!tag.isEmpty())
-			stack.set(IEDataComponents.GENERIC_ITEMS, ItemContainerContents.fromItems(this.inventory));
 		Component customName = getCustomName();
 		if(customName!=null)
 			stack.set(DataComponents.CUSTOM_NAME, customName);
@@ -217,9 +211,8 @@ public class WoodenCrateBlockEntity extends RandomizableContainerBlockEntity
 
 	public void onBEPlaced(ItemStack stack)
 	{
-		if(stack.has(IEDataComponents.GENERIC_ITEMS))
-			this.inventory = ListUtils.fromStream(stack.get(IEDataComponents.GENERIC_ITEMS).stream(), CONTAINER_SIZE);
 		enchantments = stack.getOrDefault(DataComponents.ENCHANTMENTS, ItemEnchantments.EMPTY);
+		// Inventory contents are loaded by vanilla via applyImplicitComponents
 	}
 
 	@Override
