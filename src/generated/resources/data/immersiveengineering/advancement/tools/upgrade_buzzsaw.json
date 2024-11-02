@@ -37,10 +37,12 @@
         ],
         "immersiveengineering:upgrade_nbt": [
           {
-            "type": "oiled"
+            "type": "oiled",
+            "data": {}
           },
           {
-            "type": "spareblades"
+            "type": "spareblades",
+            "data": {}
           }
         ]
       },

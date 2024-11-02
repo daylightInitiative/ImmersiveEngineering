@@ -14,10 +14,12 @@
       "components": {
         "immersiveengineering:upgrade_nbt": [
           {
-            "type": "antenna"
+            "type": "antenna",
+            "data": {}
           },
           {
-            "type": "induction"
+            "type": "induction",
+            "data": {}
           }
         ]
       },

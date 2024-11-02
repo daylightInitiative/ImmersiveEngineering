@@ -27,10 +27,12 @@
             "data": 3
           },
           {
-            "type": "waterproof"
+            "type": "waterproof",
+            "data": {}
           },
           {
-            "type": "oiled"
+            "type": "oiled",
+            "data": {}
           },
           {
             "type": "speed",

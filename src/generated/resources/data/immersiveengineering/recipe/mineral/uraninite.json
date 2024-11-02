@@ -25,6 +25,15 @@
     },
     {
       "chance": 0.1,
+      "conditions": [
+        {
+          "type": "neoforge:not",
+          "value": {
+            "type": "neoforge:tag_empty",
+            "tag": "c:ores/thorium"
+          }
+        }
+      ],
       "output": {
         "tag": "c:ores/thorium"
       }

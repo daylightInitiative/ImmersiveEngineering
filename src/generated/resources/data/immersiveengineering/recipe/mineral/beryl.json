@@ -26,6 +26,15 @@
     },
     {
       "chance": 0.3,
+      "conditions": [
+        {
+          "type": "neoforge:not",
+          "value": {
+            "type": "neoforge:tag_empty",
+            "tag": "c:gems/aquamarine"
+          }
+        }
+      ],
       "output": {
         "tag": "c:gems/aquamarine"
       }

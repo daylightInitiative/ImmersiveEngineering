@@ -21,6 +21,15 @@
     },
     {
       "chance": 0.2,
+      "conditions": [
+        {
+          "type": "neoforge:not",
+          "value": {
+            "type": "neoforge:tag_empty",
+            "tag": "c:dusts/phosphorus"
+          }
+        }
+      ],
       "output": {
         "tag": "c:dusts/phosphorus"
       }

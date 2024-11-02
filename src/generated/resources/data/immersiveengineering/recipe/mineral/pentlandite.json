@@ -27,12 +27,30 @@
     },
     {
       "chance": 0.1,
+      "conditions": [
+        {
+          "type": "neoforge:not",
+          "value": {
+            "type": "neoforge:tag_empty",
+            "tag": "c:ores/platinum"
+          }
+        }
+      ],
       "output": {
         "tag": "c:ores/platinum"
       }
     },
     {
       "chance": 0.1,
+      "conditions": [
+        {
+          "type": "neoforge:not",
+          "value": {
+            "type": "neoforge:tag_empty",
+            "tag": "c:ores/osmium"
+          }
+        }
+      ],
       "output": {
         "tag": "c:ores/osmium"
       }

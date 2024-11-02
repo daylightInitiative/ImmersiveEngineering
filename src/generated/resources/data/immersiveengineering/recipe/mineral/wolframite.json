@@ -30,12 +30,30 @@
     },
     {
       "chance": 0.3,
+      "conditions": [
+        {
+          "type": "neoforge:not",
+          "value": {
+            "type": "neoforge:tag_empty",
+            "tag": "c:ores/manganese"
+          }
+        }
+      ],
       "output": {
         "tag": "c:ores/manganese"
       }
     },
     {
       "chance": 0.3,
+      "conditions": [
+        {
+          "type": "neoforge:not",
+          "value": {
+            "type": "neoforge:tag_empty",
+            "tag": "c:ores/tin"
+          }
+        }
+      ],
       "output": {
         "tag": "c:ores/tin"
       }
