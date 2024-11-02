@@ -17,7 +17,7 @@ import blusunrize.immersiveengineering.api.crafting.MetalPressRecipe;
 import blusunrize.immersiveengineering.api.crafting.TagOutput;
 import blusunrize.immersiveengineering.api.crafting.cache.CachedRecipeList;
 import blusunrize.immersiveengineering.common.register.IEItems.Molds;
-import blusunrize.immersiveengineering.common.util.Utils;
+import blusunrize.immersiveengineering.common.util.InventoryCraftingFalse;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
@@ -206,9 +206,9 @@ public class MetalPressPackingRecipes
 
 	public static Pair<RecipeHolder<CraftingRecipe>, ItemStack> getPackedOutput(int gridSize, ItemStack stack, Level world)
 	{
-		CraftingInput invC = Utils.InventoryCraftingFalse.createFilledCraftingInventory(
+		CraftingInput invC = InventoryCraftingFalse.createFilledCraftingInventory(
 				gridSize, gridSize, NonNullList.withSize(gridSize*gridSize, stack.copy())
-		).asCraftInput();
+		);
 		return world.getRecipeManager()
 				.getRecipeFor(RecipeType.CRAFTING, invC, world)
 				.map(recipe -> Pair.of(recipe, recipe.value().assemble(invC, world.registryAccess())))

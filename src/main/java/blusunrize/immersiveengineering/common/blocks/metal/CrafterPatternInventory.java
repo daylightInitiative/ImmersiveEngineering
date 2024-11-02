@@ -10,6 +10,7 @@ package blusunrize.immersiveengineering.common.blocks.metal;
 
 import blusunrize.immersiveengineering.api.tool.assembler.AssemblerHandler;
 import blusunrize.immersiveengineering.api.tool.assembler.RecipeQuery;
+import blusunrize.immersiveengineering.common.util.InventoryCraftingFalse;
 import blusunrize.immersiveengineering.common.util.Utils;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.core.NonNullList;
@@ -36,7 +37,7 @@ public class CrafterPatternInventory
 	{
 		if(level==null)
 			return;
-		CraftingInput invC = Utils.InventoryCraftingFalse.createFilledCraftingInventory(3, 3, inv).asCraftInput();
+		CraftingInput invC = InventoryCraftingFalse.createFilledCraftingInventory(3, 3, inv);
 		this.recipe = Utils.findCraftingRecipe(invC, level).map(RecipeHolder::value).orElse(null);
 		this.inv.set(9, recipe!=null?recipe.assemble(invC, level.registryAccess()): ItemStack.EMPTY);
 	}

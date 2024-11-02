@@ -27,6 +27,7 @@ import blusunrize.immersiveengineering.common.blocks.multiblocks.shapes.Assemble
 import blusunrize.immersiveengineering.common.config.IEServerConfig;
 import blusunrize.immersiveengineering.common.fluids.ArrayFluidHandler;
 import blusunrize.immersiveengineering.common.util.IESounds;
+import blusunrize.immersiveengineering.common.util.InventoryCraftingFalse;
 import blusunrize.immersiveengineering.common.util.Utils;
 import blusunrize.immersiveengineering.common.util.inventory.SlotwiseItemHandler;
 import blusunrize.immersiveengineering.common.util.inventory.SlotwiseItemHandler.IOConstraint;
@@ -148,7 +149,7 @@ public class AssemblerLogic implements IMultiblockLogic<State>, IServerTickableC
 			this.consumeIngredients(state, queries, availableStacks, true, sources);
 
 			NonNullList<ItemStack> remainingItems = pattern.recipe.getRemainingItems(
-					Utils.InventoryCraftingFalse.createFilledCraftingInventory(3, 3, sources.gridItems).asCraftInput()
+					InventoryCraftingFalse.createFilledCraftingInventory(3, 3, sources.gridItems)
 			);
 			for(int i = 0; i < remainingItems.size(); i++)
 			{

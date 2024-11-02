@@ -41,17 +41,12 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.Container;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.CraftingContainer;
-import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.inventory.TransientCraftingContainer;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.FireworkExplosion;
 import net.minecraft.world.item.component.FireworkExplosion.Shape;
@@ -624,43 +619,6 @@ public class Utils
 				return new Vec3(vertex.x, vertex.y, value);
 		}
 		return vertex;
-	}
-
-	public static class InventoryCraftingFalse extends TransientCraftingContainer
-	{
-		private static final AbstractContainerMenu nullContainer = new AbstractContainerMenu(MenuType.CRAFTING, 0)
-		{
-			@Override
-			public ItemStack quickMoveStack(Player p_38941_, int p_38942_)
-			{
-				return ItemStack.EMPTY;
-			}
-
-			@Override
-			public void slotsChanged(Container paramIInventory)
-			{
-			}
-
-			@Override
-			public boolean stillValid(@Nonnull Player playerIn)
-			{
-				return false;
-			}
-		};
-
-		public InventoryCraftingFalse(int w, int h)
-		{
-			super(nullContainer, w, h);
-		}
-
-		public static CraftingContainer createFilledCraftingInventory(int w, int h, List<ItemStack> stacks)
-		{
-			CraftingContainer invC = new Utils.InventoryCraftingFalse(w, h);
-			for(int j = 0; j < w*h; j++)
-				if(!stacks.get(j).isEmpty())
-					invC.setItem(j, stacks.get(j).copy());
-			return invC;
-		}
 	}
 
 	public static BlockPos rayTraceForFirst(Vec3 start, Vec3 end, Level w, Set<BlockPos> ignore)

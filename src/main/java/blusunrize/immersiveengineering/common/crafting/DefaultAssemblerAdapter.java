@@ -12,7 +12,7 @@ import blusunrize.immersiveengineering.api.tool.assembler.AssemblerHandler;
 import blusunrize.immersiveengineering.api.tool.assembler.AssemblerHandler.IRecipeAdapter;
 import blusunrize.immersiveengineering.api.tool.assembler.RecipeQuery;
 import blusunrize.immersiveengineering.common.util.FakePlayerUtil;
-import blusunrize.immersiveengineering.common.util.Utils;
+import blusunrize.immersiveengineering.common.util.InventoryCraftingFalse;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingInput;
@@ -31,27 +31,25 @@ public class DefaultAssemblerAdapter implements IRecipeAdapter<Recipe<CraftingIn
 	public List<RecipeQuery> getQueriedInputs(Recipe<CraftingInput> recipe, NonNullList<ItemStack> input, Level world)
 	{
 		NonNullList<Ingredient> ingred = recipe.getIngredients();
+		CraftingInput craftingInput = InventoryCraftingFalse.createFilledCraftingInventory(3, 3, input);
 		// Check that the ingredients roughly match what the recipe actually requires.
 		// This is necessary to prevent infinite crafting for recipes like FireworkRocketRecipe which don't return
 		// meaningful values in getIngredients.
 		NonNullList<Ingredient> ingredientsForMatching = NonNullList.create();
-		List<ItemStack> inputList = input.subList(0, input.size()-1);
 		for(Ingredient i : ingred)
 			if(!i.isEmpty())
 				ingredientsForMatching.add(i);
-		while(ingredientsForMatching.size() < inputList.size())
+		while(ingredientsForMatching.size() < craftingInput.size())
 			ingredientsForMatching.add(Ingredient.EMPTY);
 		CommonHooks.setCraftingPlayer(FakePlayerUtil.getFakePlayer(world));
-		int[] ingredientAssignment = RecipeMatcher.findMatches(inputList, ingredientsForMatching);
+		int[] ingredientAssignment = RecipeMatcher.findMatches(craftingInput.items(), ingredientsForMatching);
 		CommonHooks.setCraftingPlayer(null);
 
 		// Collect remaining items
-		NonNullList<ItemStack> remains = recipe.getRemainingItems(
-				Utils.InventoryCraftingFalse.createFilledCraftingInventory(3, 3, input).asCraftInput()
-		);
+		NonNullList<ItemStack> remains = recipe.getRemainingItems(craftingInput);
 
 		List<RecipeQuery> queries = new ArrayList<>();
-		for(int i = 0; i < inputList.size(); i++)
+		for(int i = 0; i < craftingInput.size(); i++)
 		{
 			final RecipeQuery query;
 			if(ingredientAssignment!=null)
@@ -63,7 +61,7 @@ public class DefaultAssemblerAdapter implements IRecipeAdapter<Recipe<CraftingIn
 				);
 			else
 				// Otherwise request the exact stacks used in the input
-				query = AssemblerHandler.createQueryFromItemStack(input.get(i), remains.get(i));
+				query = AssemblerHandler.createQueryFromItemStack(craftingInput.getItem(i), remains.get(i));
 			if(query!=null)
 				queries.add(query);
 		}
