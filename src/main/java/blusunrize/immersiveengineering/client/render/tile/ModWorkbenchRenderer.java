@@ -59,7 +59,7 @@ public class ModWorkbenchRenderer extends IEBlockEntityRenderer<ModWorkbenchBloc
 				double playerDistanceSq = ClientUtils.mc().player.distanceToSqr(Vec3.atCenterOf(te.getBlockPos()));
 				if(playerDistanceSq < 120)
 				{
-					final String category = stack.get(IEApiDataComponents.BLUEPRINT_TYPE);
+					final String category = IEApiDataComponents.getBlueprintType(stack);
 					IVertexBufferHolder vbo = VBO_BY_BLUEPRINT.computeIfAbsent(category, this::buildVBO);
 					vbo.render(BlueprintRenderer.RENDER_TYPE, combinedLightIn, combinedOverlayIn, bufferIn, transform);
 				}

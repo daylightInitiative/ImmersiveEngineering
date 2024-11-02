@@ -11,7 +11,6 @@ package blusunrize.immersiveengineering.api.crafting;
 import blusunrize.immersiveengineering.api.IEApiDataComponents;
 import blusunrize.immersiveengineering.api.crafting.cache.CachedRecipeList;
 import blusunrize.immersiveengineering.api.utils.SetRestrictedField;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.ItemStack;
@@ -154,9 +153,7 @@ public class BlueprintCraftingRecipe extends MultiblockRecipe
 	public static List<RecipeHolder<BlueprintCraftingRecipe>> findRecipes(Level level, String blueprintCategory)
 	{
 		updateRecipeCategories(level);
-		return recipesByCategory.getOrDefault(blueprintCategory, ImmutableList.of())
-				.stream()
-				.toList();
+		return recipesByCategory.getOrDefault(blueprintCategory, List.of());
 	}
 
 	public static void updateRecipeCategories(Level level)

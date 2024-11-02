@@ -9,6 +9,7 @@
 package blusunrize.immersiveengineering.common.items;
 
 import blusunrize.immersiveengineering.ImmersiveEngineering;
+import blusunrize.immersiveengineering.api.IEApiDataComponents;
 import blusunrize.immersiveengineering.api.Lib;
 import blusunrize.immersiveengineering.api.crafting.BlueprintCraftingRecipe;
 import net.minecraft.ChatFormatting;
@@ -36,7 +37,7 @@ public class EngineersBlueprintItem extends IEBaseItem
 	@Override
 	public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> list, TooltipFlag flag)
 	{
-		String key = stack.get(BLUEPRINT_TYPE);
+		String key = IEApiDataComponents.getBlueprintType(stack);
 		if(key.isEmpty())
 			return;
 		String formatKey = Lib.DESC_INFO+"blueprint."+key;
@@ -78,6 +79,6 @@ public class EngineersBlueprintItem extends IEBaseItem
 	@Nonnull
 	public static List<RecipeHolder<BlueprintCraftingRecipe>> getRecipes(Level level, ItemStack stack)
 	{
-		return BlueprintCraftingRecipe.findRecipes(level, stack.get(BLUEPRINT_TYPE));
+		return BlueprintCraftingRecipe.findRecipes(level, IEApiDataComponents.getBlueprintType(stack));
 	}
 }

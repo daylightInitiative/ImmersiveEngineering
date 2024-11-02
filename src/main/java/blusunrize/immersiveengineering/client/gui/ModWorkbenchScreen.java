@@ -67,7 +67,7 @@ public class ModWorkbenchScreen extends ToolModificationScreen<ModWorkbenchConta
 		if(s.hasItem()&&s.getItem().getItem() instanceof EngineersBlueprintItem)
 		{
 			List<RecipeHolder<BlueprintCraftingRecipe>> recipes = BlueprintCraftingRecipe.findRecipes(
-					Minecraft.getInstance().level, s.getItem().get(IEApiDataComponents.BLUEPRINT_TYPE)
+					Minecraft.getInstance().level, IEApiDataComponents.getBlueprintType(s.getItem())
 			);
 			if(recipes!=null&&!recipes.isEmpty()&&recipes.size() > ModWorkbenchContainer.OUTPUTS_PER_PAGE)
 			{

@@ -179,7 +179,7 @@ public class BlueprintShelfBlockEntity extends IEBaseBlockEntity implements IIEI
 			final float hitZ = (float)bhr.getLocation().z-bhr.getBlockPos().getZ();
 			int targetedSlot = getTargetedSlot(bhr.getDirection(), hitX, hitY, hitZ);
 			ItemStack stackInSlot = this.inventory.get(targetedSlot);
-			String key = stackInSlot.get(IEApiDataComponents.BLUEPRINT_TYPE);
+			String key = IEApiDataComponents.getBlueprintType(stackInSlot);
 			if(key==null||key.isEmpty())
 				return null;
 			String formatKey = Lib.DESC_INFO+"blueprint."+key;

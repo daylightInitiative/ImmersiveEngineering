@@ -12,6 +12,7 @@ import blusunrize.immersiveengineering.api.wires.utils.WireLink;
 import com.mojang.datafixers.util.Unit;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.function.Supplier;
 
@@ -21,4 +22,11 @@ public class IEApiDataComponents
 	public static Supplier<DataComponentType<String>> BLUEPRINT_TYPE;
 	public static Supplier<DataComponentType<ResourceLocation>> ATTACHED_SHADER;
 	public static Supplier<DataComponentType<Unit>> FLUID_PRESSURIZED;
+
+	public static final String INVALID_BLUEPRINT = "invalid_blueprint";
+
+	public static String getBlueprintType(ItemStack stack)
+	{
+		return stack.getOrDefault(BLUEPRINT_TYPE, INVALID_BLUEPRINT);
+	}
 }

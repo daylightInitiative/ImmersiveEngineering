@@ -85,7 +85,7 @@ public class JEIHelper implements IModPlugin
 		subtypeRegistry.registerSubtypeInterpreter(
 				VanillaTypes.ITEM_STACK,
 				Misc.BLUEPRINT.asItem(),
-				(stack, $) -> stack.get(IEApiDataComponents.BLUEPRINT_TYPE)
+				(stack, $) -> IEApiDataComponents.getBlueprintType(stack)
 		);
 		subtypeRegistry.registerSubtypeInterpreter(
 				VanillaTypes.ITEM_STACK,

@@ -58,7 +58,7 @@ public class AutoWorkbenchScreen extends IEContainerScreen<AutoWorkbenchMenu>
 		if(s!=null&&s.hasItem()&&s.getItem().getItem() instanceof EngineersBlueprintItem)
 		{
 			List<RecipeHolder<BlueprintCraftingRecipe>> recipes = BlueprintCraftingRecipe.findRecipes(
-					Minecraft.getInstance().level, s.getItem().get(IEApiDataComponents.BLUEPRINT_TYPE)
+					Minecraft.getInstance().level, IEApiDataComponents.getBlueprintType(s.getItem())
 			);
 			if(recipes!=null&&!recipes.isEmpty())
 			{

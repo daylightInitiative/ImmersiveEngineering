@@ -9,6 +9,7 @@
 package blusunrize.immersiveengineering.client;
 
 import blusunrize.immersiveengineering.ImmersiveEngineering;
+import blusunrize.immersiveengineering.api.IEApiDataComponents;
 import blusunrize.immersiveengineering.api.client.TextUtils;
 import blusunrize.immersiveengineering.api.crafting.BlastFurnaceFuel;
 import blusunrize.immersiveengineering.api.crafting.BlueprintCraftingRecipe;
@@ -98,7 +99,6 @@ import java.util.Optional;
 import java.util.stream.IntStream;
 
 import static blusunrize.immersiveengineering.ImmersiveEngineering.rl;
-import static blusunrize.immersiveengineering.api.IEApiDataComponents.BLUEPRINT_TYPE;
 
 public class ClientEventHandler implements ResourceManagerReloadListener
 {
@@ -248,7 +248,9 @@ public class ClientEventHandler implements ResourceManagerReloadListener
 
 			if(playerDistanceSq < 1000)
 			{
-				List<RecipeHolder<BlueprintCraftingRecipe>> recipes = BlueprintCraftingRecipe.findRecipes(event.getItemFrameEntity().level(), event.getItemStack().get(BLUEPRINT_TYPE));
+				List<RecipeHolder<BlueprintCraftingRecipe>> recipes = BlueprintCraftingRecipe.findRecipes(
+						event.getItemFrameEntity().level(), IEApiDataComponents.getBlueprintType(event.getItemStack())
+				);
 				if(!recipes.isEmpty())
 				{
 					int i = event.getItemFrameEntity().getRotation();

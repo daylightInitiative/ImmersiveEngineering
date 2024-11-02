@@ -280,7 +280,7 @@ public class AutoWorkbenchRenderer extends IEMultiblockRenderer<State>
 
 		if(!blueprintStack.isEmpty()&&playerDistanceSq < 1000)
 		{
-			List<RecipeHolder<BlueprintCraftingRecipe>> recipes = BlueprintCraftingRecipe.findRecipes(level, blueprintStack.get(IEApiDataComponents.BLUEPRINT_TYPE));
+			List<RecipeHolder<BlueprintCraftingRecipe>> recipes = BlueprintCraftingRecipe.findRecipes(level, IEApiDataComponents.getBlueprintType(blueprintStack));
 			BlueprintCraftingRecipe recipe = (state.selectedRecipe < 0||state.selectedRecipe >= recipes.size())?null: recipes.get(state.selectedRecipe).value();
 			BlueprintLines blueprint = recipe==null?null: getBlueprintDrawable(recipe, level);
 			if(blueprint!=null)
