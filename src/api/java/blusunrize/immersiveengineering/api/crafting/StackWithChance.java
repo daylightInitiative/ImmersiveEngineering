@@ -9,6 +9,7 @@
 
 package blusunrize.immersiveengineering.api.crafting;
 
+import blusunrize.immersiveengineering.api.utils.codec.IEDualCodecs;
 import com.google.common.base.Preconditions;
 import malte0811.dualcodecs.DualCodec;
 import malte0811.dualcodecs.DualCodecs;
@@ -29,6 +30,7 @@ public record StackWithChance(TagOutput stack, float chance, List<ICondition> co
 	public static final DualCodec<RegistryFriendlyByteBuf, StackWithChance> CODECS = DualCompositeCodecs.composite(
 			TagOutput.CODECS.fieldOf("output"), StackWithChance::stack,
 			DualCodecs.FLOAT.fieldOf("chance"), StackWithChance::chance,
+			IEDualCodecs.CONDITIONS.optionalFieldOf("conditions", List.of()), StackWithChance::conditions,
 			StackWithChance::new
 	);
 	public static final StreamCodec<RegistryFriendlyByteBuf, List<StackWithChance>> STREAM_LIST = CODECS.streamCodec().apply(ByteBufCodecs.list());

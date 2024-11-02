@@ -19,9 +19,11 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.common.conditions.ICondition;
 import net.neoforged.neoforge.fluids.FluidStack;
 
 import java.util.AbstractMap.SimpleEntry;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
@@ -37,6 +39,10 @@ public class IEDualCodecs
 
 	public static final DualCodec<RegistryFriendlyByteBuf, NonNullList<Ingredient>> NONNULL_INGREDIENTS = new DualCodec<>(
 			IECodecs.NONNULL_INGREDIENTS, Ingredient.CONTENTS_STREAM_CODEC.apply(IEStreamCodecs.nonNullList())
+	);
+
+	public static final DualCodec<ByteBuf, List<ICondition>> CONDITIONS = new DualCodec<>(
+			ICondition.LIST_CODEC, IECodecs.lenientUnitStream(List.of())
 	);
 
 	public static <E extends Enum<E>> DualCodec<ByteBuf, E> forEnum(E[] values)

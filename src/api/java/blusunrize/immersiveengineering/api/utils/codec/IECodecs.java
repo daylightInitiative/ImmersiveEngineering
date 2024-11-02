@@ -16,6 +16,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.crafting.Ingredient;
 
 import java.util.*;
@@ -122,5 +123,23 @@ public class IECodecs
 	public static <T> Tag toNbtOrThrow(Codec<T> codec, T object)
 	{
 		return codec.encodeStart(NbtOps.INSTANCE, object).getOrThrow();
+	}
+
+	public static <B, T> StreamCodec<B, T> lenientUnitStream(T value)
+	{
+		return new StreamCodec<B, T>()
+		{
+			@Override
+			public T decode(B buffer)
+			{
+				return value;
+			}
+
+			@Override
+			public void encode(B buffer, T value)
+			{
+				// Unlike StreamCodec.unit, do not check that the values match here
+			}
+		};
 	}
 }
