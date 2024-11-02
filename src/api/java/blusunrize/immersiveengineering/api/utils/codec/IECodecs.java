@@ -10,8 +10,6 @@ package blusunrize.immersiveengineering.api.utils.codec;
 
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
-import com.mojang.serialization.DynamicOps;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.NbtOps;
@@ -59,43 +57,16 @@ public class IECodecs
 			Function<String, Codec<V>> valueCodec, Function<V, String> getKey
 	)
 	{
-		return new Codec<>()
-		{
-			@Override
-			public <T> DataResult<Pair<List<V>, T>> decode(DynamicOps<T> ops, T input)
-			{
-				return ops.getMapValues(input).flatMap(s -> {
-					DataResult<List<V>> result = DataResult.success(new ArrayList<>());
-					for(var entry : s.toList())
-						result = result.flatMap(
-								current -> ops.getStringValue(entry.getFirst()).flatMap(
-										key -> valueCodec.apply(key).decode(ops, entry.getSecond()).map(
-												value -> {
-													var newMap = new ArrayList<>(current);
-													newMap.add(value.getFirst());
-													return newMap;
-												}
-										)
-								)
-						);
-					return result.map(m -> new Pair<>(m, ops.empty()));
-				});
-			}
-
-			@Override
-			public <T> DataResult<T> encode(List<V> input, DynamicOps<T> ops, T prefix)
-			{
-				DataResult<T> result = DataResult.success(prefix);
-				for(var entry : input)
-					result = result.flatMap(oldT -> {
-						var type = getKey.apply(entry);
-						var maybeValue = valueCodec.apply(type).encodeStart(ops, entry);
-						var key = ops.createString(type);
-						return maybeValue.flatMap(valueT -> ops.mergeToMap(oldT, key, valueT));
-					});
-				return result;
-			}
-		};
+		return Codec.dispatchedMap(Codec.STRING, valueCodec::apply)
+				.xmap(
+						m -> List.copyOf(m.values()),
+						s -> {
+							Map<String, V> map = new HashMap<>();
+							for(var v : s)
+								map.put(getKey.apply(v), v);
+							return map;
+						}
+				);
 	}
 
 	public static <C> Codec<Set<C>> setOf(Codec<C> codec)
