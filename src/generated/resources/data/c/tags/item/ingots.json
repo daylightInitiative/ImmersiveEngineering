@@ -7,6 +7,7 @@
     "#c:ingots/uranium",
     "#c:ingots/constantan",
     "#c:ingots/electrum",
-    "#c:ingots/steel"
+    "#c:ingots/steel",
+    "#c:ingots/hop_graphite"
   ]
 }
