@@ -165,25 +165,23 @@ public class SpecificIEOBJModel<T> implements BakedModel
 		BakedModel result = this;
 		ItemTransform baseItemTransform = baseModel.getOwner().getTransforms().getTransform(transformType);
 		Vector3f scale = baseItemTransform.scale;
+		baseItemTransform.apply(applyLeftHandTransform, transforms);
 		if(scale.x()*scale.y()*scale.z() < 0)
 		{
-			Vector3f newScale = new Vector3f(scale);
-			newScale.mul(-1);
-			new ItemTransform(
-					baseItemTransform.rotation, baseItemTransform.translation, newScale, baseItemTransform.rightRotation
-			).apply(applyLeftHandTransform, transforms);
-			transforms.last().pose().mul(INVERT);
-			transforms.last().normal().mul(INVERT_NORMAL);
 			// The custom renderer handles inversion on its own, for the default renderer we need to invert the quads
 			if(!isCustomRenderer())
 				result = this.inverted.get();
 		}
-		else
-			baseItemTransform.apply(applyLeftHandTransform, transforms);
 		ItemCallback.castOrDefault(callback).handlePerspective(
 				key, GlobalTempData.getActiveHolder(), transformType, transforms
 		);
 		return result;
+	}
+
+	public boolean invertQuads(@Nonnull ItemDisplayContext transformType) {
+		ItemTransform baseItemTransform = baseModel.getOwner().getTransforms().getTransform(transformType);
+		Vector3f scale = baseItemTransform.scale;
+		return scale.x()*scale.y()*scale.z() < 0;
 	}
 
 	private List<BakedQuad> buildQuads()
