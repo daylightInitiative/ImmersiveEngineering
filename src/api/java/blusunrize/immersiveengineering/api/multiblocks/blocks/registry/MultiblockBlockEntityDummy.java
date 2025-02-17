@@ -9,6 +9,7 @@
 package blusunrize.immersiveengineering.api.multiblocks.blocks.registry;
 
 import blusunrize.immersiveengineering.api.IEProperties;
+import blusunrize.immersiveengineering.api.IEProperties.Model;
 import blusunrize.immersiveengineering.api.client.IModelOffsetProvider;
 import blusunrize.immersiveengineering.api.multiblocks.blocks.MultiblockRegistration;
 import blusunrize.immersiveengineering.api.multiblocks.blocks.env.IMultiblockBEHelperDummy;
@@ -25,6 +26,7 @@ import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.client.model.data.ModelData;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
@@ -116,5 +118,14 @@ public class MultiblockBlockEntityDummy<State extends IMultiblockState>
 					mirroredPosInMB.getZ()
 			);
 		return mirroredPosInMB.subtract(helper.getMultiblock().masterPosInMB());
+	}
+
+	@Override
+	public @NotNull ModelData getModelData()
+	{
+		BlockPos offset = getModelOffset(getBlockState(), helper.getSize(getLevel()));
+		return ModelData.builder()
+				.with(Model.SUBMODEL_OFFSET, offset)
+				.build();
 	}
 }

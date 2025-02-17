@@ -14,6 +14,7 @@ import blusunrize.immersiveengineering.api.multiblocks.blocks.util.RelativeBlock
 import blusunrize.immersiveengineering.api.multiblocks.blocks.util.ShapeType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -79,6 +80,8 @@ public interface IMultiblockBEHelper<State extends IMultiblockState>
 	BlockState getOriginalBlock(Level level);
 
 	ItemStack getPickBlock();
+
+	Vec3i getSize(Level level);
 
 	@Nullable
 	default <OtherState extends IMultiblockState>

@@ -1,3 +1,6 @@
+##### Version 1.20.1-10.2.0-pre
+- Fix block breaking overlay on multiblocks (BluSunrize)
+
 ##### Version 1.20.1-10.1.0-171
 - Includes all features from 9.2.4
 - Add sounds for Arc Furnace, Excavator, and Automated Workbench (voidsong-dragonfly)

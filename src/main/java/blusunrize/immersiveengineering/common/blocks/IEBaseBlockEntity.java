@@ -8,6 +8,8 @@
 
 package blusunrize.immersiveengineering.common.blocks;
 
+import blusunrize.immersiveengineering.api.IEProperties.Model;
+import blusunrize.immersiveengineering.api.client.IModelOffsetProvider;
 import blusunrize.immersiveengineering.api.energy.WrappingEnergyStorage;
 import blusunrize.immersiveengineering.api.utils.DirectionUtils;
 import blusunrize.immersiveengineering.api.utils.SafeChunkUtils;
@@ -19,6 +21,7 @@ import blusunrize.immersiveengineering.common.util.ResettableCapability;
 import com.google.common.base.Preconditions;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -31,9 +34,11 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.ticks.ScheduledTick;
+import net.minecraftforge.client.model.data.ModelData;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -324,6 +329,23 @@ public abstract class IEBaseBlockEntity extends BlockEntity implements Blockstat
 	{
 		super.setLevel(world);
 		this.redstoneBySide.clear();
+	}
+
+	@Override
+	public @NotNull ModelData getModelData()
+	{
+		BlockPos offset = null;
+		BlockState state = getState();
+
+		if(this instanceof IModelOffsetProvider offsetProvider)
+			offset = offsetProvider.getModelOffset(state, Vec3i.ZERO);
+		else if(state.getBlock() instanceof IModelOffsetProvider offsetProvider)
+			offset = offsetProvider.getModelOffset(state, Vec3i.ZERO);
+		if(offset!=null)
+			return ModelData.builder()
+					.with(Model.SUBMODEL_OFFSET, offset)
+					.build();
+		return ModelData.EMPTY;
 	}
 
 	// Based on the super version, but works around a Forge patch to World#markChunkDirty causing duplicate comparator

@@ -23,6 +23,7 @@ import blusunrize.immersiveengineering.common.util.Utils;
 import com.google.common.base.Preconditions;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Vec3i;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -211,6 +212,12 @@ public abstract class MultiblockBEHelperCommon<State extends IMultiblockState> i
 		if(level==null)
 			return ItemStack.EMPTY;
 		return Utils.getPickBlock(getOriginalBlock(level));
+	}
+
+	@Override
+	public Vec3i getSize(Level level)
+	{
+		return multiblock.size(level);
 	}
 
 	@Nullable
