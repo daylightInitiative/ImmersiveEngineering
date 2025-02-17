@@ -20,6 +20,8 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 
+import java.util.Objects;
+
 public abstract class UpgradeableToolItem extends InternalStorageItem implements IUpgradeableTool
 {
 	private String upgradeType;
@@ -33,7 +35,7 @@ public abstract class UpgradeableToolItem extends InternalStorageItem implements
 	@Override
 	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged)
 	{
-		return !ItemStack.matches(oldStack, newStack);
+		return slotChanged || !Objects.equals(getUpgrades(oldStack), getUpgrades(newStack));
 	}
 
 	@Override

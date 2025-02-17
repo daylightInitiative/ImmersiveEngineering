@@ -1,5 +1,6 @@
 ##### Version 1.20.1-10.2.0-pre
 - Fix block breaking overlay on multiblocks (BluSunrize)
+- Fix tools playing a re-equip animation when they shouldn't (BluSunrize)
 
 ##### Version 1.20.1-10.1.0-171
 - Includes all features from 9.2.4
