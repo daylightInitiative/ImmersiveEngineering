@@ -1,4 +1,5 @@
-##### Version 1.20.1-10.2.0-pre
+##### Version 1.20.1-10.2.0-182
+- Final release for 1.20.1
 - Expand list of blocks that the rockcutter and grinding disc can dig (BluSunrize)
 - Fix diesel generators providing free power with any fluid (the-pandoran)
 - Fix block breaking overlay on multiblocks (BluSunrize)
