@@ -5,6 +5,7 @@
 - Fix tools playing a re-equip animation when they shouldn't (BluSunrize)
 - Fix windmills having their insides turn white when far away (BluSunrize)
 - Fix Toolbox being movable while opened (BluSunrize)
+- Fix ComputerCraft methods with extra arguments causing problems (BluSunrize)
 
 ##### Version 1.20.1-10.1.0-171
 - Includes all features from 9.2.4
