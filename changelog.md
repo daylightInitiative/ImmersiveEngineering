@@ -1,4 +1,6 @@
 ##### Version 1.20.1-10.2.0-pre
+- Expand list of blocks that the rockcutter and grinding disc can dig (BluSunrize)
+- Fix diesel generators providing free power with any fluid (the-pandoran)
 - Fix block breaking overlay on multiblocks (BluSunrize)
 - Fix tools playing a re-equip animation when they shouldn't (BluSunrize)
 - Fix windmills having their insides turn white when far away (BluSunrize)
