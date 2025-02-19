@@ -12,6 +12,7 @@
 - Fix condition recipe encoding/decoding (Malte)
 - Fix chemthrower not "noticing" its main fluid (Malte)
 - Fix hempseeds not being compostable (voidsong-dragonfly)
+- Fix broken armor values on steel armor (BluSunrize)
 - Translations Added/Updated: zh_cn (Cactusstudent, SlimeSB, mc-kaishixiaxue, JustAlkaid), tr_tr (RuyaSavascisi)
 
 ##### Version 1.21.1-12.0.0-182
