@@ -3,6 +3,10 @@
 - Add missing potion recipes for Thick & Mundane potions (voidsong-dragonfly)
 - Add machine interface support for the Assembler (BluSunrize)
 - Change text in the Circuit Table not being translatable (André Augusto)
+- Reduce damage taken from decelerating with the Skyhook by 60% (BluSunrize)
+    - Also actually mention this damage in the manual
+    - This should lead to less deaths by suddenly grabbing a cable
+    - In the future, we may add an upgrade to remove this damage entirely
 - Fix High Cetane Biodiesel not being properly usable in the chemthrower (BluSunrize)
 - Fix redstone timer showing the wrong signal colour in its overlay (BluSunrize)
 - Fix manual erroneously listing explosive cartridges as using the "common" blueprint (BluSunrize)
