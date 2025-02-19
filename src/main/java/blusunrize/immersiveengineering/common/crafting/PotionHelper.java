@@ -55,11 +55,10 @@ public class PotionHelper
 			brewingData = ImmersiveEngineering.proxy.getClientWorld().potionBrewing();
 		// Vanilla
 		for(var mixPredicate : ((PotionBrewingAccess)brewingData).getConversions())
-			if(mixPredicate.getTo()!=Potions.MUNDANE&&mixPredicate.getTo()!=Potions.THICK)
-				out.apply(
-						mixPredicate.getTo(), mixPredicate.getFrom(),
-						new IngredientWithSize(mixPredicate.getIngredient())
-				);
+			out.apply(
+					mixPredicate.getTo(), mixPredicate.getFrom(),
+					new IngredientWithSize(mixPredicate.getIngredient())
+			);
 
 		// Modded
 		for(IBrewingRecipe recipe : brewingData.getRecipes())

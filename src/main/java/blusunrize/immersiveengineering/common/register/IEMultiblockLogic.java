@@ -95,6 +95,7 @@ public class IEMultiblockLogic
 			.notMirrored()
 			.redstoneNoComputer(s -> s.rsState, AssemblerLogic.REDSTONE_PORTS)
 			.gui(IEMenuTypes.ASSEMBLER)
+			.comparator(AssemblerLogic.makeComparator())
 			.build();
 
 	public static final MultiblockRegistration<AutoWorkbenchLogic.State> AUTO_WORKBENCH = metal(new AutoWorkbenchLogic(), "auto_workbench")
@@ -127,6 +128,7 @@ public class IEMultiblockLogic
 			.structure(() -> IEMultiblocks.MIXER)
 			.redstone(s -> s.rsState, MixerLogic.REDSTONE_POS)
 			.gui(IEMenuTypes.MIXER)
+			.comparator(MixerLogic.makeComparator())
 			.build();
 
 	public static final MultiblockRegistration<RefineryLogic.State> REFINERY = metal(new RefineryLogic(), "refinery")

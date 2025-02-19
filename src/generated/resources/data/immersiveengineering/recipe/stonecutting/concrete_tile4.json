@@ -1,7 +1,7 @@
 {
   "type": "minecraft:stonecutting",
   "ingredient": {
-    "item": "immersiveengineering:concrete_brick"
+    "item": "immersiveengineering:concrete"
   },
   "result": {
     "count": 1,

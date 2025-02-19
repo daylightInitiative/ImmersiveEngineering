@@ -1,4 +1,5 @@
 ##### Version 1.21.1-12.1.0-pre
+- All changes from 1.20.4-11.7.0
 - Add HOP graphite ingots to general ingots tag (Malte)
 - Add builtin compat with Repurposed Structrues (TelepathicGrunt)
 - Remove CustomParticleManager (IMS)
@@ -144,14 +145,12 @@
 - Change the recipes for revolver cartridges to be cheaper overall (BluSunrize)
 - Change Nickel and Uranium ores to have more easily identifiable textures (BluSunrize)
 - Change titles and descriptions of Advancements to more closely match Mojang's pattern (voidsong-dragonfly)
-- Change wire loss to be exponential rather than linear, allowing HV lines to run much further and still be viable! (
-  voidsong-dragonfly)
+- Change wire loss to be exponential rather than linear, allowing HV lines to run much further and still be viable! (voidsong-dragonfly)
 - Change storage crates in their behavior (BluSunrize)
     - They will only keep their items if they are sealed before being broken
     - To seal a crate you'll need to use an engineer's hammer on it for an extended duration
     - This way, they're not longer as good as Shulker Boxes
-    - To make up for it, the name of a crate can now be edited in its GUI and will display when hovering the cursor over
-      the block
+    - To make up for it, the name of a crate can now be edited in its GUI and will display when hovering the cursor over the block
 - Change waterwheels in their behavior (voidsong-dragonfly)
     - Water source blocks directly in wheel paddles now have higher 'resistance' and penalize wheels
     - Fluid blocks of lower height now provide less torque to waterwheels - higher flow is better
