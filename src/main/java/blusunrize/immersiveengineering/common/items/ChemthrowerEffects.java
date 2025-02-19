@@ -165,6 +165,8 @@ public class ChemthrowerEffects
 		ChemthrowerHandler.registerFlammable(fluidCreosote);
 		ChemthrowerHandler.registerEffect(fluidBiodiesel, new ChemthrowerEffect_Potion(null, 0, IEPotions.FLAMMABLE.value(), 140, 1));
 		ChemthrowerHandler.registerFlammable(fluidBiodiesel);
+		ChemthrowerHandler.registerEffect(fluidHighPowerBiodiesel, new ChemthrowerEffect_Potion(null, 0, IEPotions.FLAMMABLE.value(), 140, 1));
+		ChemthrowerHandler.registerFlammable(fluidHighPowerBiodiesel);
 		ChemthrowerHandler.registerFlammable(fluidEthanol);
 		ChemthrowerHandler.registerFlammable(fluidAcetaldehyde);
 		ChemthrowerHandler.registerEffect(fluidResin, new ChemthrowerEffect_Potion(null, 0, IEPotions.STICKY.value(), 140, 1));
