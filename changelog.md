@@ -12,6 +12,7 @@
 - Fix internal slot counts for consumed items in the assembler, no longer duplicating buckets of water (BluSunrize)
 - Fix arc furnace secondaries having reversed output chances (voidsong-dragonfly)
 - Fix incorrect documentation about the sample drill in the manual (voidsong-dragonfly)
+- Fix sawmill having a broken comparator (and machine interface) output when the blade breaks (BluSunrize)
 - Translations Added/Updated: cs_cz.json (RomanPlayer22), zh_cn.json (Cactusstudent, SlimeSB, mc-kaishixiaxue, JustAlkaid)
 
 ##### Version 1.20.4-11.6.1-181
