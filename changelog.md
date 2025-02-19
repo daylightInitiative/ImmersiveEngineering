@@ -2,6 +2,7 @@
 - Add some missing Concrete recipes to make crafting easier (voidsong-dragonfly)
 - Add missing potion recipes for Thick & Mundane potions (voidsong-dragonfly)
 - Add machine interface support for the Assembler (BluSunrize)
+- Add missing comparator outputs that were documented in the manual (BluSunrize)
 - Change text in the Circuit Table not being translatable (André Augusto)
 - Change Arc Furnace electrode comparator (and machine interface) output to represent the *lowest* electrode
 - Reduce damage taken from decelerating with the Skyhook by 60% (BluSunrize)

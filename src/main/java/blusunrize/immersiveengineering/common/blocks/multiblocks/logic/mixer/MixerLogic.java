@@ -12,6 +12,8 @@ import blusunrize.immersiveengineering.api.ApiUtils;
 import blusunrize.immersiveengineering.api.Lib;
 import blusunrize.immersiveengineering.api.crafting.MixerRecipe;
 import blusunrize.immersiveengineering.api.energy.AveragingEnergyStorage;
+import blusunrize.immersiveengineering.api.multiblocks.blocks.component.ComparatorManager;
+import blusunrize.immersiveengineering.api.multiblocks.blocks.component.ComparatorManager.SimpleComparatorValue;
 import blusunrize.immersiveengineering.api.multiblocks.blocks.component.IClientTickableComponent;
 import blusunrize.immersiveengineering.api.multiblocks.blocks.component.IServerTickableComponent;
 import blusunrize.immersiveengineering.api.multiblocks.blocks.component.RedstoneControl.RSState;
@@ -25,6 +27,7 @@ import blusunrize.immersiveengineering.api.tool.MachineInterfaceHandler;
 import blusunrize.immersiveengineering.api.tool.MachineInterfaceHandler.IMachineInterfaceConnection;
 import blusunrize.immersiveengineering.api.tool.MachineInterfaceHandler.MachineCheckImplementation;
 import blusunrize.immersiveengineering.client.fx.FluidSplashOptions;
+import blusunrize.immersiveengineering.common.blocks.multiblocks.logic.FermenterLogic;
 import blusunrize.immersiveengineering.common.blocks.multiblocks.logic.mixer.MixerLogic.State;
 import blusunrize.immersiveengineering.common.blocks.multiblocks.process.MultiblockProcess;
 import blusunrize.immersiveengineering.common.blocks.multiblocks.process.MultiblockProcessInMachine;
@@ -247,6 +250,13 @@ public class MixerLogic
 	public Function<BlockPos, VoxelShape> shapeGetter(ShapeType forType)
 	{
 		return MixerShapes.SHAPE_GETTER;
+	}
+
+	public static ComparatorManager<State> makeComparator()
+	{
+		return ComparatorManager.makeSimple(
+				SimpleComparatorValue.inventory(State::getInventory, 0, NUM_SLOTS), REDSTONE_POS
+		);
 	}
 
 	public static class State implements IMultiblockState, ProcessContextInMachine<MixerRecipe>

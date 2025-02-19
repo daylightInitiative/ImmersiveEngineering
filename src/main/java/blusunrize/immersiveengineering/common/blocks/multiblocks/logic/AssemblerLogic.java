@@ -10,6 +10,8 @@ package blusunrize.immersiveengineering.common.blocks.multiblocks.logic;
 
 import blusunrize.immersiveengineering.api.Lib;
 import blusunrize.immersiveengineering.api.energy.MutableEnergyStorage;
+import blusunrize.immersiveengineering.api.multiblocks.blocks.component.ComparatorManager;
+import blusunrize.immersiveengineering.api.multiblocks.blocks.component.ComparatorManager.SimpleComparatorValue;
 import blusunrize.immersiveengineering.api.multiblocks.blocks.component.IClientTickableComponent;
 import blusunrize.immersiveengineering.api.multiblocks.blocks.component.IServerTickableComponent;
 import blusunrize.immersiveengineering.api.multiblocks.blocks.component.RedstoneControl.RSState;
@@ -27,7 +29,6 @@ import blusunrize.immersiveengineering.api.tool.MachineInterfaceHandler.MachineC
 import blusunrize.immersiveengineering.api.tool.assembler.RecipeQuery;
 import blusunrize.immersiveengineering.common.blocks.metal.CrafterPatternInventory;
 import blusunrize.immersiveengineering.common.blocks.multiblocks.logic.AssemblerLogic.State;
-import blusunrize.immersiveengineering.common.blocks.multiblocks.logic.arcfurnace.ArcFurnaceLogic;
 import blusunrize.immersiveengineering.common.blocks.multiblocks.shapes.AssemblerShapes;
 import blusunrize.immersiveengineering.common.config.IEServerConfig;
 import blusunrize.immersiveengineering.common.fluids.ArrayFluidHandler;
@@ -336,6 +337,13 @@ public class AssemblerLogic implements IMultiblockLogic<State>, IServerTickableC
 	public Function<BlockPos, VoxelShape> shapeGetter(ShapeType forType)
 	{
 		return AssemblerShapes.SHAPE_GETTER;
+	}
+
+	public static ComparatorManager<State> makeComparator()
+	{
+		return ComparatorManager.makeSimple(
+				SimpleComparatorValue.inventory(State::getInventory, 0, 18), REDSTONE_PORTS
+		);
 	}
 
 	public static class State implements IMultiblockState
