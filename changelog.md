@@ -3,6 +3,7 @@
 - Add missing potion recipes for Thick & Mundane potions (voidsong-dragonfly)
 - Add machine interface support for the Assembler (BluSunrize)
 - Change text in the Circuit Table not being translatable (André Augusto)
+- Change Arc Furnace electrode comparator (and machine interface) output to represent the *lowest* electrode
 - Reduce damage taken from decelerating with the Skyhook by 60% (BluSunrize)
     - Also actually mention this damage in the manual
     - This should lead to less deaths by suddenly grabbing a cable

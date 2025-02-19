@@ -66,6 +66,7 @@ import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.IntStream;
 
 public class ArcFurnaceLogic
 		implements IMultiblockLogic<State>, IServerTickableComponent<State>, IClientTickableComponent<State>
@@ -472,14 +473,12 @@ public class ArcFurnaceLogic
 
 		private float getElectrodeComparatorValue()
 		{
-			float f = 0;
-			for(int i = FIRST_ELECTRODE_SLOT; i < FIRST_ELECTRODE_SLOT+ELECTRODE_COUNT; i++)
-			{
-				final ItemStack electrode = inventory.getStackInSlot(i);
-				if(!electrode.isEmpty())
-					f += 1-(electrode.getDamageValue()/(float)electrode.getMaxDamage());
-			}
-			return f/3f;
+			return (float)IntStream.range(0, ELECTRODE_COUNT).mapToDouble(i -> {
+				final ItemStack electrode = inventory.getStackInSlot(FIRST_ELECTRODE_SLOT+i);
+				if(electrode.isEmpty())
+					return 0;
+				return 1-(electrode.getDamageValue()/(float)electrode.getMaxDamage());
+			}).min().orElse(0);
 		}
 
 		public boolean hasElectrodes()
