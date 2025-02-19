@@ -1,3 +1,19 @@
+##### Version 1.21.1-12.1.0-pre
+- Add HOP graphite ingots to general ingots tag (Malte)
+- Add builtin compat with Repurposed Structrues (TelepathicGrunt)
+- Remove CustomParticleManager (IMS)
+- Change High Explosive cartridges to return shells on use (voidsong-dragonfly)
+- Fix crash with dual codecs (Malte)
+- Fix crash when placing toolbox (Malte)
+- Fix sealed crates deleting items (Malte)
+- Fix incorrect sprite for coke oven flame (Malte)
+- Fix crash with assembler (Malte)
+- Fix crash due to invalid blueprints (Malte)
+- Fix condition recipe encoding/decoding (Malte)
+- Fix chemthrower not "noticing" its main fluid (Malte)
+- Fix hempseeds not being compostable (voidsong-dragonfly)
+- Translations Added/Updated: zh_cn (Cactusstudent, SlimeSB, mc-kaishixiaxue, JustAlkaid), tr_tr (RuyaSavascisi)
+
 ##### Version 1.21.1-12.0.0-182
 - First release for 1.21.1
 - **All** of the porting work and bugfixing were done by Malte
