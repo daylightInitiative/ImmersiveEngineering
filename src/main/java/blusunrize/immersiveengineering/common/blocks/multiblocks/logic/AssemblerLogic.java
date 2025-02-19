@@ -8,6 +8,7 @@
 
 package blusunrize.immersiveengineering.common.blocks.multiblocks.logic;
 
+import blusunrize.immersiveengineering.api.Lib;
 import blusunrize.immersiveengineering.api.energy.MutableEnergyStorage;
 import blusunrize.immersiveengineering.api.multiblocks.blocks.component.IClientTickableComponent;
 import blusunrize.immersiveengineering.api.multiblocks.blocks.component.IServerTickableComponent;
@@ -20,9 +21,13 @@ import blusunrize.immersiveengineering.api.multiblocks.blocks.util.CapabilityPos
 import blusunrize.immersiveengineering.api.multiblocks.blocks.util.MBInventoryUtils;
 import blusunrize.immersiveengineering.api.multiblocks.blocks.util.RelativeBlockFace;
 import blusunrize.immersiveengineering.api.multiblocks.blocks.util.ShapeType;
+import blusunrize.immersiveengineering.api.tool.MachineInterfaceHandler;
+import blusunrize.immersiveengineering.api.tool.MachineInterfaceHandler.IMachineInterfaceConnection;
+import blusunrize.immersiveengineering.api.tool.MachineInterfaceHandler.MachineCheckImplementation;
 import blusunrize.immersiveengineering.api.tool.assembler.RecipeQuery;
 import blusunrize.immersiveengineering.common.blocks.metal.CrafterPatternInventory;
 import blusunrize.immersiveengineering.common.blocks.multiblocks.logic.AssemblerLogic.State;
+import blusunrize.immersiveengineering.common.blocks.multiblocks.logic.arcfurnace.ArcFurnaceLogic;
 import blusunrize.immersiveengineering.common.blocks.multiblocks.shapes.AssemblerShapes;
 import blusunrize.immersiveengineering.common.config.IEServerConfig;
 import blusunrize.immersiveengineering.common.fluids.ArrayFluidHandler;
@@ -40,6 +45,7 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -77,6 +83,17 @@ public class AssemblerLogic implements IMultiblockLogic<State>, IServerTickableC
 	public static final BlockPos[] REDSTONE_PORTS = {
 			new BlockPos(0, 0, 1), new BlockPos(2, 0, 1)
 	};
+
+	// register additional conditions for machine interface
+	public static ResourceLocation[] MIF_CONDITION_TANKS = IntStream.range(0, NUM_TANKS)
+			.mapToObj(i -> new ResourceLocation(Lib.MODID, "assembler/tank_"+i))
+			.toArray(ResourceLocation[]::new);
+
+	static
+	{
+		for(ResourceLocation tank_cond : MIF_CONDITION_TANKS)
+			MachineInterfaceHandler.copyOptions(tank_cond, MachineInterfaceHandler.BASIC_FLUID_IN);
+	}
 
 	@Override
 	public void tickClient(IMultiblockContext<State> context)
@@ -305,6 +322,8 @@ public class AssemblerLogic implements IMultiblockLogic<State>, IServerTickableC
 		register.registerAt(ItemHandler.BLOCK, ITEM_INPUT, state -> state.itemInput);
 		register.registerAt(FluidHandler.BLOCK, FLUID_INPUT, state -> state.fluidInput);
 		register.registerAt(EnergyStorage.BLOCK, ENERGY_INPUT, state -> state.energy);
+		for(BlockPos bp : REDSTONE_PORTS)
+			register.registerAtBlockPos(IMachineInterfaceConnection.CAPABILITY, bp, state -> state.mifHandler);
 	}
 
 	@Override
@@ -335,6 +354,7 @@ public class AssemblerLogic implements IMultiblockLogic<State>, IServerTickableC
 		private final Supplier<@Nullable IItemHandler> output;
 		private final IItemHandler itemInput;
 		private final IFluidHandler fluidInput;
+		private final IMachineInterfaceConnection mifHandler;
 		private BooleanSupplier isPlayingSound = () -> false;
 		private boolean shouldPlaySound;
 
@@ -347,6 +367,14 @@ public class AssemblerLogic implements IMultiblockLogic<State>, IServerTickableC
 			);
 			itemInput = new WrappingItemHandler(inventory, true, false);
 			fluidInput = new ArrayFluidHandler(tanks, false, true, ctx.getMarkDirtyRunnable());
+			mifHandler = () -> new MachineCheckImplementation[]{
+					new MachineCheckImplementation<>(itemInput, MachineInterfaceHandler.BASIC_ITEM_IN),
+					new MachineCheckImplementation<>(tanks[0], MIF_CONDITION_TANKS[0]),
+					new MachineCheckImplementation<>(tanks[1], MIF_CONDITION_TANKS[1]),
+					new MachineCheckImplementation<>(tanks[2], MIF_CONDITION_TANKS[2]),
+					new MachineCheckImplementation<>(output, MachineInterfaceHandler.BASIC_ITEM_OUT),
+					new MachineCheckImplementation<>(energy, MachineInterfaceHandler.BASIC_ENERGY)
+			};
 		}
 
 		@Override
@@ -412,7 +440,7 @@ public class AssemblerLogic implements IMultiblockLogic<State>, IServerTickableC
 		{
 			int slot = 0;
 			for(; slot < gridItems.size(); slot++)
-				if(!this.gridItems.get(slot).isEmpty() && --queryIdx<0)
+				if(!this.gridItems.get(slot).isEmpty()&&--queryIdx < 0)
 					return slot;
 			return 0;
 		}

@@ -1,6 +1,7 @@
 ##### Version 1.20.4-11.7.0-pre
 - Add some missing Concrete recipes to make crafting easier (voidsong-dragonfly)
 - Add missing potion recipes for Thick & Mundane potions (voidsong-dragonfly)
+- Add machine interface support for the Assembler (BluSunrize)
 - Change text in the Circuit Table not being translatable (André Augusto)
 - Fix High Cetane Biodiesel not being properly usable in the chemthrower (BluSunrize)
 - Fix redstone timer showing the wrong signal colour in its overlay (BluSunrize)
