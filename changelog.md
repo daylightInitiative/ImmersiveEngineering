@@ -1,3 +1,9 @@
+##### Version 1.20.4-11.7.0-pre
+- Add some missing Concrete recipes to make crafting easier (voidsong-dragonfly)
+- Add missing potion recipes for Thick & Mundane potions (voidsong-dragonfly)
+- Change text in the Circuit Table not being translatable (André Augusto)
+- Translations Added/Updated: cs_cz.json (RomanPlayer22), zh_cn.json (Cactusstudent, SlimeSB, mc-kaishixiaxue, JustAlkaid)
+
 ##### Version 1.20.4-11.6.1-181
 - Fix pipe valves causing a crash when used in a loop of pipes (BluSunrize)
 
