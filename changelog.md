@@ -6,7 +6,6 @@
 - Fix pipe valves causing a crash when used in a loop of pipes (BluSunrize)
 
 ##### Version 1.20.4-11.6.0-180
-
 - "The Redstone Update!"
     - Add the radio tower, a way to wirelessly send signals! (BluSunrize)
     - Add the redstone state cell for storing signals (BluSunrize)
@@ -37,7 +36,6 @@
 - Translations Added/Updated: de_de (AriaElidove)
 
 ##### Version 1.20.4-11.5.0-179
-
 - Add warning signs (BluSunrize)
     - Textures kindly provided by AriaElidove, thank you!
     - You can also make a banner pattern with the signs and put (some) of the warnings on banners and shields!
@@ -65,14 +63,12 @@
 - Fix models for drill and buzzsaw not using translucent as a rendertype (BluSunrize)
 
 ##### Version 1.20.4-11.4.3-178
-
 - Change scaffolding blocks to have more descriptive names (AriaElidove)
 - Change translations for fluid blocks so Jade shows them properly (AriaElidove)
 - Fix arc recycling preventing joining multiplayer servers (BluSunrize)
 - Fix wooden crates closing their GUI when using your inventory key in their name (BluSunrize)
 
 ##### Version 1.20.4-11.4.2-177
-
 - Add treated wood & steel doors (BluSunrize)
     - Steel doors can only be opened by hand and will be locked by an applied redstone signal
     - There's also matching trapdoors
@@ -102,13 +98,11 @@
 - Fix post transformers being placeable on top of posts (voidsong-dragonfly)
 
 ##### Version 1.20.4-11.4.1-176
-
 - Add a netherite nugget (BluSunrize)
     - This is to allow recycling outputs of nuggets
 - Fix incorrect output on high-cetane diesel recipe (BluSunrize)
 
 ##### Version 1.20.4-11.4.0-175
-
 - Add upgrades for the Engineering's Skyhook (BluSunrize)
     - High Torque Motor makes it faster to go up slopes
     - Insulated Grip allows riding live wires without getting zapped
@@ -158,7 +152,6 @@
 - Fix inconsistent breaking sounds with stone multiblocks (BluSunrize)
 
 ##### Version 1.20.4-11.3.0-174
-
 - Re-add CC-Tweaked integration (Malte)
 - Add missing redstone acid recipe to the manual (BluSunrize)
 - Add the windows from Engineer's Decor (BluSunrize)
@@ -172,7 +165,6 @@
 - Fix Toolbox being movable while opened (BluSunrize)
 
 ##### Version 1.20.4-11.2.0-173
-
 - Overhaul the Engineering's Manual (voidsong-dragonfly)
     - Splitting various long entries into multiple smaller ones (fluid transport, logic circuits, ...)
     - Adding new pages for undocumented features (gunpower barrel, minecarts, ...)
