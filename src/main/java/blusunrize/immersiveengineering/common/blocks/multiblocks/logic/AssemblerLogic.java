@@ -95,7 +95,7 @@ public class AssemblerLogic implements IMultiblockLogic<State>, IServerTickableC
 	{
 		final State state = context.getState();
 		final boolean wasPlaying = state.shouldPlaySound;
-		if(!state.rsState.isEnabled(context) && wasPlaying!=state.rsState.isEnabled(context))
+		if(!state.rsState.isEnabled(context)&&wasPlaying!=state.rsState.isEnabled(context))
 		{
 			state.shouldPlaySound = false;
 			context.requestMasterBESync();
@@ -238,7 +238,7 @@ public class AssemblerLogic implements IMultiblockLogic<State>, IServerTickableC
 	}
 
 	private boolean consumeFluid(
-			List<FluidStack> tankFluids, int slot, RecipeQuery query, @Nullable RecipeInputSources sources
+			List<FluidStack> tankFluids, int queryIndex, RecipeQuery query, @Nullable RecipeInputSources sources
 	)
 	{
 		for(FluidStack tankFluid : tankFluids)
@@ -246,14 +246,14 @@ public class AssemblerLogic implements IMultiblockLogic<State>, IServerTickableC
 			{
 				tankFluid.shrink(query.getFluidSize());
 				if(sources!=null)
-					sources.providedByNonItem.set(slot, true);
+					sources.providedByNonItem.set(sources.getSlotForQueryIndex(queryIndex), true);
 				return true;
 			}
 		return false;
 	}
 
 	private int consumeItem(
-			int maxConsume, int slot, ItemStack next, RecipeQuery query, @Nullable RecipeInputSources sources
+			int maxConsume, int queryIndex, ItemStack next, RecipeQuery query, @Nullable RecipeInputSources sources
 	)
 	{
 		if(maxConsume <= 0||next.isEmpty()||!query.matchesIgnoringSize(next))
@@ -261,7 +261,7 @@ public class AssemblerLogic implements IMultiblockLogic<State>, IServerTickableC
 		int taken = Math.min(maxConsume, next.getCount());
 		ItemStack forGrid = next.split(taken);
 		if(sources!=null)
-			sources.gridItems.set(slot, forGrid);
+			sources.gridItems.set(sources.getSlotForQueryIndex(queryIndex), forGrid);
 		return taken;
 	}
 
@@ -406,6 +406,15 @@ public class AssemblerLogic implements IMultiblockLogic<State>, IServerTickableC
 		public RecipeInputSources(CrafterPatternInventory pattern)
 		{
 			this(new ArrayList<>(pattern.inv), new BooleanArrayList(new boolean[9]));
+		}
+
+		public int getSlotForQueryIndex(int queryIdx)
+		{
+			int slot = 0;
+			for(; slot < gridItems.size(); slot++)
+				if(!this.gridItems.get(slot).isEmpty() && --queryIdx<0)
+					return slot;
+			return 0;
 		}
 	}
 }

@@ -8,6 +8,7 @@
 - Fix banner pattern for the screwdriver grip (BluSunrize)
 - Fix windmills having their insides turn white when far away (BluSunrize)
 - Fix command "/ie clearshaders" not working when passing a player reference (BluSunrize)
+- Fix internal slot counts for consumed items in the assembler, no longer duplicating buckets of water (BluSunrize)
 - Translations Added/Updated: cs_cz.json (RomanPlayer22), zh_cn.json (Cactusstudent, SlimeSB, mc-kaishixiaxue, JustAlkaid)
 
 ##### Version 1.20.4-11.6.1-181
