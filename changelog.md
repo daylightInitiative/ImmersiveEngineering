@@ -4,6 +4,7 @@
 - Change text in the Circuit Table not being translatable (André Augusto)
 - Fix High Cetane Biodiesel not being properly usable in the chemthrower (BluSunrize)
 - Fix redstone timer showing the wrong signal colour in its overlay (BluSunrize)
+- Fix manual erroneously listing explosive cartridges as using the "common" blueprint (BluSunrize)
 - Translations Added/Updated: cs_cz.json (RomanPlayer22), zh_cn.json (Cactusstudent, SlimeSB, mc-kaishixiaxue, JustAlkaid)
 
 ##### Version 1.20.4-11.6.1-181
