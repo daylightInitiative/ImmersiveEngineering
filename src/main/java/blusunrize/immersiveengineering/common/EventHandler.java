@@ -34,7 +34,6 @@ import blusunrize.immersiveengineering.common.register.IEItems.Misc;
 import blusunrize.immersiveengineering.common.register.IEItems.Tools;
 import blusunrize.immersiveengineering.common.util.IEDamageSources;
 import blusunrize.immersiveengineering.common.util.IEDamageSources.ElectricDamageSource;
-import blusunrize.immersiveengineering.common.util.IEExplosion;
 import blusunrize.immersiveengineering.common.util.IESounds;
 import blusunrize.immersiveengineering.common.util.Utils;
 import net.minecraft.advancements.AdvancementHolder;
@@ -63,7 +62,6 @@ import net.minecraft.world.entity.raid.Raider;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.LecternBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.LecternBlockEntity;
@@ -96,7 +94,6 @@ import java.util.function.Predicate;
 
 public class EventHandler
 {
-	public static Map<Level, Set<IEExplosion>> currentExplosions = new WeakHashMap<>();
 	public static final Queue<Runnable> SERVER_TASKS = new ArrayDeque<>();
 
 	@SubscribeEvent
@@ -175,19 +172,6 @@ public class EventHandler
 			Runnable next = SERVER_TASKS.poll();
 			if(next!=null)
 				next.run();
-		}
-
-		final Set<IEExplosion> explosionsInLevel = currentExplosions.get(level);
-		if(explosionsInLevel!=null)
-		{
-			Iterator<IEExplosion> itExplosion = explosionsInLevel.iterator();
-			while(itExplosion.hasNext())
-			{
-				IEExplosion ex = itExplosion.next();
-				ex.doExplosionTick();
-				if(ex.isExplosionFinished)
-					itExplosion.remove();
-			}
 		}
 	}
 
