@@ -24,6 +24,7 @@
 - Fix arc furnace secondaries having reversed output chances (voidsong-dragonfly)
 - Fix incorrect documentation about the sample drill in the manual (voidsong-dragonfly)
 - Fix sawmill having a broken comparator (and machine interface) output when the blade breaks (BluSunrize)
+- Fix potential issue with synchronized mod loading (khjxiaogu)
 - Translations Added/Updated: cs_cz.json (RomanPlayer22), zh_cn.json (Cactusstudent, SlimeSB, mc-kaishixiaxue, JustAlkaid)
 
 ##### Version 1.20.4-11.6.1-181
