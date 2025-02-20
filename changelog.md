@@ -1,4 +1,4 @@
-##### Version 1.20.4-11.7.0-pre
+##### Version 1.20.4-11.7.0-184
 - Add some missing Concrete recipes to make crafting easier (voidsong-dragonfly)
 - Add missing potion recipes for Thick & Mundane potions (voidsong-dragonfly)
 - Add machine interface support for the Assembler (BluSunrize)
