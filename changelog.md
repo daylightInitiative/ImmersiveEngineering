@@ -3,6 +3,11 @@
 - Add missing potion recipes for Thick & Mundane potions (voidsong-dragonfly)
 - Add machine interface support for the Assembler (BluSunrize)
 - Add missing comparator outputs that were documented in the manual (BluSunrize)
+- Overhaul Gunpowder Barrels to make them far more useful (voidsong-dragonfly)
+    - No more multi-stage explosions
+    - Directional explosions that are biased against the direction with the most "hardness"
+    - More powerful than TNT because they are actual bombs and not "gunpowder mixed with sand"
+    - Better for antipersonnel damage when on the surface, but better at breaking rocks when inside rock
 - Change text in the Circuit Table not being translatable (André Augusto)
 - Change Arc Furnace electrode comparator (and machine interface) output to represent the *lowest* electrode
 - Reduce damage taken from decelerating with the Skyhook by 60% (BluSunrize)
