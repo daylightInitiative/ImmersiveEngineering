@@ -15,6 +15,8 @@
 - Fix hempseeds not being compostable (voidsong-dragonfly)
 - Fix broken armor values on steel armor (BluSunrize)
 - Fix angled chutes not having proper collision boxes (BluSunrize)
+- Fix shader banners in villages not rendering (BluSunrize)
+    - Unfortunately only affects newly generated structures
 - Translations Added/Updated: zh_cn (Cactusstudent, SlimeSB, mc-kaishixiaxue, JustAlkaid), tr_tr (RuyaSavascisi)
 
 ##### Version 1.21.1-12.0.0-182
