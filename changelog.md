@@ -20,6 +20,7 @@
 - Fix bugged colors on shader banners, resulting from mixups of ARGB and ABGR in composited textures (BluSunrize)
 - Fix missing item model for the radio tower (BluSunrize)
 - Fix firework cartridges crashing when crafted (BluSunrize)
+- Fix firework cartridges not accessing vanilla components (BluSunrize)
 - Translations Added/Updated: zh_cn (Cactusstudent, SlimeSB, mc-kaishixiaxue, JustAlkaid), tr_tr (RuyaSavascisi)
 
 ##### Version 1.21.1-12.0.0-182

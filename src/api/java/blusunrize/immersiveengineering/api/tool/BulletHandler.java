@@ -17,6 +17,7 @@ import com.google.common.collect.HashBiMap;
 import com.mojang.datafixers.util.Unit;
 import malte0811.dualcodecs.DualCodec;
 import malte0811.dualcodecs.DualCodecs;
+import net.minecraft.core.component.DataComponentType;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -223,7 +224,7 @@ public class BulletHandler
 			if(!world.isClientSide&&hitEntity!=null&&damageSourceGetter!=null)
 			{
 				Entity shooter = null;
-				if(shooterUUID!=null && world instanceof ServerLevel serverLevel)
+				if(shooterUUID!=null&&world instanceof ServerLevel serverLevel)
 					shooter = serverLevel.getEntity(shooterUUID);
 				if(hitEntity.hurt(damageSourceGetter.getSource(projectile, shooter, hitEntity), getDamage(hitEntity, headshot)))
 				{
@@ -265,8 +266,14 @@ public class BulletHandler
 		}
 	}
 
-	public record CodecsAndDefault<T>(DualCodec<? super RegistryFriendlyByteBuf, T> codecs, T defaultValue)
+	public record CodecsAndDefault<T>(DualCodec<? super RegistryFriendlyByteBuf, T> codecs, T defaultValue,
+									  DataComponentType<T> vanillaDataComponent)
 	{
+		public CodecsAndDefault(DualCodec<? super RegistryFriendlyByteBuf, T> codecs, T defaultValue)
+		{
+			this(codecs, defaultValue, null);
+		}
+
 		public static final CodecsAndDefault<Unit> UNIT = new CodecsAndDefault<>(DualCodecs.unit(Unit.INSTANCE), Unit.INSTANCE);
 	}
 }
