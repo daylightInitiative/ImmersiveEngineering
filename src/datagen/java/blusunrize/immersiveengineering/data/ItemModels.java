@@ -174,6 +174,8 @@ public class ItemModels extends TRSRItemModelProvider
 				.transforms(rl("item/multiblock"));
 		obj(IEMultiblockLogic.MIXER.blockItem().get(), rl("block/metal_multiblock/mixer.obj"))
 				.transforms(rl("item/multiblock"));
+		obj(IEMultiblockLogic.RADIO_TOWER.blockItem().get(), rl("block/metal_multiblock/radio_tower.obj"))
+				.transforms(rl("item/radio_tower"));
 
 		obj(MetalDecoration.ALU_WALLMOUNT, modLoc("block/wooden_device/wallmount.obj"))
 				.texture("texture", modLoc("block/metal_decoration/aluminum_wallmount"))

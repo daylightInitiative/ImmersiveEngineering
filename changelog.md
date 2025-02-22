@@ -17,7 +17,8 @@
 - Fix angled chutes not having proper collision boxes (BluSunrize)
 - Fix shader banners in villages not rendering (BluSunrize)
     - Unfortunately only affects newly generated structures 
-- Fix bugged colors on shader banners, resulting from mixups of ARGB and ABGR in composited textures 
+- Fix bugged colors on shader banners, resulting from mixups of ARGB and ABGR in composited textures (BluSunrize)
+- Fix missing item model for the radio tower (BluSunrize)
 - Translations Added/Updated: zh_cn (Cactusstudent, SlimeSB, mc-kaishixiaxue, JustAlkaid), tr_tr (RuyaSavascisi)
 
 ##### Version 1.21.1-12.0.0-182
