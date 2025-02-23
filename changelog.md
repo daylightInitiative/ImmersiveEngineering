@@ -5,6 +5,7 @@
 - Add backup options for tag-based villager trades, so that broken tags don't cause broken trades (BluSunrize)
 - Remove CustomParticleManager (IMS)
 - Change High Explosive cartridges to return shells on use (voidsong-dragonfly)
+- Improve readability of fluid name in the chemthrower HUD (BluSunrize)
 - Fix crash with dual codecs (Malte)
 - Fix crash when placing toolbox (Malte)
 - Fix sealed crates deleting items (Malte)

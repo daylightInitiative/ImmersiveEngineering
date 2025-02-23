@@ -271,7 +271,8 @@ public class ItemOverlayUtils
 			if(!fuel.isEmpty())
 			{
 				String name = ClientUtils.font().substrByWidth(fuel.getHoverName(), 50).getString().trim();
-				graphics.drawCenteredString(ClientUtils.font(), name, -68, -15, 0);
+				int width = ClientUtils.font().width(name);
+				graphics.drawString(ClientUtils.font(), name, -68-width/2, -15, 0x333333, false);
 			}
 		});
 	}
