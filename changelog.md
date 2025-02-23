@@ -2,6 +2,7 @@
 - All changes from 1.20.4-11.7.0
 - Add HOP graphite ingots to general ingots tag (Malte)
 - Add builtin compat with Repurposed Structrues (TelepathicGrunt)
+- Add backup options for tag-based villager trades, so that broken tags don't cause broken trades (BluSunrize)
 - Remove CustomParticleManager (IMS)
 - Change High Explosive cartridges to return shells on use (voidsong-dragonfly)
 - Fix crash with dual codecs (Malte)
