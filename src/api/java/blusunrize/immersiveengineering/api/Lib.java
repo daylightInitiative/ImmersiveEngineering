@@ -13,10 +13,14 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.properties.BlockSetType;
+import net.minecraft.world.level.block.state.properties.BlockSetType.PressurePlateSensitivity;
 import net.neoforged.fml.common.asm.enumextension.EnumProxy;
 import net.neoforged.neoforge.common.ItemAbility;
 import net.neoforged.neoforge.common.SimpleTier;
@@ -118,6 +122,27 @@ public class Lib
 		public static final ResourceKey<DamageType> RAZOR_WIRE = ieDamage("razor_wire");
 		public static final ResourceKey<DamageType> RAZOR_SHOCK = ieDamage("razor_shock");
 		public static final ResourceKey<DamageType> WIRE_SHOCK = ieDamage("wire_shock");
+	}
+
+	public static class BlockSetTypes
+	{
+		public static final BlockSetType TREATED_WOOD = new BlockSetType("treated_wood");
+		public static final BlockSetType STEEL = new BlockSetType(
+				"steel",
+				true,
+				false,
+				false,
+				PressurePlateSensitivity.MOBS,
+				SoundType.METAL,
+				SoundEvents.IRON_DOOR_CLOSE,
+				SoundEvents.IRON_DOOR_OPEN,
+				SoundEvents.IRON_TRAPDOOR_CLOSE,
+				SoundEvents.IRON_TRAPDOOR_OPEN,
+				SoundEvents.METAL_PRESSURE_PLATE_CLICK_OFF,
+				SoundEvents.METAL_PRESSURE_PLATE_CLICK_ON,
+				SoundEvents.STONE_BUTTON_CLICK_OFF,
+				SoundEvents.STONE_BUTTON_CLICK_ON
+		);
 	}
 
 	private static ResourceKey<DamageType> ieDamage(String path)

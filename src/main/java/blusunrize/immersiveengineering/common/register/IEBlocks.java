@@ -10,6 +10,7 @@ package blusunrize.immersiveengineering.common.register;
 
 import blusunrize.immersiveengineering.api.EnumMetals;
 import blusunrize.immersiveengineering.api.Lib;
+import blusunrize.immersiveengineering.api.Lib.BlockSetTypes;
 import blusunrize.immersiveengineering.api.tool.conveyor.ConveyorHandler;
 import blusunrize.immersiveengineering.api.tool.conveyor.IConveyorType;
 import blusunrize.immersiveengineering.api.wires.WireType;
@@ -375,16 +376,16 @@ public final class IEBlocks
 		);
 
 		public static final BlockEntry<DoorBlock> DOOR = new BlockEntry<>(
-				"treated_door", STANDARD_WOOD_PROPERTIES_NO_OCCLUSION, blockProps -> new IEDoorBlock(IEDoorBlock.TREATED_WOOD, blockProps)
+				"treated_door", STANDARD_WOOD_PROPERTIES_NO_OCCLUSION, blockProps -> new IEDoorBlock(BlockSetTypes.TREATED_WOOD, blockProps)
 		);
 		public static final BlockEntry<DoorBlock> DOOR_FRAMED = new BlockEntry<>(
-				"treated_door_framed", STANDARD_WOOD_PROPERTIES_NO_OCCLUSION, blockProps -> new IEDoorBlock(IEDoorBlock.TREATED_WOOD, blockProps)
+				"treated_door_framed", STANDARD_WOOD_PROPERTIES_NO_OCCLUSION, blockProps -> new IEDoorBlock(BlockSetTypes.TREATED_WOOD, blockProps)
 		);
 		public static final BlockEntry<TrapDoorBlock> TRAPDOOR = new BlockEntry<>(
-				"treated_trapdoor", STANDARD_WOOD_PROPERTIES_NO_OCCLUSION, blockProps -> new IETrapDoorBlock(IEDoorBlock.TREATED_WOOD, blockProps)
+				"treated_trapdoor", STANDARD_WOOD_PROPERTIES_NO_OCCLUSION, blockProps -> new IETrapDoorBlock(BlockSetTypes.TREATED_WOOD, blockProps)
 		);
 		public static final BlockEntry<TrapDoorBlock> TRAPDOOR_FRAMED = new BlockEntry<>(
-				"treated_trapdoor_framed", STANDARD_WOOD_PROPERTIES_NO_OCCLUSION, blockProps -> new IETrapDoorBlock(IEDoorBlock.TREATED_WOOD, blockProps)
+				"treated_trapdoor_framed", STANDARD_WOOD_PROPERTIES_NO_OCCLUSION, blockProps -> new IETrapDoorBlock(BlockSetTypes.TREATED_WOOD, blockProps)
 		);
 
 		private static void init()
@@ -533,10 +534,10 @@ public final class IEBlocks
 				"alu_catwalk_stairs", METAL_PROPERTIES_NO_OCCLUSION, blockProps -> new CatwalkStairsBlock(blockProps, true)
 		);
 		public static final BlockEntry<DoorBlock> STEEL_DOOR = new BlockEntry<>(
-				"steel_door", METAL_PROPERTIES_NO_OCCLUSION, blockProps -> new IEDoorBlock(IEDoorBlock.STEEL, blockProps).setLockedByRedstone()
+				"steel_door", METAL_PROPERTIES_NO_OCCLUSION, blockProps -> new IEDoorBlock(BlockSetTypes.STEEL, blockProps).setLockedByRedstone()
 		);
 		public static final BlockEntry<TrapDoorBlock> STEEL_TRAPDOOR = new BlockEntry<>(
-				"steel_trapdoor", METAL_PROPERTIES_NO_OCCLUSION, blockProps -> new IETrapDoorBlock(IEDoorBlock.STEEL, blockProps).setLockedByRedstone()
+				"steel_trapdoor", METAL_PROPERTIES_NO_OCCLUSION, blockProps -> new IETrapDoorBlock(BlockSetTypes.STEEL, blockProps).setLockedByRedstone()
 		);
 		public static final Map<WarningSignIcon, BlockEntry<IEBaseBlock>> WARNING_SIGNS = new EnumMap<>(WarningSignIcon.class);
 
