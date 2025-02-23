@@ -1,4 +1,4 @@
-// 1.21.1	2025-02-22T22:03:46.390703	Recipes
+// 1.21.1	2025-02-23T16:15:25.9086823	Recipes
 e46a17053b96b7062a3dbf804ed3e25c134fc397 data/immersiveengineering/advancement/recipes/misc/crafting/alloybrick.json
 6a92fb93f1478200a7237b19770f94285cc3d955 data/immersiveengineering/advancement/recipes/misc/crafting/alloybrick_from_slab.json
 bba88ea9b8e42c09c4e5df2344ccef6ad7ed4b8d data/immersiveengineering/advancement/recipes/misc/crafting/alloybrick_to_slab.json
@@ -846,7 +846,7 @@ f717702aa16c990e94183d1d7cf93a4461e22380 data/immersiveengineering/recipe/cloche
 31cf0d94a90e79a4ef657da370ed8dd0b570c59a data/immersiveengineering/recipe/cloche/dandelion.json
 ca441b26c819e800ab2b3cc13c1a056e498473ea data/immersiveengineering/recipe/cloche/fern.json
 567aa3c9438e63cb9c82f2a2765aab1d19649406 data/immersiveengineering/recipe/cloche/glow_berries.json
-d943385e02a18e82bc46a07cae32fc5d7f03bdee data/immersiveengineering/recipe/cloche/hemp.json
+5e533d211c4b5713eb305c426307d3a6a8fcc5ad data/immersiveengineering/recipe/cloche/hemp.json
 f01dfb4a41398321310bc9349d9357c5e814957b data/immersiveengineering/recipe/cloche/lilac.json
 015a3ef8a6a07f532481d184daf5f58be38dd59a data/immersiveengineering/recipe/cloche/lily_of_the_valley.json
 c9c98579155270437d3413fdebd3019ac0c1bfad data/immersiveengineering/recipe/cloche/melon.json
@@ -856,6 +856,7 @@ c9c98579155270437d3413fdebd3019ac0c1bfad data/immersiveengineering/recipe/cloche
 14daf56e21b78aaee1d88a5f0d942c760679b85d data/immersiveengineering/recipe/cloche/oxeye_daisy.json
 fdcee1f553a883a7a93d0c66f909702ca9f752e9 data/immersiveengineering/recipe/cloche/peony.json
 b1a781a11146d4f91be9e7c42bea38c54cebe445 data/immersiveengineering/recipe/cloche/pink_tulip.json
+ca3e681f86a9a6bed17578d3f2b3ed2ac78b65dc data/immersiveengineering/recipe/cloche/pitcher_plant.json
 91d25336fcecb4c24a60068c3c528d071cf7d086 data/immersiveengineering/recipe/cloche/poppy.json
 f3415960c7229b1e06fd36afd5c2bf6d643b8b81 data/immersiveengineering/recipe/cloche/potato.json
 17bea045cc43cee4e658578111dad2d2a9a35652 data/immersiveengineering/recipe/cloche/pumpkin.json

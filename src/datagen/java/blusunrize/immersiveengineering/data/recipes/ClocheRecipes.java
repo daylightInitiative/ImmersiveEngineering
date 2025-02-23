@@ -10,6 +10,7 @@ package blusunrize.immersiveengineering.data.recipes;
 
 import blusunrize.immersiveengineering.api.IETags;
 import blusunrize.immersiveengineering.client.utils.ClocheRenderFunctions.*;
+import blusunrize.immersiveengineering.common.register.IEBlocks;
 import blusunrize.immersiveengineering.common.register.IEItems.Ingredients;
 import blusunrize.immersiveengineering.common.register.IEItems.Misc;
 import blusunrize.immersiveengineering.data.recipes.builder.ClocheFertilizerBuilder;
@@ -230,8 +231,15 @@ public class ClocheRecipes extends IERecipeProvider
 				.seed(Misc.HEMP_SEEDS)
 				.soil(Blocks.DIRT)
 				.setTime(800)
-				.setRender(new RenderFunctionHemp())
+				.setRender(new RenderFunctionDoubleCrop(IEBlocks.Misc.HEMP_PLANT.get(), 3))
 				.build(out, toRL("cloche/hemp"));
+		ClocheRecipeBuilder.builder()
+				.output(Items.PITCHER_PLANT)
+				.seed(Items.PITCHER_POD)
+				.soil(Blocks.DIRT)
+				.setTime(1200)
+				.setRender(new RenderFunctionDoubleCrop(Blocks.PITCHER_CROP, 3))
+				.build(out, toRL("cloche/pitcher_plant"));
 	}
 
 	private void stemCrops(RecipeOutput out)
