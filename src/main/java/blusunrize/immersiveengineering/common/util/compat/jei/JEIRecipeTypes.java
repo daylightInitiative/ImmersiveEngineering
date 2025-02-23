@@ -8,9 +8,10 @@
 
 package blusunrize.immersiveengineering.common.util.compat.jei;
 
-import blusunrize.immersiveengineering.api.Lib;
+import blusunrize.immersiveengineering.api.IEApi;
 import blusunrize.immersiveengineering.api.crafting.*;
 import mezz.jei.api.recipe.RecipeType;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 
@@ -18,10 +19,7 @@ public class JEIRecipeTypes
 {
 	public static final RecipeType<RecipeHolder<AlloyRecipe>> ALLOY = create(IERecipeTypes.ALLOY);
 	public static final RecipeType<RecipeHolder<ArcFurnaceRecipe>> ARC_FURNACE = create(IERecipeTypes.ARC_FURNACE);
-	public static final RecipeType<RecipeHolder<ArcFurnaceRecipe>> ARC_FURNACE_RECYCLING = RecipeType.create(
-			// TODO those casts are not good
-			Lib.MODID, "arc_recycling", (Class<? extends RecipeHolder<ArcFurnaceRecipe>>)(Object)RecipeHolder.class
-	);
+	public static final RecipeType<RecipeHolder<ArcFurnaceRecipe>> ARC_FURNACE_RECYCLING = createManual(IEApi.ieLoc("arc_recycling"));
 	public static final RecipeType<RecipeHolder<BlastFurnaceFuel>> BLAST_FUEL = create(IERecipeTypes.BLAST_FUEL);
 	public static final RecipeType<RecipeHolder<BlastFurnaceRecipe>> BLAST_FURNACE = create(IERecipeTypes.BLAST_FURNACE);
 	public static final RecipeType<RecipeHolder<BlueprintCraftingRecipe>> BLUEPRINT = create(IERecipeTypes.BLUEPRINT);
@@ -41,5 +39,12 @@ public class JEIRecipeTypes
 	RecipeType<RecipeHolder<T>> create(IERecipeTypes.TypeWithClass<T> type)
 	{
 		return RecipeType.createFromVanilla(type.get());
+	}
+
+	private static <T extends Recipe<?>>
+	RecipeType<RecipeHolder<T>> createManual(ResourceLocation uid)
+	{
+		Class<? extends RecipeHolder<T>> holderClass = (Class)RecipeHolder.class;
+		return new RecipeType<>(uid, holderClass);
 	}
 }

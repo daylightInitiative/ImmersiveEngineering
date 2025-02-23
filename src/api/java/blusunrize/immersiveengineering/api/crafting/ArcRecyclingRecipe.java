@@ -1,19 +1,15 @@
 /*
  * BluSunrize
- * Copyright (c) 2017
+ * Copyright (c) 2025
  *
  * This code is licensed under "Blu's License of Common Sense"
  * Details can be found in the license file in the root folder of this project
  */
 
-package blusunrize.immersiveengineering.common.crafting;
+package blusunrize.immersiveengineering.api.crafting;
 
 import blusunrize.immersiveengineering.api.IEApi;
 import blusunrize.immersiveengineering.api.IETags;
-import blusunrize.immersiveengineering.api.crafting.ArcFurnaceRecipe;
-import blusunrize.immersiveengineering.api.crafting.IngredientWithSize;
-import blusunrize.immersiveengineering.api.crafting.TagOutput;
-import blusunrize.immersiveengineering.api.crafting.TagOutputList;
 import blusunrize.immersiveengineering.api.utils.TagUtils;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.NonNullList;
@@ -31,6 +27,8 @@ public class ArcRecyclingRecipe extends ArcFurnaceRecipe
 	private final List<Pair<TagOutput, Double>> outputs;
 	private final Lazy<TagOutputList> defaultOutputs;
 
+	public static final String SPECIAL_TYPE = "recycling";
+
 	public ArcRecyclingRecipe(Supplier<RegistryAccess> tags, List<Pair<TagOutput, Double>> outputs, IngredientWithSize input, int time, int energyPerTick)
 	{
 		super(
@@ -40,11 +38,11 @@ public class ArcRecyclingRecipe extends ArcFurnaceRecipe
 				time,
 				energyPerTick,
 				input,
-				List.of()
+				List.of(),
+				SPECIAL_TYPE
 		);
 		this.tags = tags;
 		this.outputs = outputs;
-		this.setSpecialRecipeType("Recycling");
 		this.defaultOutputs = Lazy.of(() -> {
 			List<TagOutput> ret = new ArrayList<>();
 			for(Pair<TagOutput, Double> e : outputs)

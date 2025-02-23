@@ -15,7 +15,7 @@ import blusunrize.immersiveengineering.api.crafting.cache.CachedRecipeList;
 import blusunrize.immersiveengineering.api.tool.conveyor.ConveyorHandler;
 import blusunrize.immersiveengineering.api.tool.conveyor.IConveyorType;
 import blusunrize.immersiveengineering.client.gui.*;
-import blusunrize.immersiveengineering.common.crafting.ArcRecyclingRecipe;
+import blusunrize.immersiveengineering.api.crafting.ArcRecyclingRecipe;
 import blusunrize.immersiveengineering.common.gui.CraftingTableMenu;
 import blusunrize.immersiveengineering.common.register.IEBlocks.MetalDevices;
 import blusunrize.immersiveengineering.common.register.IEBlocks.WoodenDevices;
@@ -62,6 +62,7 @@ import net.minecraft.world.level.material.Fluid;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
 
@@ -145,8 +146,8 @@ public class JEIHelper implements IModPlugin
 		registration.addRecipes(JEIRecipeTypes.SQUEEZER, getFiltered(SqueezerRecipe.RECIPES, IJEIRecipe::listInJEI));
 		registration.addRecipes(JEIRecipeTypes.FERMENTER, getFiltered(FermenterRecipe.RECIPES, IJEIRecipe::listInJEI));
 		registration.addRecipes(JEIRecipeTypes.REFINERY, getFiltered(RefineryRecipe.RECIPES, IJEIRecipe::listInJEI));
-		registration.addRecipes(JEIRecipeTypes.ARC_FURNACE_RECYCLING, getFiltered(ArcFurnaceRecipe.RECIPES, input -> input instanceof ArcRecyclingRecipe&&input.listInJEI()));
-		registration.addRecipes(JEIRecipeTypes.ARC_FURNACE, getFiltered(ArcFurnaceRecipe.RECIPES, input -> !(input instanceof ArcRecyclingRecipe)&&input.listInJEI()));
+		registration.addRecipes(JEIRecipeTypes.ARC_FURNACE_RECYCLING, getFiltered(ArcFurnaceRecipe.RECIPES, input -> input.isSpecialType(ArcRecyclingRecipe.SPECIAL_TYPE)&&input.listInJEI()));
+		registration.addRecipes(JEIRecipeTypes.ARC_FURNACE, getFiltered(ArcFurnaceRecipe.RECIPES, input -> input.isNotSpecialType()&&input.listInJEI()));
 		registration.addRecipes(JEIRecipeTypes.BOTTLING_MACHINE, getFiltered(BottlingMachineRecipe.RECIPES, IJEIRecipe::listInJEI));
 		registration.addRecipes(JEIRecipeTypes.BOTTLING_MACHINE, getFluidBucketRecipes());
 		registration.addRecipes(JEIRecipeTypes.MIXER, getFiltered(MixerRecipe.RECIPES, IJEIRecipe::listInJEI));
