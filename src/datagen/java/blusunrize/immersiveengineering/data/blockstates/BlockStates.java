@@ -49,6 +49,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.client.model.generators.*;
@@ -904,7 +905,7 @@ public class BlockStates extends ExtendedBlockstateProvider
 				.withExistingParent("block/hemp/top", ResourceLocation.withDefaultNamespace("block/crop"))
 				.texture("crop", ieLoc("block/hemp/top0"))
 				.renderType(ModelProviderUtils.getName(cutout()));
-		builder.partialState().with(HempBlock.TOP, true).setModels(new ConfiguredModel(model));
+		builder.partialState().with(HempBlock.HALF, DoubleBlockHalf.UPPER).setModels(new ConfiguredModel(model));
 
 		// Bottoms
 		for(int i = 0; i <= 4; i++)
@@ -913,7 +914,7 @@ public class BlockStates extends ExtendedBlockstateProvider
 					.withExistingParent("block/hemp/bottom"+i, ResourceLocation.withDefaultNamespace("block/crop"))
 					.texture("crop", ieLoc("block/hemp/bottom"+i))
 					.renderType(ModelProviderUtils.getName(cutout()));
-			builder.partialState().with(HempBlock.TOP, false).with(HempBlock.AGE, i).setModels(new ConfiguredModel(model));
+			builder.partialState().with(HempBlock.HALF, DoubleBlockHalf.LOWER).with(HempBlock.AGE, i).setModels(new ConfiguredModel(model));
 		}
 	}
 
