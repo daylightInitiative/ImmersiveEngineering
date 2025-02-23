@@ -15,7 +15,6 @@ import blusunrize.immersiveengineering.api.crafting.cache.CachedRecipeList;
 import blusunrize.immersiveengineering.api.tool.conveyor.ConveyorHandler;
 import blusunrize.immersiveengineering.api.tool.conveyor.IConveyorType;
 import blusunrize.immersiveengineering.client.gui.*;
-import blusunrize.immersiveengineering.api.crafting.ArcRecyclingRecipe;
 import blusunrize.immersiveengineering.common.gui.CraftingTableMenu;
 import blusunrize.immersiveengineering.common.register.IEBlocks.MetalDevices;
 import blusunrize.immersiveengineering.common.register.IEBlocks.WoodenDevices;
@@ -43,12 +42,14 @@ import blusunrize.immersiveengineering.common.util.compat.jei.workbench.Workbenc
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.RecipeTypes;
-import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.drawable.IDrawableStatic;
 import mezz.jei.api.gui.ingredient.IRecipeSlotRichTooltipCallback;
 import mezz.jei.api.helpers.IGuiHelper;
+import mezz.jei.api.ingredients.subtypes.ISubtypeInterpreter;
+import mezz.jei.api.ingredients.subtypes.UidContext;
 import mezz.jei.api.registration.*;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -57,13 +58,15 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluid;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 @JeiPlugin
@@ -84,20 +87,26 @@ public class JEIHelper implements IModPlugin
 	public void registerItemSubtypes(ISubtypeRegistration subtypeRegistry)
 	{
 		subtypeRegistry.registerSubtypeInterpreter(
-				VanillaTypes.ITEM_STACK,
 				Misc.BLUEPRINT.asItem(),
-				(stack, $) -> IEApiDataComponents.getBlueprintType(stack)
+				makeInterpreter(
+						IEApiDataComponents::getBlueprintType,
+						s -> s
+				)
 		);
 		subtypeRegistry.registerSubtypeInterpreter(
-				VanillaTypes.ITEM_STACK,
 				Misc.POTION_BUCKET.asItem(),
-				(stack, $) -> stack.get(DataComponents.POTION_CONTENTS).potion().map(h -> h.getRegisteredName()).orElse("")
+				makeInterpreter(
+						stack -> stack.get(DataComponents.POTION_CONTENTS),
+						p -> p.potion().map(Holder::getRegisteredName).orElse("")
+				)
 		);
 		for(IConveyorType<?> conveyor : ConveyorHandler.getConveyorTypes())
 			subtypeRegistry.registerSubtypeInterpreter(
-					VanillaTypes.ITEM_STACK,
 					ConveyorHandler.getBlock(conveyor).asItem(),
-					(stack, $) -> stack.getOrDefault(IEDataComponents.DEFAULT_COVER, Blocks.AIR).getDescriptionId()
+					makeInterpreter(
+							stack -> stack.getOrDefault(IEDataComponents.DEFAULT_COVER, Blocks.AIR),
+							Block::getDescriptionId
+					)
 			);
 	}
 
@@ -257,5 +266,28 @@ public class JEIHelper implements IModPlugin
 					);
 			}
 		return recipes;
+	}
+
+	private <T> ISubtypeInterpreter<ItemStack> makeInterpreter(
+			Function<ItemStack, T> componentGetter,
+			Function<T, String> legacyStringGetter
+	)
+	{
+		return new ISubtypeInterpreter<ItemStack>()
+		{
+
+			@Override
+			public @Nullable Object getSubtypeData(ItemStack itemStack, UidContext uidContext)
+			{
+				return componentGetter.apply(itemStack);
+			}
+
+			// deprecated for future removal?
+			@Override
+			public String getLegacyStringSubtypeInfo(ItemStack itemStack, UidContext uidContext)
+			{
+				return componentGetter.andThen(legacyStringGetter).apply(itemStack);
+			}
+		};
 	}
 }
