@@ -32,7 +32,7 @@ public class ArcRecyclingRecipe extends ArcFurnaceRecipe
 	public ArcRecyclingRecipe(Supplier<RegistryAccess> tags, List<Pair<TagOutput, Double>> outputs, IngredientWithSize input, int time, int energyPerTick)
 	{
 		super(
-				new TagOutputList(outputs.stream().map(Pair::getFirst).toList()),
+				buildOutputList(tags, outputs),
 				TagOutput.EMPTY,
 				List.of(),
 				time,
@@ -43,20 +43,22 @@ public class ArcRecyclingRecipe extends ArcFurnaceRecipe
 		);
 		this.tags = tags;
 		this.outputs = outputs;
-		this.defaultOutputs = Lazy.of(() -> {
-			List<TagOutput> ret = new ArrayList<>();
-			for(Pair<TagOutput, Double> e : outputs)
+		this.defaultOutputs = Lazy.of(() -> buildOutputList(this.tags, this.outputs));
+	}
+
+	private static TagOutputList buildOutputList(Supplier<RegistryAccess> tags, List<Pair<TagOutput, Double>> outputs) {
+		List<TagOutput> ret = new ArrayList<>();
+		for(Pair<TagOutput, Double> e : outputs)
+		{
+			if(e.getSecond() >= 1)
+				ret.add(new TagOutput(e.getFirst().get().copyWithCount((int)(e.getSecond().doubleValue()))));
+			String[] type = TagUtils.getMatchingPrefixAndRemaining(tags.get(), e.getFirst().get(), "ingots");
+			if(type!=null&&((e.getSecond()%1) > 0.11))
 			{
-				if(e.getSecond() >= 1)
-					ret.add(new TagOutput(e.getFirst().get().copyWithCount((int)(e.getSecond().doubleValue()))));
-				String[] type = TagUtils.getMatchingPrefixAndRemaining(tags.get(), e.getFirst().get(), "ingots");
-				if(type!=null&&((e.getSecond()%1) > 0.11))
-				{
-					ret.add(new TagOutput(TagUtils.createItemWrapper(IETags.getNugget(type[1])), (int)(9*(e.getSecond()%1))));
-				}
+				ret.add(new TagOutput(TagUtils.createItemWrapper(IETags.getNugget(type[1])), (int)(9*(e.getSecond()%1))));
 			}
-			return new TagOutputList(ret);
-		});
+		}
+		return new TagOutputList(ret);
 	}
 
 	@Override

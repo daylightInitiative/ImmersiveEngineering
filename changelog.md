@@ -23,6 +23,7 @@
 - Fix firework cartridges crashing when crafted (BluSunrize)
 - Fix firework cartridges not accessing vanilla components (BluSunrize)
 - Fix arc recycling recipes not having their own JEI tab (BluSunrize)
+- Fix arc recycling recipes not showing adjusted outputs in JEI (BluSunrize)
 - Translations Added/Updated: zh_cn (Cactusstudent, SlimeSB, mc-kaishixiaxue, JustAlkaid), tr_tr (RuyaSavascisi)
 
 ##### Version 1.21.1-12.0.0-182
