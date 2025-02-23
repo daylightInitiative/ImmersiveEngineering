@@ -4,7 +4,9 @@
     "item": "immersiveengineering:seed"
   },
   "render": {
-    "type": "immersiveengineering:hemp"
+    "type": "immersiveengineering:doublecrop",
+    "block": "immersiveengineering:hemp",
+    "doublingAge": 3
   },
   "results": [
     {
