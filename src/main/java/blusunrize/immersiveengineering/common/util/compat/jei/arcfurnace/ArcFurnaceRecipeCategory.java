@@ -18,6 +18,7 @@ import blusunrize.immersiveengineering.common.util.compat.jei.JEIHelper;
 import blusunrize.immersiveengineering.common.util.compat.jei.JEIRecipeTypes;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
+import mezz.jei.api.gui.builder.ITooltipBuilder;
 import mezz.jei.api.gui.drawable.IDrawableStatic;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
@@ -125,7 +126,7 @@ public class ArcFurnaceRecipeCategory extends IERecipeCategory<ArcFurnaceRecipe>
 	}
 
 	@Override
-	public List<Component> getTooltipStrings(RecipeHolder<ArcFurnaceRecipe> holder, IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY)
+	public void getTooltip(ITooltipBuilder tooltip, RecipeHolder<ArcFurnaceRecipe> holder, IRecipeSlotsView recipeSlotsView, double mouseX, double mouseY)
 	{
 		ArcFurnaceRecipe recipe = holder.value();
 		int x = (148-getWidth(recipe))/2;
@@ -134,11 +135,8 @@ public class ArcFurnaceRecipeCategory extends IERecipeCategory<ArcFurnaceRecipe>
 			float time = recipe.getTotalProcessTime();
 			float energy = recipe.getTotalProcessEnergy()/time;
 			Utils.formatDouble(energy, "#.##");
-			return Arrays.asList(
-					Component.translatable("desc.immersiveengineering.info.ift", Utils.formatDouble(energy, "#.##")),
-					Component.translatable("desc.immersiveengineering.info.seconds", Utils.formatDouble(time/20, "#.##"))
-			);
+			tooltip.add(Component.translatable("desc.immersiveengineering.info.ift", Utils.formatDouble(energy, "#.##")));
+			tooltip.add(Component.translatable("desc.immersiveengineering.info.seconds", Utils.formatDouble(time/20, "#.##")));
 		}
-		return super.getTooltipStrings(holder, recipeSlotsView, mouseX, mouseY);
 	}
 }
