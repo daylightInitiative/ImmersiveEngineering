@@ -33,6 +33,7 @@
 - Fix arc recycling recipes not having their own JEI tab (BluSunrize)
 - Fix arc recycling recipes not showing adjusted outputs in JEI (BluSunrize)
 - Fix floodlights deleting their own fake lightsources immediately (voidsong-dragonfly)
+- Fix the scope for railgun and revolver just not rendering at all (BluSunrize)
 - Translations Added/Updated: zh_cn (Cactusstudent, SlimeSB, mc-kaishixiaxue, JustAlkaid), tr_tr (RuyaSavascisi)
 
 ##### Version 1.21.1-12.0.0-182
