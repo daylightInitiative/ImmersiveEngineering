@@ -67,6 +67,7 @@ import net.minecraft.client.gui.screens.inventory.MenuAccess;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.HangingSignRenderer;
 import net.minecraft.client.renderer.blockentity.SignRenderer;
 import net.minecraft.client.renderer.entity.*;
 import net.minecraft.client.resources.PlayerSkin.Model;
@@ -498,6 +499,7 @@ public class ClientProxy extends CommonProxy
 		event.registerBlockEntityRenderer(IEBlockEntities.SHADER_BANNER.get(), ShaderBannerRenderer::new);
 		//SIGNS
 		event.registerBlockEntityRenderer(IEBlockEntities.SIGN.get(), SignRenderer::new);
+		event.registerBlockEntityRenderer(IEBlockEntities.HANGING_SIGN.get(), HangingSignRenderer::new);
 	}
 
 	public static <C extends AbstractContainerMenu, S extends Screen & MenuAccess<C>>

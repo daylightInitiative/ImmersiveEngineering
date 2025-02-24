@@ -39,6 +39,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.HangingSignItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SignItem;
 import net.minecraft.world.level.ItemLike;
@@ -855,22 +856,31 @@ public final class IEBlocks
 			IEItems.REGISTER.register(entry.getId().getPath(), () -> finalToItem.apply(entry.get()));
 		}
 		IEItems.REGISTER.register("treated_wood_sign", WoodenDecoration.SIGN::getSignItem);
+		IEItems.REGISTER.register("treated_wood_hanging_sign", WoodenDecoration.SIGN::getHangingSignItem);
 	}
 
-	public record SignHolder(BlockEntry<IESignBlocks.Standing> sign, BlockEntry<IESignBlocks.Wall> wall)
+	public record SignHolder(String baseName, BlockEntry<IESignBlocks.Standing> sign, BlockEntry<IESignBlocks.Wall> wall, BlockEntry<IESignBlocks.Hanging> hanging, BlockEntry<IESignBlocks.WallHanging> wallHanging)
 	{
 		public static SignHolder of(WoodType wood, float strength, MapColor mapColor, NoteBlockInstrument nbi, boolean ignite)
 		{
-			String name = ResourceLocation.parse(wood.name()).getPath();
+			String baseName = ResourceLocation.parse(wood.name()).getPath();
 			BlockEntry<IESignBlocks.Standing> sign = new BlockEntry<>(
-					name+"_sign", buildProperties(strength, mapColor, nbi, ignite, null),
+					baseName+"_sign", buildProperties(strength, mapColor, nbi, ignite, null),
 					blockProps -> new IESignBlocks.Standing(wood, blockProps)
 			);
 			BlockEntry<IESignBlocks.Wall> wall = new BlockEntry<>(
-					name+"_wall_sign", buildProperties(strength, mapColor, nbi, ignite, sign::get),
+					baseName+"_wall_sign", buildProperties(strength, mapColor, nbi, ignite, sign::get),
 					blockProps -> new IESignBlocks.Wall(wood, blockProps)
 			);
-			return new SignHolder(sign, wall);
+			BlockEntry<IESignBlocks.Hanging> hanging = new BlockEntry<>(
+					baseName+"_hanging_sign", buildProperties(strength, mapColor, nbi, ignite, null),
+					blockProps -> new IESignBlocks.Hanging(wood, blockProps)
+			);
+			BlockEntry<IESignBlocks.WallHanging> wallHanging = new BlockEntry<>(
+					baseName+"_wall_hanging_sign", buildProperties(strength, mapColor, nbi, ignite, hanging::get),
+					blockProps -> new IESignBlocks.WallHanging(wood, blockProps)
+			);
+			return new SignHolder(baseName, sign, wall, hanging, wallHanging);
 		}
 
 		private static Supplier<BlockBehaviour.Properties> buildProperties(float strength, MapColor mapColor, NoteBlockInstrument nbi, boolean ignite, Supplier<Block> dropsLike)
@@ -890,9 +900,14 @@ public final class IEBlocks
 			return new SignItem(new Item.Properties().stacksTo(16), this.sign().get(), this.wall().get());
 		}
 
+		public HangingSignItem getHangingSignItem()
+		{
+			return new HangingSignItem(this.hanging().get(), this.wallHanging.get(), new Item.Properties().stacksTo(16));
+		}
+
 		public boolean matchesEntries(BlockEntry<?> entry)
 		{
-			return entry==sign()||entry==wall();
+			return entry==sign()||entry==wall()||entry==hanging()||entry==wallHanging();
 		}
 	}
 

@@ -12,9 +12,7 @@ import blusunrize.immersiveengineering.common.register.IEBlockEntities;
 import com.mojang.datafixers.util.Function3;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.SignBlock;
-import net.minecraft.world.level.block.StandingSignBlock;
-import net.minecraft.world.level.block.WallSignBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -27,7 +25,8 @@ import java.util.Properties;
 
 public class IESignBlocks
 {
-	public static record Holder(IESignBlocks.Standing standing) {
+	public static record Holder(IESignBlocks.Standing standing)
+	{
 	}
 
 	public static class Standing extends StandingSignBlock
@@ -68,4 +67,41 @@ public class IESignBlocks
 		}
 	}
 
+	public static class Hanging extends CeilingHangingSignBlock
+	{
+		public Hanging(WoodType type, Properties properties)
+		{
+			super(type, properties);
+		}
+
+		@Nullable
+		public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType)
+		{
+			return createTickerHelper(blockEntityType, IEBlockEntities.HANGING_SIGN.get(), SignBlockEntity::tick);
+		}
+
+		public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
+		{
+			return new IEHangingSignBlockEntity(pos, state);
+		}
+	}
+
+	public static class WallHanging extends WallHangingSignBlock
+	{
+		public WallHanging(WoodType type, Properties properties)
+		{
+			super(type, properties);
+		}
+
+		@Nullable
+		public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType)
+		{
+			return createTickerHelper(blockEntityType, IEBlockEntities.HANGING_SIGN.get(), SignBlockEntity::tick);
+		}
+
+		public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
+		{
+			return new IEHangingSignBlockEntity(pos, state);
+		}
+	}
 }

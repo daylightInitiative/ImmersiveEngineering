@@ -203,6 +203,7 @@ public class BlockStates extends ExtendedBlockstateProvider
 		scaffold(WoodenDecoration.TREATED_SCAFFOLDING, rl("block/wooden_decoration/scaffolding"), rl("block/wooden_decoration/scaffolding_top"));
 
 		signBlock(WoodenDecoration.SIGN.sign().get(), WoodenDecoration.SIGN.wall().get(), rl("block/wooden_decoration/treated_wood_horizontal"));
+		hangingSignBlock(WoodenDecoration.SIGN.hanging().get(), WoodenDecoration.SIGN.wallHanging().get(), rl("block/wooden_decoration/treated_wood_horizontal"));
 
 		ResourceLocation aluSide = rl("block/metal_decoration/aluminum_scaffolding");
 		ResourceLocation steelSide = rl("block/metal_decoration/steel_scaffolding");

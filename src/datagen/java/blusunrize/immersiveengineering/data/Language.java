@@ -16,6 +16,8 @@ import blusunrize.immersiveengineering.common.items.ShaderItem;
 import blusunrize.immersiveengineering.common.items.bullets.IEBullets;
 import blusunrize.immersiveengineering.common.register.IEBannerPatterns;
 import blusunrize.immersiveengineering.common.register.IEBannerPatterns.BannerEntry;
+import blusunrize.immersiveengineering.common.register.IEBlocks;
+import blusunrize.immersiveengineering.common.register.IEBlocks.WoodenDecoration;
 import blusunrize.immersiveengineering.common.register.IEItems;
 import blusunrize.immersiveengineering.common.register.IEItems.Misc;
 import blusunrize.immersiveengineering.common.register.IEItems.Weapons;
@@ -41,6 +43,7 @@ import org.apache.commons.lang3.mutable.MutableBoolean;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import static blusunrize.immersiveengineering.api.IEApi.ieLoc;
 
@@ -75,6 +78,7 @@ public class Language extends LanguageProvider
 		addBanners();
 		addItems();
 		addShaders();
+		addSigns(WoodenDecoration.SIGN);
 
 		verify();
 	}
@@ -172,6 +176,18 @@ public class Language extends LanguageProvider
 					add("block.minecraft.banner.immersiveengineering."+key+"."+color, I18n.get("color.minecraft."+color)+" "+bannerName);
 				}
 			}
+	}
+
+	private void addSigns(IEBlocks.SignHolder holder)
+	{
+		String key = holder.baseName();
+		String name = Pattern.compile("(?:^|_)([a-z])")
+				.matcher(key)
+				.replaceAll(m -> " "+m.group(1).toUpperCase());
+		add("block.immersiveengineering."+key+"_sign", name+" Sign");
+		add("block.immersiveengineering."+key+"_wall_sign", name+" Sign");
+		add("block.immersiveengineering."+key+"_hanging_sign", name+" Hanging Sign");
+		add("block.immersiveengineering."+key+"_wall_hanging_sign", name+" Hanging Sign");
 	}
 
 	private void addBullets()

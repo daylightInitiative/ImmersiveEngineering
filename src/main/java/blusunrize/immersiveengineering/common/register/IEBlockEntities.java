@@ -13,6 +13,7 @@ import blusunrize.immersiveengineering.ImmersiveEngineering;
 import blusunrize.immersiveengineering.api.IEProperties;
 import blusunrize.immersiveengineering.common.blocks.FakeLightBlock.FakeLightBlockEntity;
 import blusunrize.immersiveengineering.common.blocks.IEBlockInterfaces.IGeneralMultiblock;
+import blusunrize.immersiveengineering.common.blocks.IEHangingSignBlockEntity;
 import blusunrize.immersiveengineering.common.blocks.IESignBlockEntity;
 import blusunrize.immersiveengineering.common.blocks.MultiblockBEType;
 import blusunrize.immersiveengineering.common.blocks.cloth.BalloonBlockEntity;
@@ -59,6 +60,9 @@ public class IEBlockEntities
 	);
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<IESignBlockEntity>> SIGN = REGISTER.register(
 			"sign", makeTypeMultipleBlocks(IESignBlockEntity::new, ImmutableSet.of(WoodenDecoration.SIGN.sign(), WoodenDecoration.SIGN.wall()))
+	);
+	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<IEHangingSignBlockEntity>> HANGING_SIGN = REGISTER.register(
+			"hanging_sign", makeTypeMultipleBlocks(IEHangingSignBlockEntity::new, ImmutableSet.of(WoodenDecoration.SIGN.hanging(), WoodenDecoration.SIGN.wallHanging()))
 	);
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CraftingTableBlockEntity>> CRAFTING_TABLE = REGISTER.register(
 			"craftingtable", makeType(CraftingTableBlockEntity::new, WoodenDevices.CRAFTING_TABLE)
