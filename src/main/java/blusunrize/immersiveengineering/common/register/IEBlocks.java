@@ -580,7 +580,7 @@ public final class IEBlocks
 			}
 			for(WarningSignIcon icon : WarningSignIcon.values())
 				WARNING_SIGNS.put(icon, new BlockEntry<>(
-						"warning_sign_"+icon.getSerializedName(), METAL_PROPERTIES_NO_OVERLAY, blockProps -> new WarningSignBlock(icon, blockProps)
+						"warning_sign_"+icon.getSerializedName(), WarningSignBlock.PROPERTIES, blockProps -> new WarningSignBlock(icon, blockProps)
 				));
 		}
 	}
