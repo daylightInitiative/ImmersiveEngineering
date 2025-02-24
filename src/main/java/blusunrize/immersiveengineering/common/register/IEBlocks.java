@@ -545,6 +545,8 @@ public final class IEBlocks
 		public static final BlockEntry<TrapDoorBlock> STEEL_TRAPDOOR = new BlockEntry<>(
 				"steel_trapdoor", METAL_PROPERTIES_NO_OCCLUSION, blockProps -> new IETrapDoorBlock(BlockSetTypes.STEEL, blockProps).setLockedByRedstone()
 		);
+		public static final SignHolder STEEL_SIGN = SignHolder.of(WoodTypes.STEEL, 3f, MapColor.METAL, NoteBlockInstrument.IRON_XYLOPHONE, true);
+
 		public static final Map<WarningSignIcon, BlockEntry<IEBaseBlock>> WARNING_SIGNS = new EnumMap<>(WarningSignIcon.class);
 
 		private static void init()
@@ -837,9 +839,8 @@ public final class IEBlocks
 		{
 			if(entry==Misc.FAKE_LIGHT||entry==Misc.POTTED_HEMP||entry==StoneDecoration.CORESAMPLE||
 					entry==MetalDevices.TOOLBOX||entry==Cloth.SHADER_BANNER||entry==Cloth.SHADER_BANNER_WALL||
+					WoodenDecoration.SIGN.matchesEntries(entry)||MetalDecoration.STEEL_SIGN.matchesEntries(entry)||
 					entry==Misc.HEMP_PLANT||entry==Connectors.POST_TRANSFORMER||IEFluids.ALL_FLUID_BLOCKS.contains(entry))
-				continue;
-			if(WoodenDecoration.SIGN.matchesEntries(entry))
 				continue;
 			Function<Block, BlockItemIE> toItem;
 			if(entry==Cloth.BALLOON)
@@ -855,11 +856,14 @@ public final class IEBlocks
 			Function<Block, BlockItemIE> finalToItem = toItem;
 			IEItems.REGISTER.register(entry.getId().getPath(), () -> finalToItem.apply(entry.get()));
 		}
-		IEItems.REGISTER.register("treated_wood_sign", WoodenDecoration.SIGN::getSignItem);
-		IEItems.REGISTER.register("treated_wood_hanging_sign", WoodenDecoration.SIGN::getHangingSignItem);
+		// Signs
+		WoodenDecoration.SIGN.registerItems(IEItems.REGISTER);
+		MetalDecoration.STEEL_SIGN.registerItems(IEItems.REGISTER);
 	}
 
-	public record SignHolder(String baseName, BlockEntry<IESignBlocks.Standing> sign, BlockEntry<IESignBlocks.Wall> wall, BlockEntry<IESignBlocks.Hanging> hanging, BlockEntry<IESignBlocks.WallHanging> wallHanging)
+	public record SignHolder(String baseName, BlockEntry<IESignBlocks.Standing> sign,
+							 BlockEntry<IESignBlocks.Wall> wall, BlockEntry<IESignBlocks.Hanging> hanging,
+							 BlockEntry<IESignBlocks.WallHanging> wallHanging)
 	{
 		public static SignHolder of(WoodType wood, float strength, MapColor mapColor, NoteBlockInstrument nbi, boolean ignite)
 		{

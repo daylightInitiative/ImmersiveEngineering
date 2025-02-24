@@ -144,11 +144,30 @@ public class Lib
 				SoundEvents.STONE_BUTTON_CLICK_OFF,
 				SoundEvents.STONE_BUTTON_CLICK_ON
 		);
+		public static final BlockSetType ALUMINUM = new BlockSetType(
+				"aluminum",
+				true,
+				false,
+				false,
+				PressurePlateSensitivity.MOBS,
+				SoundType.METAL,
+				SoundEvents.IRON_DOOR_CLOSE,
+				SoundEvents.IRON_DOOR_OPEN,
+				SoundEvents.IRON_TRAPDOOR_CLOSE,
+				SoundEvents.IRON_TRAPDOOR_OPEN,
+				SoundEvents.METAL_PRESSURE_PLATE_CLICK_OFF,
+				SoundEvents.METAL_PRESSURE_PLATE_CLICK_ON,
+				SoundEvents.STONE_BUTTON_CLICK_OFF,
+				SoundEvents.STONE_BUTTON_CLICK_ON
+		);
 	}
 
 	public static class WoodTypes
 	{
+		// Only one of these is a wood!
 		public static final WoodType TREATED_WOOD = WoodType.register(new WoodType(ieLoc("treated_wood").toString(), BlockSetTypes.TREATED_WOOD));
+		public static final WoodType STEEL = WoodType.register(new WoodType(ieLoc("steel").toString(), BlockSetTypes.STEEL));
+		public static final WoodType ALUMINUM = WoodType.register(new WoodType(ieLoc("aluminum").toString(), BlockSetTypes.ALUMINUM));
 	}
 
 	private static ResourceKey<DamageType> ieDamage(String path)

@@ -35,8 +35,11 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @SuppressWarnings("unused")
 public class IEBlockEntities
@@ -59,10 +62,12 @@ public class IEBlockEntities
 			"coresample", makeType(CoresampleBlockEntity::new, StoneDecoration.CORESAMPLE)
 	);
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<IESignBlockEntity>> SIGN = REGISTER.register(
-			"sign", makeTypeMultipleBlocks(IESignBlockEntity::new, ImmutableSet.of(WoodenDecoration.SIGN.sign(), WoodenDecoration.SIGN.wall()))
+			"sign", makeTypeMultipleBlocks(IESignBlockEntity::new,
+					Stream.of(WoodenDecoration.SIGN, MetalDecoration.STEEL_SIGN).mapMulti(SignHolder::mapMultiSign).toList())
 	);
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<IEHangingSignBlockEntity>> HANGING_SIGN = REGISTER.register(
-			"hanging_sign", makeTypeMultipleBlocks(IEHangingSignBlockEntity::new, ImmutableSet.of(WoodenDecoration.SIGN.hanging(), WoodenDecoration.SIGN.wallHanging()))
+			"hanging_sign", makeTypeMultipleBlocks(IEHangingSignBlockEntity::new,
+					Stream.of(WoodenDecoration.SIGN, MetalDecoration.STEEL_SIGN).mapMulti(SignHolder::mapMultiHanging).toList())
 	);
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CraftingTableBlockEntity>> CRAFTING_TABLE = REGISTER.register(
 			"craftingtable", makeType(CraftingTableBlockEntity::new, WoodenDevices.CRAFTING_TABLE)

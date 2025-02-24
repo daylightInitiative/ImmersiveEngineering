@@ -751,6 +751,8 @@ public class DecorationRecipes extends IERecipeProvider
 				.define('i', IETags.getTagsFor(EnumMetals.STEEL).ingot)
 				.unlockedBy("has_steel_ingot", has(IETags.getTagsFor(EnumMetals.STEEL).ingot))
 				.save(new WrappingRecipeOutput<>(out, BasicShapedRecipe::new), toRL(toPath(MetalDecoration.STEEL_TRAPDOOR)));
+
+		addSigns(MetalDecoration.STEEL_SIGN, IETags.getTagsFor(EnumMetals.STEEL).ingot, IETags.steelRod, out);
 	}
 
 	private void addStairs(ItemLike block, RecipeOutput out)

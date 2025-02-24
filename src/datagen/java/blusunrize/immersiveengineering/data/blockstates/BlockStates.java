@@ -28,6 +28,7 @@ import blusunrize.immersiveengineering.common.blocks.plant.HempBlock;
 import blusunrize.immersiveengineering.common.blocks.wooden.BlueprintShelfBlock;
 import blusunrize.immersiveengineering.common.blocks.wooden.SawdustBlock;
 import blusunrize.immersiveengineering.common.blocks.wooden.TreatedWoodStyles;
+import blusunrize.immersiveengineering.common.register.IEBlocks;
 import blusunrize.immersiveengineering.common.register.IEBlocks.*;
 import blusunrize.immersiveengineering.common.register.IEFluids;
 import blusunrize.immersiveengineering.common.register.IEMultiblockLogic;
@@ -436,6 +437,7 @@ public class BlockStates extends ExtendedBlockstateProvider
 		createTrapdoor(MetalDecoration.STEEL_TRAPDOOR, "block/metal_decoration/steel_trapdoor");
 
 		createSigns(WoodenDecoration.SIGN, "block/wooden_decoration/treated_wood_horizontal");
+		createSigns(MetalDecoration.STEEL_SIGN, "block/metal/storage_steel");
 
 		for(Entry<WarningSignIcon, BlockEntry<IEBaseBlock>> warningSign : MetalDecoration.WARNING_SIGNS.entrySet())
 		{

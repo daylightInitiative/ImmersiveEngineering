@@ -17,6 +17,7 @@ import blusunrize.immersiveengineering.common.items.bullets.IEBullets;
 import blusunrize.immersiveengineering.common.register.IEBannerPatterns;
 import blusunrize.immersiveengineering.common.register.IEBannerPatterns.BannerEntry;
 import blusunrize.immersiveengineering.common.register.IEBlocks;
+import blusunrize.immersiveengineering.common.register.IEBlocks.MetalDecoration;
 import blusunrize.immersiveengineering.common.register.IEBlocks.WoodenDecoration;
 import blusunrize.immersiveengineering.common.register.IEItems;
 import blusunrize.immersiveengineering.common.register.IEItems.Misc;
@@ -79,6 +80,7 @@ public class Language extends LanguageProvider
 		addItems();
 		addShaders();
 		addSigns(WoodenDecoration.SIGN);
+		addSigns(MetalDecoration.STEEL_SIGN);
 
 		verify();
 	}
