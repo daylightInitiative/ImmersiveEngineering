@@ -207,6 +207,7 @@ public class DecorationRecipes extends IERecipeProvider
 				.unlockedBy("has_treated_planks", has(IETags.getItemTag(IETags.treatedWood)))
 				.save(new WrappingRecipeOutput<>(out, BasicShapedRecipe::new), toRL(toPath(WoodenDecoration.TRAPDOOR)));
 		addVariationChain(out, WoodenDecoration.TRAPDOOR, WoodenDecoration.TRAPDOOR_FRAMED);
+		addSigns(WoodenDecoration.SIGN, IETags.getItemTag(IETags.treatedWood), Tags.Items.RODS_WOODEN, out);
 	}
 
 	private void stoneDecoration(RecipeOutput out)
@@ -766,6 +767,26 @@ public class DecorationRecipes extends IERecipeProvider
 				.pattern("sss")
 				.unlockedBy("has_"+toPath(block), has(block))
 				.save(out, toRL(toPath(stairs)));
+	}
+
+	private void addSigns(IEBlocks.SignHolder holder, TagKey<Item> block, TagKey<Item> stick, RecipeOutput out)
+	{
+		shapedMisc(holder.sign(), 3)
+				.define('w', block)
+				.define('s', stick)
+				.pattern("www")
+				.pattern("www")
+				.pattern(" s ")
+				.unlockedBy("has_material", has(block))
+				.save(out, toRL(toPath(holder.sign())));
+		shapedMisc(holder.hanging(), 6)
+				.define('w', block)
+				.define('c', Blocks.CHAIN)
+				.pattern("c c")
+				.pattern("www")
+				.pattern("www")
+				.unlockedBy("has_material", has(block))
+				.save(out, toRL(toPath(holder.hanging())));
 	}
 
 	private void addVariationChain(RecipeOutput out, ItemLike... items)
