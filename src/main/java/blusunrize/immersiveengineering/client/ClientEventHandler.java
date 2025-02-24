@@ -94,8 +94,11 @@ import org.joml.Quaternionf;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.stream.IntStream;
 
 import static blusunrize.immersiveengineering.ImmersiveEngineering.rl;
@@ -116,7 +119,7 @@ public class ClientEventHandler implements ResourceManagerReloadListener
 	public void onPlayerTick(PlayerTickEvent.Post event)
 	{
 		final var player = event.getEntity();
-		if(player==null||!player.level().isClientSide||player!=ClientUtils.mc().player)
+		if(!player.level().isClientSide||player!=ClientUtils.mc().player)
 			return;
 		if(this.shieldToggleTimer > 0)
 			this.shieldToggleTimer--;
@@ -165,6 +168,7 @@ public class ClientEventHandler implements ResourceManagerReloadListener
 						if(steps!=null&&steps.length > 0)
 							ZoomHandler.fovZoom = steps[ZoomHandler.getCurrentZoomStep(steps)];
 					}
+					break;
 				}
 			}
 	}
@@ -307,10 +311,23 @@ public class ClientEventHandler implements ResourceManagerReloadListener
 	@SubscribeEvent
 	public void onRenderOverlayPre(RenderGuiLayerEvent.Pre event)
 	{
-		ItemStack equipped = ClientUtils.mc().player.getItemInHand(InteractionHand.MAIN_HAND);
-		// early exit if not handling a zoom tool
-		if(!(event.getName().equals(VanillaGuiLayers.CROSSHAIR)&&ZoomHandler.isZooming&&equipped.getItem() instanceof IZoomTool tool))
+		// early exit if not handling zooming
+		if(!event.getName().equals(VanillaGuiLayers.CROSSHAIR)||!ZoomHandler.isZooming)
 			return;
+
+		// check for a zoom tool and get its step array
+		Player player = ClientUtils.mc().player;
+		float[] zoomSteps = Arrays.stream(InteractionHand.values())
+				.map(player::getItemInHand)
+				.mapMulti((BiConsumer<ItemStack, Consumer<float[]>>)(itemStack, consumer) -> {
+					if(itemStack.getItem() instanceof IZoomTool zoomTool&&zoomTool.canZoom(itemStack, player))
+						consumer.accept(zoomTool.getZoomSteps(itemStack, player));
+				}).findFirst().orElse(null);
+
+		if(zoomSteps==null||zoomSteps.length <= 1)
+			return;
+
+		// cancel default crosshair
 		event.setCanceled(true);
 
 		GuiGraphics graphics = event.getGuiGraphics();
@@ -338,44 +355,40 @@ public class ClientEventHandler implements ResourceManagerReloadListener
 		graphics.blitSprite(ieLoc("hud/scope"), 0, 0, resMin, resMin);
 		RenderSystem.disableBlend();
 
-		float[] steps = tool.getZoomSteps(equipped, ClientUtils.mc().player);
-		if(steps!=null&&steps.length > 1)
+		// draw gauge on the right side
+		transform.translate(218/256f*resMin, 64/256f*resMin, 0);
+		graphics.blitSprite(ieLoc("hud/gauge_vertical"), 0, 0, Math.round(24/256f*resMin), Math.round(128/256f*resMin));
+
+		float stepLength = 118/(float)zoomSteps.length;
+		float stepOffset = (stepLength-7)/2f;
+		// move inside the gauge
+		RenderSystem.enableBlend();
+		transform.translate(5/256f*resMin, (5+stepOffset)/256f*resMin, 0);
+
+		// draw markers for the possible steps
+		int curStep = -1;
+		float dist = 0;
+		int innerWidth = Math.round(14/256f*resMin);
+		int innerHeight = Math.round(7/256f*resMin);
+
+		for(int i = 0; i < zoomSteps.length; i++)
 		{
-			// draw gauge on the right side
-			transform.translate(218/256f*resMin, 64/256f*resMin, 0);
-			graphics.blitSprite(ieLoc("hud/gauge_vertical"), 0, 0, Math.round(24/256f*resMin), Math.round(128/256f*resMin));
-
-			float stepLength = 118/(float)steps.length;
-			float stepOffset = (stepLength-7)/2f;
-			// move inside the gauge
-			RenderSystem.enableBlend();
-			transform.translate(5/256f*resMin, (5+stepOffset)/256f*resMin, 0);
-
-			// draw markers for the possible steps
-			int curStep = -1;
-			float dist = 0;
-			int innerWidth = Math.round(14/256f*resMin);
-			int innerHeight = Math.round(7/256f*resMin);
-
-			for(int i = 0; i < steps.length; i++)
+			graphics.blitSprite(ieLoc("hud/gauge_vertical_step"), 0, 0, innerWidth, innerHeight);
+			transform.translate(0, stepLength/256*resMin, 0);
+			if(curStep==-1||Math.abs(zoomSteps[i]-ZoomHandler.fovZoom) < dist)
 			{
-				graphics.blitSprite(ieLoc("hud/gauge_vertical_step"), 0, 0, innerWidth, innerHeight);
-				transform.translate(0, stepLength/256*resMin, 0);
-				if(curStep==-1||Math.abs(steps[i]-ZoomHandler.fovZoom) < dist)
-				{
-					curStep = i;
-					dist = Math.abs(steps[i]-ZoomHandler.fovZoom);
-				}
+				curStep = i;
+				dist = Math.abs(zoomSteps[i]-ZoomHandler.fovZoom);
 			}
-			transform.translate(0, -118/256f*resMin, 0);
-
-			// draw the pointer and text for current level
-			transform.translate(0, curStep*stepLength/256*resMin, 0);
-			graphics.blitSprite(ieLoc("hud/gauge_vertical_pointer"), 0, 0, innerWidth, innerHeight);
-			transform.translate(16/256f*resMin, 1/256f*resMin, 0);
-			graphics.drawString(ClientUtils.font(), (1/steps[curStep])+"x", 0, 0, 0xffffff, false);
-			RenderSystem.disableBlend();
 		}
+		transform.translate(0, -118/256f*resMin, 0);
+
+		// draw the pointer and text for current level
+		transform.translate(0, curStep*stepLength/256*resMin, 0);
+		graphics.blitSprite(ieLoc("hud/gauge_vertical_pointer"), 0, 0, innerWidth, innerHeight);
+		transform.translate(16/256f*resMin, 1/256f*resMin, 0);
+		graphics.drawString(ClientUtils.font(), (1/zoomSteps[curStep])+"x", 0, 0, 0xffffff, false);
+		RenderSystem.disableBlend();
 		transform.popPose();
 	}
 
@@ -415,8 +428,9 @@ public class ClientEventHandler implements ResourceManagerReloadListener
 		Player player = ClientUtils.mc().player;
 
 		// Check if player is holding a zoom-allowing item
-		ItemStack equipped = player.getItemInHand(InteractionHand.MAIN_HAND);
-		boolean mayZoom = equipped.getItem() instanceof IZoomTool&&((IZoomTool)equipped.getItem()).canZoom(equipped, player);
+		boolean mayZoom = Arrays.stream(InteractionHand.values())
+				.map(player::getItemInHand)
+				.anyMatch(s -> s.getItem() instanceof IZoomTool zoomTool&&zoomTool.canZoom(s, player));
 		// Set zoom if allowed, otherwise stop zooming
 		if(ZoomHandler.isZooming)
 		{
@@ -436,10 +450,12 @@ public class ClientEventHandler implements ResourceManagerReloadListener
 	{
 		if(event.getCinematicCameraEnabled())
 			return;
+
 		// Check if player is holding a zoom-allowing item and using them
 		Player player = ClientUtils.mc().player;
-		ItemStack equipped = player.getItemInHand(InteractionHand.MAIN_HAND);
-		boolean mayZoom = equipped.getItem() instanceof IZoomTool&&((IZoomTool)equipped.getItem()).canZoom(equipped, player);
+		boolean mayZoom = Arrays.stream(InteractionHand.values())
+				.map(player::getItemInHand)
+				.anyMatch(s -> s.getItem() instanceof IZoomTool zoomTool&&zoomTool.canZoom(s, player));
 		if(ZoomHandler.isZooming&&mayZoom)
 		{
 			// final math is: (m*0.6 + 0.2)³ * 8; where m is the mouse sensitivity
@@ -459,21 +475,26 @@ public class ClientEventHandler implements ResourceManagerReloadListener
 		Player player = ClientUtils.mc().player;
 		if(event.getScrollDeltaY()!=0&&ClientUtils.mc().screen==null&&player!=null)
 		{
-			ItemStack equipped = player.getItemInHand(InteractionHand.MAIN_HAND);
-			// Handle zoom steps
-			if(equipped.getItem() instanceof IZoomTool&&((IZoomTool)equipped.getItem()).canZoom(equipped, player)&&ZoomHandler.isZooming)
+			// Handle zooming in and out
+			if(ZoomHandler.isZooming)
 			{
-				float[] steps = ((IZoomTool)equipped.getItem()).getZoomSteps(equipped, player);
-				if(steps!=null&&steps.length > 0)
+				float[] zoomSteps = Arrays.stream(InteractionHand.values())
+						.map(player::getItemInHand)
+						.mapMulti((BiConsumer<ItemStack, Consumer<float[]>>)(itemStack, consumer) -> {
+							if(itemStack.getItem() instanceof IZoomTool zoomTool&&zoomTool.canZoom(itemStack, player))
+								consumer.accept(zoomTool.getZoomSteps(itemStack, player));
+						}).findFirst().orElse(null);
+				if(zoomSteps!=null&&zoomSteps.length > 0)
 				{
-					int curStep = ZoomHandler.getCurrentZoomStep(steps);
+					int curStep = ZoomHandler.getCurrentZoomStep(zoomSteps);
 					int newStep = curStep+(event.getScrollDeltaY() > 0?-1: 1);
-					if(newStep >= 0&&newStep < steps.length)
-						ZoomHandler.fovZoom = steps[newStep];
+					if(newStep >= 0&&newStep < zoomSteps.length)
+						ZoomHandler.fovZoom = zoomSteps[newStep];
 					event.setCanceled(true);
 				}
 			}
 
+			ItemStack equipped = player.getItemInHand(InteractionHand.MAIN_HAND);
 			// Handle sneak + scrolling
 			if(player.isShiftKeyDown())
 			{
