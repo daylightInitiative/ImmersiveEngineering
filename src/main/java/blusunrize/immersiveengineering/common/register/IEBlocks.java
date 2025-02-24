@@ -895,19 +895,38 @@ public final class IEBlocks
 			};
 		}
 
-		public SignItem getSignItem()
+		public void registerItems(DeferredRegister<Item> register)
 		{
-			return new SignItem(new Item.Properties().stacksTo(16), this.sign().get(), this.wall().get());
-		}
-
-		public HangingSignItem getHangingSignItem()
-		{
-			return new HangingSignItem(this.hanging().get(), this.wallHanging.get(), new Item.Properties().stacksTo(16));
+			register.register(
+					baseName+"_sign",
+					() -> new SignItem(new Item.Properties().stacksTo(16), this.sign().get(), this.wall().get())
+			);
+			register.register(
+					baseName+"_hanging_sign",
+					() -> new HangingSignItem(this.hanging().get(), this.wallHanging.get(), new Item.Properties().stacksTo(16))
+			);
 		}
 
 		public boolean matchesEntries(BlockEntry<?> entry)
 		{
 			return entry==sign()||entry==wall()||entry==hanging()||entry==wallHanging();
+		}
+
+		public List<BlockEntry<?>> getEntries()
+		{
+			return Arrays.asList(sign, wall, hanging, wallHanging);
+		}
+
+		public void mapMultiSign(Consumer<BlockEntry<?>> consumer)
+		{
+			consumer.accept(sign());
+			consumer.accept(wall());
+		}
+
+		public void mapMultiHanging(Consumer<BlockEntry<?>> consumer)
+		{
+			consumer.accept(hanging());
+			consumer.accept(wallHanging());
 		}
 	}
 

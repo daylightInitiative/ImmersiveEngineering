@@ -202,9 +202,6 @@ public class BlockStates extends ExtendedBlockstateProvider
 
 		scaffold(WoodenDecoration.TREATED_SCAFFOLDING, rl("block/wooden_decoration/scaffolding"), rl("block/wooden_decoration/scaffolding_top"));
 
-		signBlock(WoodenDecoration.SIGN.sign().get(), WoodenDecoration.SIGN.wall().get(), rl("block/wooden_decoration/treated_wood_horizontal"));
-		hangingSignBlock(WoodenDecoration.SIGN.hanging().get(), WoodenDecoration.SIGN.wallHanging().get(), rl("block/wooden_decoration/treated_wood_horizontal"));
-
 		ResourceLocation aluSide = rl("block/metal_decoration/aluminum_scaffolding");
 		ResourceLocation steelSide = rl("block/metal_decoration/steel_scaffolding");
 		for(MetalScaffoldingType type : MetalScaffoldingType.values())
@@ -437,6 +434,8 @@ public class BlockStates extends ExtendedBlockstateProvider
 		createTrapdoor(WoodenDecoration.TRAPDOOR, "block/wooden_decoration/treated_trapdoor");
 		createTrapdoor(WoodenDecoration.TRAPDOOR_FRAMED, "block/wooden_decoration/treated_trapdoor_framed");
 		createTrapdoor(MetalDecoration.STEEL_TRAPDOOR, "block/metal_decoration/steel_trapdoor");
+
+		createSigns(WoodenDecoration.SIGN, "block/wooden_decoration/treated_wood_horizontal");
 
 		for(Entry<WarningSignIcon, BlockEntry<IEBaseBlock>> warningSign : MetalDecoration.WARNING_SIGNS.entrySet())
 		{
@@ -898,6 +897,12 @@ public class BlockStates extends ExtendedBlockstateProvider
 	{
 		trapdoorBlockWithRenderType(block.get(), rl(texture), true, "cutout");
 		itemModel(block, models().getExistingFile(rl(BuiltInRegistries.BLOCK.getKey(block.get()).getPath()+"_bottom")));
+	}
+
+	private void createSigns(IEBlocks.SignHolder holder, String particle)
+	{
+		signBlock(holder.sign().get(), holder.wall().get(), rl(particle));
+		hangingSignBlock(holder.hanging().get(), holder.wallHanging().get(), rl(particle));
 	}
 
 	private void createHemp()

@@ -458,13 +458,10 @@ public class IEBlockTags extends BlockTagsProvider
 				WoodenDecoration.DOOR_FRAMED,
 				WoodenDecoration.TRAPDOOR,
 				WoodenDecoration.TRAPDOOR_FRAMED,
-				WoodenDecoration.SIGN.sign(),
-				WoodenDecoration.SIGN.wall(),
-				WoodenDecoration.SIGN.hanging(),
-				WoodenDecoration.SIGN.wallHanging(),
 				Cloth.SHADER_BANNER,
 				Cloth.SHADER_BANNER_WALL
 		);
+		registerMineable(tag, WoodenDecoration.SIGN.getEntries());
 		for(BlockEntry<?> treatedWood : WoodenDecoration.TREATED_WOOD.values())
 			registerMineable(tag, treatedWood);
 	}
@@ -681,12 +678,12 @@ public class IEBlockTags extends BlockTagsProvider
 	private void setMiningLevel(Supplier<Block> block, Tiers level)
 	{
 		TagKey<Block> tag = switch(level)
-				{
-					case STONE -> BlockTags.NEEDS_STONE_TOOL;
-					case IRON -> BlockTags.NEEDS_IRON_TOOL;
-					case DIAMOND -> BlockTags.NEEDS_DIAMOND_TOOL;
-					default -> throw new IllegalArgumentException("No tag available for "+level.name());
-				};
+		{
+			case STONE -> BlockTags.NEEDS_STONE_TOOL;
+			case IRON -> BlockTags.NEEDS_IRON_TOOL;
+			case DIAMOND -> BlockTags.NEEDS_DIAMOND_TOOL;
+			default -> throw new IllegalArgumentException("No tag available for "+level.name());
+		};
 		tag(tag).add(block.get());
 	}
 
