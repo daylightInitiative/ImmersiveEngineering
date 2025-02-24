@@ -5,6 +5,8 @@
 - Add backup options for tag-based villager trades, so that broken tags don't cause broken trades (BluSunrize)
 - Add support for Pitcher Plants in the cloche (BluSunrize)
     - This comes with a new render function for datapacks to handle double-high crops, which is also used by hemp
+- Add treated wood, steel and aluminium signs (BluSunrize)
+    - They work like vanilla signs, not much else to say
 - Remove CustomParticleManager (IMS)
 - Change High Explosive cartridges to return shells on use (voidsong-dragonfly)
 - Change hemp plants to use the same "half" property as vanilla double flowers (BluSunrize)
