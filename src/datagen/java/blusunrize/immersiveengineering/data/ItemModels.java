@@ -104,6 +104,8 @@ public class ItemModels extends TRSRItemModelProvider
 		addItemModel("door_steel", MetalDecoration.STEEL_DOOR);
 		addItemModel("sign_steel", MetalDecoration.STEEL_SIGN.sign());
 		addItemModel("sign_steel_hanging", MetalDecoration.STEEL_SIGN.hanging());
+		addItemModel("sign_aluminum", MetalDecoration.ALU_SIGN.sign());
+		addItemModel("sign_aluminum_hanging", MetalDecoration.ALU_SIGN.hanging());
 
 		for(Entry<WarningSignIcon, BlockEntry<IEBaseBlock>> warningSign : MetalDecoration.WARNING_SIGNS.entrySet())
 		{

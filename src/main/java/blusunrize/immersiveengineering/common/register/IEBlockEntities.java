@@ -63,11 +63,11 @@ public class IEBlockEntities
 	);
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<IESignBlockEntity>> SIGN = REGISTER.register(
 			"sign", makeTypeMultipleBlocks(IESignBlockEntity::new,
-					Stream.of(WoodenDecoration.SIGN, MetalDecoration.STEEL_SIGN).mapMulti(SignHolder::mapMultiSign).toList())
+					Stream.of(WoodenDecoration.SIGN, MetalDecoration.STEEL_SIGN, MetalDecoration.ALU_SIGN).mapMulti(SignHolder::mapMultiSign).toList())
 	);
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<IEHangingSignBlockEntity>> HANGING_SIGN = REGISTER.register(
 			"hanging_sign", makeTypeMultipleBlocks(IEHangingSignBlockEntity::new,
-					Stream.of(WoodenDecoration.SIGN, MetalDecoration.STEEL_SIGN).mapMulti(SignHolder::mapMultiHanging).toList())
+					Stream.of(WoodenDecoration.SIGN, MetalDecoration.STEEL_SIGN, MetalDecoration.ALU_SIGN).mapMulti(SignHolder::mapMultiHanging).toList())
 	);
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CraftingTableBlockEntity>> CRAFTING_TABLE = REGISTER.register(
 			"craftingtable", makeType(CraftingTableBlockEntity::new, WoodenDevices.CRAFTING_TABLE)

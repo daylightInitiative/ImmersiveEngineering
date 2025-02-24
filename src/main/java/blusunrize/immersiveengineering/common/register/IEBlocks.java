@@ -545,7 +545,8 @@ public final class IEBlocks
 		public static final BlockEntry<TrapDoorBlock> STEEL_TRAPDOOR = new BlockEntry<>(
 				"steel_trapdoor", METAL_PROPERTIES_NO_OCCLUSION, blockProps -> new IETrapDoorBlock(BlockSetTypes.STEEL, blockProps).setLockedByRedstone()
 		);
-		public static final SignHolder STEEL_SIGN = SignHolder.of(WoodTypes.STEEL, 3f, MapColor.METAL, NoteBlockInstrument.IRON_XYLOPHONE, true);
+		public static final SignHolder STEEL_SIGN = SignHolder.of(WoodTypes.STEEL, 3f, MapColor.METAL, NoteBlockInstrument.IRON_XYLOPHONE, false);
+		public static final SignHolder ALU_SIGN = SignHolder.of(WoodTypes.ALUMINUM, 3f, MapColor.METAL, NoteBlockInstrument.IRON_XYLOPHONE, false);
 
 		public static final Map<WarningSignIcon, BlockEntry<IEBaseBlock>> WARNING_SIGNS = new EnumMap<>(WarningSignIcon.class);
 
@@ -839,7 +840,7 @@ public final class IEBlocks
 		{
 			if(entry==Misc.FAKE_LIGHT||entry==Misc.POTTED_HEMP||entry==StoneDecoration.CORESAMPLE||
 					entry==MetalDevices.TOOLBOX||entry==Cloth.SHADER_BANNER||entry==Cloth.SHADER_BANNER_WALL||
-					WoodenDecoration.SIGN.matchesEntries(entry)||MetalDecoration.STEEL_SIGN.matchesEntries(entry)||
+					WoodenDecoration.SIGN.matchesEntries(entry)||MetalDecoration.STEEL_SIGN.matchesEntries(entry)||MetalDecoration.ALU_SIGN.matchesEntries(entry)||
 					entry==Misc.HEMP_PLANT||entry==Connectors.POST_TRANSFORMER||IEFluids.ALL_FLUID_BLOCKS.contains(entry))
 				continue;
 			Function<Block, BlockItemIE> toItem;
@@ -859,6 +860,7 @@ public final class IEBlocks
 		// Signs
 		WoodenDecoration.SIGN.registerItems(IEItems.REGISTER);
 		MetalDecoration.STEEL_SIGN.registerItems(IEItems.REGISTER);
+		MetalDecoration.ALU_SIGN.registerItems(IEItems.REGISTER);
 	}
 
 	public record SignHolder(String baseName, BlockEntry<IESignBlocks.Standing> sign,

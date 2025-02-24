@@ -438,6 +438,7 @@ public class BlockStates extends ExtendedBlockstateProvider
 
 		createSigns(WoodenDecoration.SIGN, "block/wooden_decoration/treated_wood_horizontal");
 		createSigns(MetalDecoration.STEEL_SIGN, "block/metal/storage_steel");
+		createSigns(MetalDecoration.ALU_SIGN, "block/metal/storage_aluminum");
 
 		for(Entry<WarningSignIcon, BlockEntry<IEBaseBlock>> warningSign : MetalDecoration.WARNING_SIGNS.entrySet())
 		{

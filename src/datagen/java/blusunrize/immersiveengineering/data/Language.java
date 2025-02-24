@@ -81,6 +81,7 @@ public class Language extends LanguageProvider
 		addShaders();
 		addSigns(WoodenDecoration.SIGN);
 		addSigns(MetalDecoration.STEEL_SIGN);
+		addSigns(MetalDecoration.ALU_SIGN);
 
 		verify();
 	}
