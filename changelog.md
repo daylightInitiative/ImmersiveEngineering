@@ -13,6 +13,7 @@
 - Change hemp plants to use the same "half" property as vanilla double flowers (BluSunrize)
     - This results in existing hemp looking weird, just break and replace it!
 - Change mouse sensitivity based on current zoom level with railgun or revolver (BluSunrize)
+    - Also hide revolver's & railgun's first-person render while zoomed 
 - Improve readability of fluid name in the chemthrower HUD (BluSunrize)
 - Fix crash with dual codecs (Malte)
 - Fix crash when placing toolbox (Malte)
