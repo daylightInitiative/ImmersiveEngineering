@@ -183,7 +183,7 @@ public class Language extends LanguageProvider
 		String key = holder.baseName();
 		String name = Pattern.compile("(?:^|_)([a-z])")
 				.matcher(key)
-				.replaceAll(m -> " "+m.group(1).toUpperCase());
+				.replaceAll(m -> " "+m.group(1).toUpperCase()).trim();
 		add("block.immersiveengineering."+key+"_sign", name+" Sign");
 		add("block.immersiveengineering."+key+"_wall_sign", name+" Sign");
 		add("block.immersiveengineering."+key+"_hanging_sign", name+" Hanging Sign");
