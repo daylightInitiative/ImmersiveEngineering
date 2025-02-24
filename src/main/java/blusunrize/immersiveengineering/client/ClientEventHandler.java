@@ -431,6 +431,28 @@ public class ClientEventHandler implements ResourceManagerReloadListener
 			event.setNewFovModifier(1);
 	}
 
+	@SubscribeEvent()
+	public void onPlayerTurn(CalculatePlayerTurnEvent event)
+	{
+		if(event.getCinematicCameraEnabled())
+			return;
+		// Check if player is holding a zoom-allowing item and using them
+		Player player = ClientUtils.mc().player;
+		ItemStack equipped = player.getItemInHand(InteractionHand.MAIN_HAND);
+		boolean mayZoom = equipped.getItem() instanceof IZoomTool&&((IZoomTool)equipped.getItem()).canZoom(equipped, player);
+		if(ZoomHandler.isZooming&&mayZoom)
+		{
+			// final math is: (m*0.6 + 0.2)³ * 8; where m is the mouse sensitivity
+			// we want to avoid the "* 8" so the modifier to fix that is: (6m + 1)/(3m)
+			// however this only applies for the spyglass which has a fov modifier of 0.1,
+			// so we'll also scale it by the current zoom level
+			double mouseSensitivity = event.getMouseSensitivity();
+			double mod = 0.5-1/(6*mouseSensitivity);
+			double fovMod = 0.1/ZoomHandler.fovZoom;
+			event.setMouseSensitivity(mod*mouseSensitivity/fovMod);
+		}
+	}
+
 	@SubscribeEvent
 	public void onMouseEvent(MouseScrollingEvent event)
 	{
