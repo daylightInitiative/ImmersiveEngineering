@@ -21,6 +21,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.BlockSetType.PressurePlateSensitivity;
+import net.minecraft.world.level.block.state.properties.WoodType;
 import net.neoforged.fml.common.asm.enumextension.EnumProxy;
 import net.neoforged.neoforge.common.ItemAbility;
 import net.neoforged.neoforge.common.SimpleTier;
@@ -143,6 +144,11 @@ public class Lib
 				SoundEvents.STONE_BUTTON_CLICK_OFF,
 				SoundEvents.STONE_BUTTON_CLICK_ON
 		);
+	}
+
+	public static class WoodTypes
+	{
+		public static final WoodType TREATED_WOOD = WoodType.register(new WoodType(ieLoc("treated_wood").toString(), BlockSetTypes.TREATED_WOOD));
 	}
 
 	private static ResourceKey<DamageType> ieDamage(String path)

@@ -11,6 +11,7 @@ package blusunrize.immersiveengineering.common.register;
 import blusunrize.immersiveengineering.api.EnumMetals;
 import blusunrize.immersiveengineering.api.Lib;
 import blusunrize.immersiveengineering.api.Lib.BlockSetTypes;
+import blusunrize.immersiveengineering.api.Lib.WoodTypes;
 import blusunrize.immersiveengineering.api.tool.conveyor.ConveyorHandler;
 import blusunrize.immersiveengineering.api.tool.conveyor.IConveyorType;
 import blusunrize.immersiveengineering.api.wires.WireType;
@@ -39,12 +40,14 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.SignItem;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
+import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.material.MapColor;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -387,6 +390,8 @@ public final class IEBlocks
 		public static final BlockEntry<TrapDoorBlock> TRAPDOOR_FRAMED = new BlockEntry<>(
 				"treated_trapdoor_framed", STANDARD_WOOD_PROPERTIES_NO_OCCLUSION, blockProps -> new IETrapDoorBlock(BlockSetTypes.TREATED_WOOD, blockProps)
 		);
+
+		public static final SignHolder SIGN = SignHolder.of(WoodTypes.TREATED_WOOD, 1f, MapColor.WOOD, NoteBlockInstrument.BASS, true);
 
 		private static void init()
 		{
@@ -833,6 +838,8 @@ public final class IEBlocks
 					entry==MetalDevices.TOOLBOX||entry==Cloth.SHADER_BANNER||entry==Cloth.SHADER_BANNER_WALL||
 					entry==Misc.HEMP_PLANT||entry==Connectors.POST_TRANSFORMER||IEFluids.ALL_FLUID_BLOCKS.contains(entry))
 				continue;
+			if(WoodenDecoration.SIGN.matchesEntries(entry))
+				continue;
 			Function<Block, BlockItemIE> toItem;
 			if(entry==Cloth.BALLOON)
 				toItem = BlockItemBalloon::new;
@@ -846,6 +853,46 @@ public final class IEBlocks
 				toItem = toItem.andThen(b -> b.setBurnTime(10*IEItems.COKE_BURN_TIME));
 			Function<Block, BlockItemIE> finalToItem = toItem;
 			IEItems.REGISTER.register(entry.getId().getPath(), () -> finalToItem.apply(entry.get()));
+		}
+		IEItems.REGISTER.register("treated_wood_sign", WoodenDecoration.SIGN::getSignItem);
+	}
+
+	public record SignHolder(BlockEntry<IESignBlocks.Standing> sign, BlockEntry<IESignBlocks.Wall> wall)
+	{
+		public static SignHolder of(WoodType wood, float strength, MapColor mapColor, NoteBlockInstrument nbi, boolean ignite)
+		{
+			String name = ResourceLocation.parse(wood.name()).getPath();
+			BlockEntry<IESignBlocks.Standing> sign = new BlockEntry<>(
+					name+"_sign", buildProperties(strength, mapColor, nbi, ignite, null),
+					blockProps -> new IESignBlocks.Standing(wood, blockProps)
+			);
+			BlockEntry<IESignBlocks.Wall> wall = new BlockEntry<>(
+					name+"_wall_sign", buildProperties(strength, mapColor, nbi, ignite, sign::get),
+					blockProps -> new IESignBlocks.Wall(wood, blockProps)
+			);
+			return new SignHolder(sign, wall);
+		}
+
+		private static Supplier<BlockBehaviour.Properties> buildProperties(float strength, MapColor mapColor, NoteBlockInstrument nbi, boolean ignite, Supplier<Block> dropsLike)
+		{
+			return () -> {
+				BlockBehaviour.Properties props = Properties.of().mapColor(mapColor).instrument(nbi).strength(strength).forceSolidOn().noCollission();
+				if(ignite)
+					props.ignitedByLava();
+				if(dropsLike!=null)
+					props.dropsLike(dropsLike.get());
+				return props;
+			};
+		}
+
+		public SignItem getSignItem()
+		{
+			return new SignItem(new Item.Properties().stacksTo(16), this.sign().get(), this.wall().get());
+		}
+
+		public boolean matchesEntries(BlockEntry<?> entry)
+		{
+			return entry==sign()||entry==wall();
 		}
 	}
 

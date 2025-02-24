@@ -458,6 +458,8 @@ public class IEBlockTags extends BlockTagsProvider
 				WoodenDecoration.DOOR_FRAMED,
 				WoodenDecoration.TRAPDOOR,
 				WoodenDecoration.TRAPDOOR_FRAMED,
+				WoodenDecoration.SIGN.sign(),
+				WoodenDecoration.SIGN.wall(),
 				Cloth.SHADER_BANNER,
 				Cloth.SHADER_BANNER_WALL
 		);

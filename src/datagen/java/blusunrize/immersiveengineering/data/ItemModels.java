@@ -215,6 +215,7 @@ public class ItemModels extends TRSRItemModelProvider
 				.transforms(modLoc("item/post"));
 		addItemModel("door_treated", WoodenDecoration.DOOR);
 		addItemModel("door_treated_framed", WoodenDecoration.DOOR_FRAMED);
+		addItemModel("sign_treated", WoodenDecoration.SIGN.sign());
 
 		obj(WoodenDevices.WORKBENCH, rl("block/wooden_device/workbench.obj.ie"))
 				.transforms(rl("item/workbench"));
