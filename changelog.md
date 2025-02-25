@@ -8,12 +8,14 @@
 - Add treated wood, steel and aluminium signs (BluSunrize)
     - They work like vanilla signs, not much else to say
 - Add the ability to make warning signs glow with glow ink sacks (BluSunrize)
+- Add recipe for crushing coarse dirt into dirt (voidsong-dragonfly)
 - Remove CustomParticleManager (IMS)
 - Change High Explosive cartridges to return shells on use (voidsong-dragonfly)
 - Change hemp plants to use the same "half" property as vanilla double flowers (BluSunrize)
     - This results in existing hemp looking weird, just break and replace it!
 - Change mouse sensitivity based on current zoom level with railgun or revolver (BluSunrize)
     - Also hide revolver's & railgun's first-person render while zoomed
+- Change coke oven to only burn the same logs as a vanilla furnace can (voidsong-dragonfly)
 - Improve readability of fluid name in the chemthrower HUD (BluSunrize)
 - Fix crash with dual codecs (Malte)
 - Fix crash when placing toolbox (Malte)
@@ -37,6 +39,7 @@
 - Fix floodlights deleting their own fake lightsources immediately (voidsong-dragonfly)
 - Fix the scope for railgun and revolver just not rendering at all (BluSunrize)
 - Fix zooming not working when the weapon is in offhand (BluSunrize)
+- Fix multiblock inventories stacking to 99 (voidsong-dragonfly)
 - Fix charging station not charging the accumulator backpack (BluSunrize)
 - Translations Added/Updated: zh_cn (Cactusstudent, SlimeSB, mc-kaishixiaxue, JustAlkaid), tr_tr (RuyaSavascisi)
 
