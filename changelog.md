@@ -1,4 +1,4 @@
-##### Version 1.21.1-12.1.0-pre
+##### Version 1.21.1-12.1.0-185
 - All changes from 1.20.4-11.7.0
 - Add HOP graphite ingots to general ingots tag (Malte)
 - Add builtin compat with Repurposed Structrues (TelepathicGrunt)
