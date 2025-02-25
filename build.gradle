@@ -416,23 +416,32 @@ static String getShortenedAssetPath(File file) {
     return file.getPath()
             .replaceFirst('^.*?resources.(assets.immersiveengineering.)?', '') // remove start
             .replaceAll('[/\\\\]+', '_') // replace slashes with underscores
+            .replaceAll('.png+', '') // trim the ending
 }
 
 for (dir in project.sourceSets.main.resources.srcDirs) {
     fileTree(dir: dir, includes: pngPatterns).each { file ->
-        tasks.register("optimizePng_" + getShortenedAssetPath(file), Exec) {
+        def path = getShortenedAssetPath(file);
+        tasks.register("optimizePng_" + path, Exec) {
             executable "optipng"
-            args "-q", "-o7", "-zm1-9", "-strip", "all", file
-            // It'd be awesome if we could do logging here, but routing standardOutput to a ByteArrayOutputStream
-            // doesn't work...
-            // Todo: try with file output!
+            args "-q", "-log", "optipng_${path}.log", "-o7", "-zm1-9", "-strip", "all", file
         }
     }
 }
 task optimizePng {
     for (dir in project.sourceSets.main.resources.srcDirs) {
         fileTree(dir: dir, includes: pngPatterns).each { file ->
-            dependsOn "optimizePng_" + getShortenedAssetPath(file)
+            def path = getShortenedAssetPath(file);
+            dependsOn "optimizePng_${path}"
+            doLast {
+                def logfile = new File("optipng_${path}.log")
+                if (logfile.exists()) {
+                    def decrease = logfile.text.trim().find('[\\d\\.]+% decrease')
+                    if (decrease)
+                        println "${file.name} optimized:\n\t${decrease} in size"
+                    logfile.delete()
+                }
+            }
         }
     }
 }
