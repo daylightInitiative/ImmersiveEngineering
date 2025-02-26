@@ -1,6 +1,6 @@
 name: Crash Report
 description: If your game crashed while playing with Immersive Engineering
-labels: ["crash :boom:"]
+labels: ["crash 💥"]
 body:
   - type: markdown
     attributes:

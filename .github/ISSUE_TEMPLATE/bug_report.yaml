@@ -1,6 +1,6 @@
 name: Bug Report
 description: If you experienced a bug while playing with Immersive Engineering
-labels: ["bug"]
+labels: ["bug 🐛"]
 body:
   - type: markdown
     attributes:
