@@ -309,6 +309,7 @@ public class ItemModels extends TRSRItemModelProvider
 		withExistingParent(name(SpawnEggs.EGG_FUSILIER), ResourceLocation.withDefaultNamespace("item/template_spawn_egg"));
 		withExistingParent(name(SpawnEggs.EGG_COMMANDO), ResourceLocation.withDefaultNamespace("item/template_spawn_egg"));
 		withExistingParent(name(SpawnEggs.EGG_BULWARK), ResourceLocation.withDefaultNamespace("item/template_spawn_egg"));
+		addItemModels("", IEItems.SpawnEggs.ROBOT_WOLF);
 
 		obj(Tools.VOLTMETER, rl("item/voltmeter.obj"))
 				.transforms(rl("item/voltmeter"));

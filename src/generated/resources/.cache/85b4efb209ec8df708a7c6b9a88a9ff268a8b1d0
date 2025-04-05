@@ -1,4 +1,4 @@
-// 1.21.1	2025-02-24T15:45:25.3823948	Item models
+// 1.21.1	2025-04-04T18:16:19.8250598	Item models
 8e8e1578653ae2e701aee18c524176bc5c6bcd7f assets/immersiveengineering/models/item/acetaldehyde_bucket.json
 62d8a99359a8d59d68eaae60eca3ab0da03e358f assets/immersiveengineering/models/item/advanced_blast_furnace.json
 d03faa43ead928b27068b685663fe7fdd4465d1a assets/immersiveengineering/models/item/alloy_smelter.json
@@ -280,6 +280,7 @@ adf41de9c05b421d2ba979576fca2539eb39b598 assets/immersiveengineering/models/item
 a22f45c3b9f4628d6110f29c8ef6aa3082317cc2 assets/immersiveengineering/models/item/redstone_timer.json
 de3aff128fa1bfa3e4a279b392d48a0a00c09097 assets/immersiveengineering/models/item/refinery.json
 0cfaa06609150f400fc5365200d17a0ff1c973d6 assets/immersiveengineering/models/item/revolver.json
+9fab45d0ff5fcc33b7757a1a0247603b5b0ccb00 assets/immersiveengineering/models/item/robot_wolf.json
 33d279a2d5e6463704ea78587300db74978801be assets/immersiveengineering/models/item/rockcutter.json
 f6e1943d311590533b1cdcfab44a31e7d755d0df assets/immersiveengineering/models/item/sample_drill.json
 9462332eae24acf44afb0824343dfafa26b3d47c assets/immersiveengineering/models/item/sawblade.json

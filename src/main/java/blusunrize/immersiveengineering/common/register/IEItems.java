@@ -353,6 +353,7 @@ public final class IEItems
 		public static final ItemRegObject<SpawnEggItem> EGG_FUSILIER = registerEgg(IEEntityTypes.FUSILIER, 0x959b9b, 0xaf6766);
 		public static final ItemRegObject<SpawnEggItem> EGG_COMMANDO = registerEgg(IEEntityTypes.COMMANDO, 0x293a1e, 0x959b9b);
 		public static final ItemRegObject<SpawnEggItem> EGG_BULWARK = registerEgg(IEEntityTypes.BULWARK, 0x959b9b, 0xc75538);
+		public static final ItemRegObject<RobotWolfItem> ROBOT_WOLF = register("robot_wolf", RobotWolfItem::new);
 
 		private static void init()
 		{
