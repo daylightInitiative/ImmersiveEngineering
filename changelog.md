@@ -13,6 +13,7 @@
 - Fix magnetic glove for the shield not working (BluSunrize)
 - Fix display of items on wooden crates in inventory (BluSunrize)
 - Fix rockcutter not properly silk-touching blocks (BluSunrize)
+- Fix blueprint shelf showing "invalid_blueprint" on empty slots (BluSunrize)
 
 ##### Version 1.21.1-12.1.0-185
 - All changes from 1.20.4-11.7.0
