@@ -10,6 +10,7 @@
     - Fix bullets not assigning their owner, thus all damage being considered turret damage
     - Fix bullets and railgun shots not counting as projectiles
     - Fix chemthrower not correctly attributing kills to the player
+- Fix magnetic glove for the shield not working (BluSunrize)
 
 ##### Version 1.21.1-12.1.0-185
 - All changes from 1.20.4-11.7.0
