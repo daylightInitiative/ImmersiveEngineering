@@ -6,9 +6,10 @@
     - They conflict with redstone acid and are never used anyway
 - Fix waterwheels not updating blocked in many cases (voidsong-dragonfly)
 - Fix fluid router GUI crashing (Léa Gris)
-- Fix bullets not assigning their owner, thus all damage being considered turret damage (BluSunrize)
-- Fix bullets and railgun shots not counting as projectiles (BluSunrize)
-- Fix chemthrower not correctly attributing kills to the player (BluSunrize)
+- Fix "Superior Weaponry" achievement not triggering, caused by various factors: (BluSunrize)
+    - Fix bullets not assigning their owner, thus all damage being considered turret damage
+    - Fix bullets and railgun shots not counting as projectiles
+    - Fix chemthrower not correctly attributing kills to the player
 
 ##### Version 1.21.1-12.1.0-185
 - All changes from 1.20.4-11.7.0

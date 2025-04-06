@@ -135,7 +135,11 @@ public class Advancements extends AdvancementProvider
 				.orRequirements()
 				.addCriterion("revolver_kill", KilledTrigger.TriggerInstance.playerKilledEntity(
 						EntityPredicate.Builder.entity().of(EntityTypeTags.RAIDERS),
-						DamageSourcePredicate.Builder.damageType().direct(EntityPredicate.Builder.entity().of(IEEntityTypes.REVOLVERSHOT.get()))
+						DamageSourcePredicate.Builder.damageType().tag(TagPredicate.is(DamageTypeTags.IS_PROJECTILE)).source(EntityPredicate.Builder.entity().equipment(
+								EntityEquipmentPredicate.Builder.equipment().mainhand(
+										ItemPredicate.Builder.item().of(Weapons.REVOLVER.asItem())
+								).build()
+						))
 				)).addCriterion("railgun_kill", KilledTrigger.TriggerInstance.playerKilledEntity(
 						EntityPredicate.Builder.entity().of(EntityTypeTags.RAIDERS),
 						DamageSourcePredicate.Builder.damageType().tag(TagPredicate.is(DamageTypeTags.IS_PROJECTILE)).source(EntityPredicate.Builder.entity().equipment(
@@ -145,7 +149,11 @@ public class Advancements extends AdvancementProvider
 						))
 				)).addCriterion("chemthrower_kill", KilledTrigger.TriggerInstance.playerKilledEntity(
 						EntityPredicate.Builder.entity().of(EntityTypeTags.RAIDERS),
-						DamageSourcePredicate.Builder.damageType().direct(EntityPredicate.Builder.entity().of(IEEntityTypes.CHEMTHROWER_SHOT.get()))
+						DamageSourcePredicate.Builder.damageType().source(EntityPredicate.Builder.entity().equipment(
+								EntityEquipmentPredicate.Builder.equipment().mainhand(
+										ItemPredicate.Builder.item().of(Weapons.CHEMTHROWER.asItem())
+								).build()
+						))
 				))
 				.loot("shader_rare").save(consumer);
 
