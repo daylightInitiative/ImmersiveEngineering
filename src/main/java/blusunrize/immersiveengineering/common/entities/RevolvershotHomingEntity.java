@@ -77,7 +77,7 @@ public class RevolvershotHomingEntity extends RevolvershotEntity
 		AABB aabb = new AABB(getX()-r, getY()-r, getZ()-r, getX()+r, getY()+r, getZ()+r);
 		LivingEntity target = null;
 		for(LivingEntity o : level().getEntitiesOfClass(LivingEntity.class, aabb))
-			if(o!=null&&!o.getUUID().equals(this.shooterUUID))
+			if(o!=null&&!o.equals(getOwner()))
 				if(target==null||o.distanceToSqr(this) < target.distanceToSqr(this))
 					target = o;
 		return target;

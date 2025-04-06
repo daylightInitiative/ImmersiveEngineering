@@ -6,6 +6,7 @@
     - They conflict with redstone acid and are never used anyway
 - Fix waterwheels not updating blocked in many cases (voidsong-dragonfly)
 - Fix fluid router GUI crashing (Léa Gris)
+- Fix bullets not assigning their owner, thus all damage being considered turret damage (BluSunrize)
 
 ##### Version 1.21.1-12.1.0-185
 - All changes from 1.20.4-11.7.0

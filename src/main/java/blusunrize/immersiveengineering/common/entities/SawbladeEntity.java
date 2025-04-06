@@ -131,11 +131,10 @@ public class SawbladeEntity extends IEProjectileEntity
 	protected void handlePiecing(Entity target)
 	{
 		super.handlePiecing(target);
-		if(this.piercedEntities.size() >= 3&&getShooterUUID()!=null)
+		Entity owner = getOwner();
+		if(this.piercedEntities.size() >= 3&&owner instanceof Player shooter)
 		{
-			Player shooter = level().getPlayerByUUID(this.getShooterUUID());
-			if(shooter!=null)
-				Utils.unlockIEAdvancement(shooter, "tools/secret_ravenholm");
+			Utils.unlockIEAdvancement(shooter, "tools/secret_ravenholm");
 		}
 	}
 

@@ -115,7 +115,7 @@ public class RailgunShotEntity extends IEProjectileEntity
 			if(projectileProperties!=null)
 			{
 				Entity shooter = this.getOwner();
-				UUID shooterUuid = this.getShooterUUID();
+				UUID shooterUuid = shooter!=null?shooter.getUUID():null;
 				Entity hit = result.getEntity();
 				double damage = projectileProperties.getDamage(this.level(), hit, shooterUuid, this);
 				DamageSource source = projectileProperties.getDamageSource(this.level(), hit, shooterUuid, this);
@@ -139,7 +139,8 @@ public class RailgunShotEntity extends IEProjectileEntity
 			IRailgunProjectile projectileProperties = getProjectileProperties();
 			if(projectileProperties!=null)
 			{
-				UUID shooterUuid = this.getShooterUUID();
+				Entity owner = getOwner();
+				UUID shooterUuid = owner!=null?owner.getUUID():null;
 				double breakRoll = this.random.nextDouble();
 				if(breakRoll <= getProjectileProperties().getBreakChance(shooterUuid, ammo))
 					this.discard();
