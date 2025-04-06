@@ -1,3 +1,8 @@
+##### Version 1.21.1-12.1.1-pre
+- Add Automaton Wolves! (BluSunrize)
+    - They are spawned with a new item, which requires a blueprint that can only drop from Trial Chamber Vaults
+    - They spawn with extra health and increased damage but are otherwise just subtype of wolves and behave the same
+
 ##### Version 1.21.1-12.1.0-185
 - All changes from 1.20.4-11.7.0
 - Add HOP graphite ingots to general ingots tag (Malte)
