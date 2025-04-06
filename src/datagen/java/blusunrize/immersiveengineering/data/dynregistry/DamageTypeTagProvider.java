@@ -21,7 +21,7 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Set;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public class DamageTypeTagProvider extends TagsProvider<DamageType>
@@ -52,7 +52,7 @@ public class DamageTypeTagProvider extends TagsProvider<DamageType>
 				.add(DamageTypes.RAILGUN.playerType())
 				.add(DamageTypes.SAWBLADE.playerType());
 		// ALL the projectiles!
-		Set<TurretDamageType> projectiles = Set.of(
+		List<TurretDamageType> projectiles = List.of(
 				DamageTypes.REVOLVER_CASULL, DamageTypes.REVOLVER_ARMORPIERCING, DamageTypes.REVOLVER_BUCKSHOT,
 				DamageTypes.REVOLVER_DRAGONSBREATH, DamageTypes.REVOLVER_HOMING, DamageTypes.REVOLVER_WOLFPACK,
 				DamageTypes.REVOLVER_SILVER, DamageTypes.REVOLVER_POTION, DamageTypes.RAILGUN, DamageTypes.SAWBLADE
