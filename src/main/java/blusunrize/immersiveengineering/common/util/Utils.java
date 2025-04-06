@@ -729,8 +729,10 @@ public class Utils
 		loottable.getRandomItems(lootcontext, out);
 	}
 
-	public static ItemStack getPickBlock(BlockState state, HitResult rtr, Player player)
+	public static ItemStack getPickBlock(BlockState state, HitResult rtr, @Nullable Player player)
 	{
+		if(player==null)
+			return ItemStack.EMPTY;
 		final RegistryAccess registries = player.level().registryAccess();
 		final LevelReader w = TemplateWorld.createSingleBlock(state, registries);
 		return state.getBlock().getCloneItemStack(state, rtr, w, BlockPos.ZERO, player);
