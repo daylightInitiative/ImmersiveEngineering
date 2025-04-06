@@ -4,6 +4,8 @@
     - They spawn with extra health and increased damage but are otherwise just subtype of wolves and behave the same
 - Remove mixer recipes for mundane and thick potions again (BluSunrize)
     - They conflict with redstone acid and are never used anyway
+- Fix waterwheels not updating blocked in many cases (voidsong-dragonfly)
+- Fix fluid router GUI crashing (Léa Gris)
 
 ##### Version 1.21.1-12.1.0-185
 - All changes from 1.20.4-11.7.0
