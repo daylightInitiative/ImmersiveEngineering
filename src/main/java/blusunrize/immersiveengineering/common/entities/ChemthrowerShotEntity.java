@@ -140,9 +140,9 @@ public class ChemthrowerShotEntity extends IEProjectileEntity
 				thrower = shooter.getItemInHand(InteractionHand.MAIN_HAND);
 
 			if(mop.getType()==Type.ENTITY&&((EntityHitResult)mop).getEntity() instanceof LivingEntity)
-				effect.applyToEntity((LivingEntity)((EntityHitResult)mop).getEntity(), shooter, thrower, fluidStack);
+				effect.applyToEntity((LivingEntity)((EntityHitResult)mop).getEntity(), shooter, this, thrower, fluidStack);
 			else if(mop.getType()==Type.BLOCK)
-				effect.applyToBlock(level(), mop, shooter, thrower, fluidStack);
+				effect.applyToBlock(level(), mop, shooter, this, thrower, fluidStack);
 		}
 		else if(mop.getType()==Type.ENTITY&&fluid.getFluidType().getTemperature(fluidStack) > 500)
 		{
