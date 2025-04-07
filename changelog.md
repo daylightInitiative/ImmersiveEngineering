@@ -16,6 +16,7 @@
 - Fix blueprint shelf showing "invalid_blueprint" on empty slots (BluSunrize)
 - Fix auto-clickers breaking when middle clicking on multiblocks (BluSunrize)
 - Fix "obstructed connection" overlay being in the wrong place (BluSunrize)
+- Fix accumulator backpack not being attachable to armor (BluSunrize)
 
 ##### Version 1.21.1-12.1.0-185
 - All changes from 1.20.4-11.7.0
