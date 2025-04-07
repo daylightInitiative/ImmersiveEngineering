@@ -39,6 +39,7 @@ import blusunrize.immersiveengineering.common.util.compat.jei.refinery.RefineryR
 import blusunrize.immersiveengineering.common.util.compat.jei.sawmill.SawmillRecipeCategory;
 import blusunrize.immersiveengineering.common.util.compat.jei.squeezer.SqueezerRecipeCategory;
 import blusunrize.immersiveengineering.common.util.compat.jei.workbench.WorkbenchRecipeCategory;
+import com.mojang.datafixers.util.Either;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.RecipeTypes;
@@ -50,22 +51,19 @@ import mezz.jei.api.ingredients.subtypes.UidContext;
 import mezz.jei.api.registration.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponentPredicate;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.material.Fluid;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -234,38 +232,21 @@ public class JEIHelper implements IModPlugin
 	// TODO these throw when joining servers!
 	private List<RecipeHolder<BottlingMachineRecipe>> getFluidBucketRecipes()
 	{
-		// assume a source and flowing version of each fluid:
-		int fluidCount = BuiltInRegistries.FLUID.size()/2;
-
-		List<RecipeHolder<BottlingMachineRecipe>> recipes = new ArrayList<>(fluidCount);
-		for(Fluid f : BuiltInRegistries.FLUID)
-			if(f.isSource(f.defaultFluidState()))
-			{
-				// Sort tags, prioritize vanilla/forge tags, and assume that more slashes means more specific tag
-				Optional<ResourceLocation> tag = f.builtInRegistryHolder().tags()
-						.map(TagKey::location)
-						.min((o1, o2) -> {
-							// TODO not symmetric!
-							if(!("minecraft".equals(o1.getNamespace())||"forge".equals(o1.getNamespace())))
-								return 1;
-							return -Long.compare(
-									o1.getPath().codePoints().filter(ch -> ch=='/').count(),
-									o2.getPath().codePoints().filter(ch -> ch=='/').count()
-							);
-						});
-				ItemStack bucket = f.getBucket().getDefaultInstance();
-				if(!bucket.isEmpty()&&tag.isPresent())
-					recipes.add(
-							new RecipeHolder<>(
-									IEApi.ieLoc("jei_bucket_"+BuiltInRegistries.FLUID.getKey(f).getPath()),
-									new BottlingMachineRecipe(
-											new TagOutputList(new TagOutput(bucket)),
-											IngredientWithSize.of(new ItemStack(Items.BUCKET)),
-											new FluidTagInput(tag.get(), 1000)
-									))
+		return BuiltInRegistries.FLUID.holders()
+				.filter(holder -> holder.value().isSource(holder.value().defaultFluidState()))
+				.filter(holder -> !holder.value().getBucket().getDefaultInstance().isEmpty())
+				.map(holder -> {
+					ItemStack bucket = holder.value().getBucket().getDefaultInstance();
+					ResourceLocation key = holder.key().location();
+					return new RecipeHolder<>(
+							IEApi.ieLoc("jei_bucket_"+key.getNamespace()+"_"+key.getPath()),
+							new BottlingMachineRecipe(
+									new TagOutputList(new TagOutput(bucket)),
+									IngredientWithSize.of(new ItemStack(Items.BUCKET)),
+									new FluidTagInput(Either.right(List.of(key)), 1000, DataComponentPredicate.EMPTY)
+							)
 					);
-			}
-		return recipes;
+				}).toList();
 	}
 
 	private <T> ISubtypeInterpreter<ItemStack> makeInterpreter(

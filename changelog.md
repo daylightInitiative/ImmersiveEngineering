@@ -5,6 +5,7 @@
 - Remove mixer recipes for mundane and thick potions again (BluSunrize)
     - They conflict with redstone acid and are never used anyway
 - Add support to configure the Fluid Router with Potion Bottles (Léa Gris)
+- Change JEI recipes for filling buckets to not use fluid tags (BluSunrize)
 - Fix waterwheels not updating blocked in many cases (voidsong-dragonfly)
 - Fix fluid router GUI crashing (Léa Gris)
 - Fix "Superior Weaponry" achievement not triggering, caused by various factors: (BluSunrize)
