@@ -19,6 +19,7 @@
 - Fix accumulator backpack not being attachable to armor (BluSunrize)
 - Fix invalid blueprints causing a render crash in the workbench (BluSunrize)
 - Fix squeezer, fermenter and mixer not allowing users to take items out again (BluSunrize)
+- Fix switchboards not transmitting signals when only connected to other switchboards (BluSunrize)
 
 ##### Version 1.21.1-12.1.0-185
 - All changes from 1.20.4-11.7.0
