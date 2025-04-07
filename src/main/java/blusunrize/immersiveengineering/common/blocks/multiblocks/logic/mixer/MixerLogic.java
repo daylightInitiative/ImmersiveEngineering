@@ -283,7 +283,7 @@ public class MixerLogic
 		public State(IInitialMultiblockContext<State> ctx)
 		{
 			this.inventory = SlotwiseItemHandler.makeWithGroups(
-					List.of(new IOConstraintGroup(IOConstraint.ANY_INPUT, NUM_SLOTS)), ctx.getMarkDirtyRunnable()
+					List.of(new IOConstraintGroup(IOConstraint.NO_CONSTRAINT, NUM_SLOTS)), ctx.getMarkDirtyRunnable()
 			);
 			this.processor = new InMachineProcessor<>(
 					8, 0, 8, ctx.getMarkDirtyRunnable(), MixerRecipe.RECIPES::getById
