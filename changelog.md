@@ -4,6 +4,7 @@
     - They spawn with extra health and increased damage but are otherwise just subtype of wolves and behave the same
 - Remove mixer recipes for mundane and thick potions again (BluSunrize)
     - They conflict with redstone acid and are never used anyway
+- Add support to configure the Fluid Router with Potion Bottles (Léa Gris)
 - Fix waterwheels not updating blocked in many cases (voidsong-dragonfly)
 - Fix fluid router GUI crashing (Léa Gris)
 - Fix "Superior Weaponry" achievement not triggering, caused by various factors: (BluSunrize)
@@ -20,6 +21,7 @@
 - Fix invalid blueprints causing a render crash in the workbench (BluSunrize)
 - Fix squeezer, fermenter and mixer not allowing users to take items out again (BluSunrize)
 - Fix switchboards not transmitting signals when only connected to other switchboards (BluSunrize)
+- Fix Diesel Generator burning fuel for too short of time (Diesel Thomas)
 
 ##### Version 1.21.1-12.1.0-185
 - All changes from 1.20.4-11.7.0
