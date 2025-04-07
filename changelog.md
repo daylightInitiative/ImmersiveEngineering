@@ -23,7 +23,8 @@
 - Fix squeezer, fermenter and mixer not allowing users to take items out again (BluSunrize)
 - Fix switchboards not transmitting signals when only connected to other switchboards (BluSunrize)
 - Fix Diesel Generator burning fuel for too short of time (Diesel Thomas)
-- Fix crash when saving configured Item or Fluid routers in inventories (Diesel Thomas)
+- Fix crash when saving configured Item or Fluid routers in inventories (BluSunrize)
+- Fix accumulators having broken side configs after being broken and replaced (BluSunrize)
 
 ##### Version 1.21.1-12.1.0-185
 - All changes from 1.20.4-11.7.0
