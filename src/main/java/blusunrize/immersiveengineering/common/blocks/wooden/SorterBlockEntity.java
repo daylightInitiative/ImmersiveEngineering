@@ -37,6 +37,7 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -310,7 +311,7 @@ public class SorterBlockEntity extends IEBaseBlockEntity implements IInteraction
 		CompoundTag data = new CompoundTag();
 		writeCustomNBT(data, false, context.getLevel().registryAccess());
 		ItemStack stack = new ItemStack(getBlockState().getBlock(), 1);
-		stack.set(DataComponents.BLOCK_ENTITY_DATA, CustomData.of(data));
+		BlockItem.setBlockEntityData(stack, this.getType(), data);
 		drop.accept(stack);
 	}
 
