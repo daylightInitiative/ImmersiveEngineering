@@ -25,6 +25,7 @@ import net.minecraft.world.item.DyeColor;
 import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.function.Predicate;
 
 public class LogicCircuitHandler
@@ -191,6 +192,21 @@ public class LogicCircuitHandler
 			for(int i = 0; i < inputs.length; i++)
 				inputs[i] = LogicCircuitRegister.valueOf(inputList.getString(i));
 			return new LogicCircuitInstruction(operator, output, inputs);
+		}
+
+		@Override
+		public boolean equals(Object o)
+		{
+			if(this==o) return true;
+			if(o==null||getClass()!=o.getClass()) return false;
+			LogicCircuitInstruction that = (LogicCircuitInstruction)o;
+			return operator==that.operator&&output==that.output&&Objects.deepEquals(inputs, that.inputs);
+		}
+
+		@Override
+		public int hashCode()
+		{
+			return Objects.hash(operator, output, Arrays.hashCode(inputs));
 		}
 	}
 
