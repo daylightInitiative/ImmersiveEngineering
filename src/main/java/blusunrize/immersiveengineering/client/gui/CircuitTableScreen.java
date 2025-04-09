@@ -110,10 +110,11 @@ public class CircuitTableScreen extends IEContainerScreen<CircuitTableMenu>
 
 		this.outputButton = this.addRenderableWidget(GuiButtonLogicCircuitRegister.create(
 				leftPos+121, topPos+56,
-				Component.literal("Output"), btn -> this.minecraft.tell(this::updateInstruction))
+				Component.translatable(Lib.DESC_INFO+"circuit_table.btn.output"),
+				btn -> this.minecraft.tell(this::updateInstruction))
 		);
 
-		this.name = new EditBox(this.font, leftPos+172, topPos+10, 54, 12, Component.empty());
+		this.name = new EditBox(this.font, leftPos+172, topPos+10, 54, 12, Component.translatable(Lib.DESC_INFO+"circuit_table.field.name"));
 		this.name.setCanLoseFocus(true);
 		this.name.setTextColor(-1);
 		this.name.setTextColorUneditable(-1);
@@ -192,7 +193,8 @@ public class CircuitTableScreen extends IEContainerScreen<CircuitTableMenu>
 			for(int i = 0; i < inputCount; i++)
 				this.inputButtons.add(this.addRenderableWidget(GuiButtonLogicCircuitRegister.create(
 						leftPos+inputStart+20*i, topPos+18,
-						Component.literal("Input "+(i+1)), btn -> this.minecraft.tell(this::updateInstruction))
+						Component.translatable(Lib.DESC_INFO+"circuit_table.btn.input_num", (i+1)),
+						btn -> this.minecraft.tell(this::updateInstruction))
 				));
 		}
 		LogicCircuitInstruction editInstr = getEditInstruction();
