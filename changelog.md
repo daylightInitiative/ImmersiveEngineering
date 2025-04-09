@@ -6,6 +6,7 @@
     - They conflict with redstone acid and are never used anyway
 - Add support to configure the Fluid Router with Potion Bottles (Léa Gris)
 - Add name field for circuits in the workbench (BluSunrize)
+- Add colouration to the circuit tooltips (BluSunrize)
 - Change JEI recipes for filling buckets to not use fluid tags (BluSunrize)
 - Fix waterwheels not updating blocked in many cases (voidsong-dragonfly)
 - Fix fluid router GUI crashing (Léa Gris)
