@@ -36,6 +36,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
+import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.HumanoidArm;
@@ -330,7 +331,7 @@ public class ItemOverlayUtils
 		if(pos==null)
 			return;
 
-		ArrayList<String> text = new ArrayList<>();
+		ArrayList<Component> text = new ArrayList<>();
 
 		boolean matches = VoltmeterItem.lastEnergyUpdate.pos().equals(pos);
 		long sinceLast = player.level().getGameTime()-VoltmeterItem.lastEnergyUpdate.measuredInTick();
@@ -343,8 +344,7 @@ public class ItemOverlayUtils
 			int storage = VoltmeterItem.lastEnergyUpdate.stored();
 			String storageText = Utils.toScientificNotation(storage, "0##", 100000);
 			String capacityText = Utils.toScientificNotation(maxStorage, "0##", 100000);
-			text.addAll(Arrays.asList(I18n.get(Lib.DESC_INFO+"energyStored", "<br>"+storageText+" / "+capacityText)
-					.split("<br>")));
+			text.add(Component.translatable(Lib.DESC_INFO+"energyStored", storageText+" / "+capacityText));
 		}
 
 		if(rrt instanceof BlockHitResult mop)
@@ -356,8 +356,8 @@ public class ItemOverlayUtils
 
 			if(VoltmeterItem.lastRedstoneUpdate.isSignalSource()&&matches)
 			{
-				text.addAll(Arrays.asList(I18n.get(Lib.DESC_INFO+"redstone_level", "<br>"+VoltmeterItem.lastRedstoneUpdate.rsLevel())
-						.split("<br>")));
+				text.add(Component.translatable(Lib.DESC_INFO+"redstone_level", ""));
+				text.add(Component.literal(String.valueOf(VoltmeterItem.lastRedstoneUpdate.rsLevel())));
 			}
 		}
 
@@ -366,14 +366,11 @@ public class ItemOverlayUtils
 			int col = 0xffffff;
 			int i = 0;
 			RenderSystem.enableBlend();
-			for(String s : text)
-				if(s!=null)
-				{
-					s = s.trim();
+			for(Component component : text)
+				if(component!=null)
 					graphics.drawCenteredString(
-							ClientUtils.font(), s, scaledWidth/2, scaledHeight/2+4+(i++)*(ClientUtils.font().lineHeight+2), col
+							ClientUtils.font(), component, scaledWidth/2, scaledHeight/2+4+(i++)*(ClientUtils.font().lineHeight+2), col
 					);
-				}
 			RenderSystem.disableBlend();
 		}
 	}
