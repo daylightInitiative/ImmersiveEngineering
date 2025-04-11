@@ -8,6 +8,8 @@
 - Add name field for circuits in the workbench (BluSunrize)
 - Add colouration to the circuit tooltips (BluSunrize)
 - Change JEI recipes for filling buckets to not use fluid tags (BluSunrize)
+- Change the skyhook to actually use the same logic as the mace (BluSunrize)
+    - Previously it was approximating it, due to missing methods in vanilla
 - Fix waterwheels not updating blocked in many cases (voidsong-dragonfly)
 - Fix fluid router GUI crashing (Léa Gris)
 - Fix "Superior Weaponry" achievement not triggering, caused by various factors: (BluSunrize)
