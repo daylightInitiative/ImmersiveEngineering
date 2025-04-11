@@ -15,6 +15,7 @@ import blusunrize.immersiveengineering.api.wires.ConnectionPoint;
 import blusunrize.immersiveengineering.api.wires.WireType;
 import blusunrize.immersiveengineering.api.wires.redstone.RedstoneNetworkHandler;
 import blusunrize.immersiveengineering.common.register.IEBlockEntities;
+import blusunrize.immersiveengineering.common.register.IEItems.Tools;
 import blusunrize.immersiveengineering.common.util.Utils;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
@@ -28,6 +29,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -188,21 +190,30 @@ public class RedstoneStateCellBlockEntity extends ConnectorRedstoneBlockEntity
 	@Override
 	public Component[] getOverlayText(Player player, HitResult mop, boolean hammer)
 	{
-		if(!Utils.isScrewdriver(player.getItemInHand(InteractionHand.MAIN_HAND)))
-			return null;
-		return new Component[]{
-				Component.empty()
-						.append(Component.translatable(Lib.GUI_CONFIG+"redstone_color_set"))
-						.append(Component.literal(" "))
-						.append(Component.translatable("color.minecraft."+redstoneChannelSet.getName())),
-				Component.empty()
-						.append(Component.translatable(Lib.GUI_CONFIG+"redstone_color_reset"))
-						.append(Component.literal(" "))
-						.append(Component.translatable("color.minecraft."+redstoneChannelReset.getName())),
-				Component.empty()
-						.append(Component.translatable(Lib.GUI_CONFIG+"redstone_color_output"))
-						.append(Component.literal(" "))
-						.append(Component.translatable("color.minecraft."+redstoneChannel.getName())),
-		};
+		ItemStack equipped = player.getMainHandItem();
+		if(Utils.isScrewdriver(equipped))
+			return new Component[]{
+					Component.empty()
+							.append(Component.translatable(Lib.GUI_CONFIG+"redstone_color_set"))
+							.append(Component.literal(" "))
+							.append(Component.translatable("color.minecraft."+redstoneChannelSet.getName())),
+					Component.empty()
+							.append(Component.translatable(Lib.GUI_CONFIG+"redstone_color_reset"))
+							.append(Component.literal(" "))
+							.append(Component.translatable("color.minecraft."+redstoneChannelReset.getName())),
+					Component.empty()
+							.append(Component.translatable(Lib.GUI_CONFIG+"redstone_color_output"))
+							.append(Component.literal(" "))
+							.append(Component.translatable("color.minecraft."+redstoneChannel.getName())),
+			};
+		else if(equipped.getItem()==Tools.VOLTMETER.get())
+			return new Component[]{
+					Component.translatable(Lib.DESC_INFO+"redstoneLevel", ""),
+					Component.translatable(Lib.DESC_INFO+"redstone_level_on_channel",
+							String.valueOf(this.output),
+							Component.translatable("color.minecraft."+redstoneChannel.getName())
+					),
+			};
+		return null;
 	}
 }

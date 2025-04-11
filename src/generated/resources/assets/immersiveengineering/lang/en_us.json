@@ -1256,6 +1256,7 @@
   "desc.immersiveengineering.info.redstoneChannel.rec": "Channel Receiving: %1$s",
   "desc.immersiveengineering.info.redstoneChannel.send": "Channel Sending: %1$s",
   "desc.immersiveengineering.info.redstoneLevel": "Redstone Level: %1$s",
+  "desc.immersiveengineering.info.redstone_level_on_channel": "%1$s on %2$s",
   "desc.immersiveengineering.info.refinery.slot.catalyst": "Catalyst",
   "desc.immersiveengineering.info.register": "Register %1$s",
   "desc.immersiveengineering.info.reqMaterial": "Required Materials:",

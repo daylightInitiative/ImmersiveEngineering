@@ -32,6 +32,7 @@
 - Fix wirecutters taking damage in creative mode (BluSunrize)
 - Fix multimeter not showing text when hovering over redstone blocks (BluSunrize)
 - Fix multimeter not working when used on redstone connectors (BluSunrize)
+- Show the stored value and output channel when checking state cells with the multimeter (BluSunrize)
 
 ##### Version 1.21.1-12.1.0-185
 - All changes from 1.20.4-11.7.0

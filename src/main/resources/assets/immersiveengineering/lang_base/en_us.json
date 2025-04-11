@@ -64,6 +64,7 @@
   "desc.immersiveengineering.info.energyStored": "Energy stored: %1$s Flux",
   "desc.immersiveengineering.info.energyStoredEU": "Energy stored: %1$s EU",
   "desc.immersiveengineering.info.redstoneLevel": "Redstone Level: %1$s",
+  "desc.immersiveengineering.info.redstone_level_on_channel": "%1$s on %2$s",
   "desc.immersiveengineering.info.fluidStored": "%1$s %2$s mB",
   "desc.immersiveengineering.info.gasStored": "Gas stored: %1$s",
   "desc.immersiveengineering.info.colour": "Colour: ",
