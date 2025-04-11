@@ -356,7 +356,7 @@ public class ItemOverlayUtils
 
 			if(VoltmeterItem.lastRedstoneUpdate.isSignalSource()&&matches)
 			{
-				text.addAll(Arrays.asList(I18n.get(Lib.DESC_INFO+"redstoneLevel", "<br>"+VoltmeterItem.lastRedstoneUpdate.rsLevel())
+				text.addAll(Arrays.asList(I18n.get(Lib.DESC_INFO+"redstone_level", "<br>"+VoltmeterItem.lastRedstoneUpdate.rsLevel())
 						.split("<br>")));
 			}
 		}

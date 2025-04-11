@@ -208,7 +208,7 @@ public class RedstoneStateCellBlockEntity extends ConnectorRedstoneBlockEntity
 			};
 		else if(equipped.getItem()==Tools.VOLTMETER.get())
 			return new Component[]{
-					Component.translatable(Lib.DESC_INFO+"redstoneLevel", ""),
+					Component.translatable(Lib.DESC_INFO+"redstone_level", ""),
 					Component.translatable(Lib.DESC_INFO+"redstone_level_on_channel",
 							String.valueOf(this.output),
 							Component.translatable("color.minecraft."+redstoneChannel.getName())

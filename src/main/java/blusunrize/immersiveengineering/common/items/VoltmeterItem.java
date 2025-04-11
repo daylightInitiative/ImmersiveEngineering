@@ -95,7 +95,7 @@ public class VoltmeterItem extends IEBaseItem
 			{
 				// or measure redstone level
 				ChatUtils.sendServerNoSpamMessages(player, Component.translatable(
-						Lib.CHAT_INFO+"redstoneLevel",
+						Lib.CHAT_INFO+"redstone_level",
 						MessageRequestRedstoneUpdate.redstoneLevel(level, pos))
 				);
 			}
