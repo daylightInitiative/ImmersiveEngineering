@@ -61,6 +61,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import org.joml.Quaternionf;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.function.BiConsumer;
 
 import static blusunrize.immersiveengineering.api.IEApi.ieLoc;
@@ -358,23 +359,24 @@ public class ItemOverlayUtils
 				PacketDistributor.sendToServer(new MessageRequestRedstoneUpdate(mop.getBlockPos()));
 
 			if(VoltmeterItem.lastRedstoneUpdate.isSignalSource()&&matches)
-			{
 				VoltmeterItem.lastRedstoneUpdate.rsLevels().consume(
 						aByte -> text.add(Component.translatable(Lib.DESC_INFO+"redstone_level", String.valueOf(aByte))),
 						pairs -> {
-							text.add(Component.translatable(Lib.DESC_INFO+"redstone_level", ""));
-							for(Pair<DyeColor, Byte> p : pairs)
+							if(pairs.length > 0)
 							{
-								Component c = Component.translatable(Lib.DESC_INFO+"redstone_level_on_channel",
-										p.getSecond(),
-										getRedstoneColorComponent(p.getFirst())
-								);
-								// if the value is less than 10, we want a space before it which has the same width as a digit
-								text.add(p.getSecond() < 10?new SpacerComponent("0").append(c): c);
+								text.add(Component.translatable(Lib.DESC_INFO+"redstone_level", ""));
+								for(Pair<DyeColor, Byte> p : pairs)
+								{
+									Component c = Component.translatable(Lib.DESC_INFO+"redstone_level_on_channel",
+											p.getSecond(),
+											getRedstoneColorComponent(p.getFirst())
+									);
+									// if the value is less than 10, we want a space before it which has the same width as a digit
+									text.add(p.getSecond() < 10?new SpacerComponent("0").append(c): c);
+								}
 							}
 						}
 				);
-			}
 		}
 
 		int i = 0;

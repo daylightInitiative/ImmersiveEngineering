@@ -50,7 +50,7 @@ public record MessageRequestRedstoneUpdate(BlockPos pos) implements IMessage
 		{
 			// special case for IE's own blocks
 			Pair<DyeColor, Byte>[] override = iRedstoneOutput.overrideVoltmeterRead();
-			if(override!=null&&override.length > 0)
+			if(override!=null)
 				return new RemoteRedstoneData(pos, level.getGameTime(), true, override);
 		}
 		return new RemoteRedstoneData(pos, level.getGameTime(), true, redstoneLevel(level, pos));
