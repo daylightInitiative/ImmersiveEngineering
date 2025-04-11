@@ -15,8 +15,8 @@ import blusunrize.immersiveengineering.api.wires.ConnectionPoint;
 import blusunrize.immersiveengineering.api.wires.WireType;
 import blusunrize.immersiveengineering.api.wires.redstone.RedstoneNetworkHandler;
 import blusunrize.immersiveengineering.common.register.IEBlockEntities;
-import blusunrize.immersiveengineering.common.register.IEItems.Tools;
 import blusunrize.immersiveengineering.common.util.Utils;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -192,24 +192,23 @@ public class RedstoneStateCellBlockEntity extends ConnectorRedstoneBlockEntity
 		return SHAPES.get(getFacing());
 	}
 
+	@Override
+	public Pair<DyeColor, Byte>[] overrideVoltmeterRead()
+	{
+		return new Pair[]{
+				Pair.of(this.redstoneChannel, (byte)this.output),
+		};
+	}
+
 
 	@Override
 	public Component[] getOverlayText(Player player, HitResult mop, boolean hammer)
 	{
-		ItemStack equipped = player.getMainHandItem();
-		if(Utils.isScrewdriver(equipped))
+		if(Utils.isScrewdriver(player.getMainHandItem()))
 			return new Component[]{
 					getChannelComponent("_set", redstoneChannelSet),
 					getChannelComponent("_reset", redstoneChannelReset),
 					getChannelComponent("_output", redstoneChannel),
-			};
-		else if(equipped.getItem()==Tools.VOLTMETER.get())
-			return new Component[]{
-					Component.translatable(Lib.DESC_INFO+"redstone_level", ""),
-					Component.translatable(Lib.DESC_INFO+"redstone_level_on_channel",
-							String.valueOf(this.output),
-							getColorComponent(redstoneChannel)
-					),
 			};
 		return null;
 	}
