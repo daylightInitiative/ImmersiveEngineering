@@ -71,14 +71,12 @@ public class VoltmeterItem extends IEBaseItem
 	@Override
 	public InteractionResult useOn(UseOnContext context)
 	{
-		Level world = context.getLevel();
+		Level level = context.getLevel();
 		BlockPos pos = context.getClickedPos();
 		Player player = context.getPlayer();
-		ItemStack stack = context.getItemInHand();
-		BlockEntity bEntity = world.getBlockEntity(pos);
 		if((player==null||!player.isShiftKeyDown()))
 		{
-			IEnergyStorage energyCap = world.getCapability(EnergyStorage.BLOCK, pos, null);
+			IEnergyStorage energyCap = level.getCapability(EnergyStorage.BLOCK, pos, null);
 			if(energyCap!=null)
 			{
 				int max = energyCap.getMaxEnergyStored();
@@ -90,54 +88,69 @@ public class VoltmeterItem extends IEBaseItem
 		}
 		if(player!=null&&player.isShiftKeyDown())
 		{
-			if(bEntity instanceof IImmersiveConnectable)
-			{
-				if(world.isClientSide)
-					return InteractionResult.SUCCESS;
-				TargetingInfo targetingInfo = new TargetingInfo(context);
-				BlockPos masterPos = ((IImmersiveConnectable)bEntity).getConnectionMaster(null, targetingInfo);
-				BlockPos delta = pos.subtract(masterPos);
-				ConnectionPoint cp = ((IImmersiveConnectable)bEntity).getTargetedPoint(targetingInfo, delta);
-				if(cp==null)
-					return InteractionResult.FAIL;
-				if(!stack.has(IEApiDataComponents.WIRE_LINK))
-					stack.set(IEApiDataComponents.WIRE_LINK, WireLink.create(cp, world, delta, targetingInfo));
-				else
-				{
-					WireLink link = stack.remove(IEApiDataComponents.WIRE_LINK);
-					if(link.dimension().equals(world.dimension()))
-					{
-						GlobalWireNetwork global = GlobalWireNetwork.getNetwork(world);
-						LocalWireNetwork netHere = global.getNullableLocalNet(cp);
-						LocalWireNetwork netLink = global.getNullableLocalNet(link.cp());
-						if(netHere==netLink&&netHere!=null)
-						{
-							EnergyTransferHandler energyHandler = netHere.getHandler(EnergyTransferHandler.ID,
-									EnergyTransferHandler.class);
-							if(energyHandler!=null)
-							{
-								Path energyPath = energyHandler.getPath(link.cp(), cp);
-								double loss;
-								if(energyPath!=null)
-									loss = energyPath.loss;
-								else
-									loss = 1;
-								player.sendSystemMessage(Component.translatable(
-										Lib.CHAT_INFO+"averageLoss", Utils.formatDouble(loss*100, "###.000")
-								));
-							}
-						}
-					}
-				}
+			if(level.isClientSide)
 				return InteractionResult.SUCCESS;
-			}
-			else
+			// either measure loss
+			if(!measureLoss(level, pos, player, context))
 			{
-				if(!world.isClientSide)
-					ChatUtils.sendServerNoSpamMessages(player, Component.translatable(Lib.CHAT_INFO+"redstoneLevel", MessageRequestRedstoneUpdate.redstoneLevel(world, pos)));
+				// or measure redstone level
+				ChatUtils.sendServerNoSpamMessages(player, Component.translatable(
+						Lib.CHAT_INFO+"redstoneLevel",
+						MessageRequestRedstoneUpdate.redstoneLevel(level, pos))
+				);
 			}
+			return InteractionResult.SUCCESS;
 		}
 		return InteractionResult.PASS;
+	}
+
+	private static boolean measureLoss(Level level, BlockPos pos, Player player, UseOnContext context)
+	{
+		ItemStack stack = context.getItemInHand();
+		BlockEntity bEntity = level.getBlockEntity(pos);
+		if(!(bEntity instanceof IImmersiveConnectable))
+			return false;
+
+		// Find connection point or exit
+		TargetingInfo targetingInfo = new TargetingInfo(context);
+		BlockPos masterPos = ((IImmersiveConnectable)bEntity).getConnectionMaster(null, targetingInfo);
+		BlockPos delta = pos.subtract(masterPos);
+		ConnectionPoint cp = ((IImmersiveConnectable)bEntity).getTargetedPoint(targetingInfo, delta);
+		if(cp==null)
+			return false;
+
+		// Find energy handler or exit
+		GlobalWireNetwork global = GlobalWireNetwork.getNetwork(level);
+		LocalWireNetwork netHere = global.getNullableLocalNet(cp);
+		EnergyTransferHandler energyHandler = netHere.getHandler(EnergyTransferHandler.ID, EnergyTransferHandler.class);
+		if(energyHandler==null)
+			return false;
+
+		// Store position or check loss if position is present
+		if(!stack.has(IEApiDataComponents.WIRE_LINK))
+			stack.set(IEApiDataComponents.WIRE_LINK, WireLink.create(cp, level, delta, targetingInfo));
+		else
+		{
+			WireLink link = stack.remove(IEApiDataComponents.WIRE_LINK);
+			if(link.dimension().equals(level.dimension()))
+			{
+				LocalWireNetwork netLink = global.getNullableLocalNet(link.cp());
+				// check for same network
+				if(netHere==netLink)
+				{
+					Path energyPath = energyHandler.getPath(link.cp(), cp);
+					double loss;
+					if(energyPath!=null)
+						loss = energyPath.loss;
+					else
+						loss = 1;
+					player.sendSystemMessage(Component.translatable(
+							Lib.CHAT_INFO+"averageLoss", Utils.formatDouble(loss*100, "###.000")
+					));
+				}
+			}
+		}
+		return true;
 	}
 
 	public record RemoteEnergyData(
