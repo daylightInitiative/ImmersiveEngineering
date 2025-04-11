@@ -189,6 +189,12 @@ public class RedstoneTimerBlockEntity extends ConnectorRedstoneBlockEntity
 		return false;
 	}
 
+	@Override
+	public boolean canConnectRedstone(@Nonnull Direction side)
+	{
+		return false;
+	}
+
 	private static final Map<Direction, VoxelShape> SHAPES = Util.make(
 			new EnumMap<>(Direction.class), map -> {
 				final double wMin = .25;

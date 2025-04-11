@@ -11,6 +11,7 @@ package blusunrize.immersiveengineering.common.items;
 import blusunrize.immersiveengineering.api.IEApiDataComponents;
 import blusunrize.immersiveengineering.api.Lib;
 import blusunrize.immersiveengineering.api.TargetingInfo;
+import blusunrize.immersiveengineering.api.utils.FastEither;
 import blusunrize.immersiveengineering.api.wires.ConnectionPoint;
 import blusunrize.immersiveengineering.api.wires.GlobalWireNetwork;
 import blusunrize.immersiveengineering.api.wires.IImmersiveConnectable;
@@ -22,6 +23,7 @@ import blusunrize.immersiveengineering.common.network.MessageRequestRedstoneUpda
 import blusunrize.immersiveengineering.common.util.ChatUtils;
 import blusunrize.immersiveengineering.common.util.Utils;
 import com.mojang.datafixers.util.Either;
+import com.mojang.datafixers.util.Pair;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -29,6 +31,7 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
@@ -168,14 +171,45 @@ public class VoltmeterItem extends IEBaseItem
 	}
 
 	public record RemoteRedstoneData(
-			BlockPos pos, long measuredInTick, boolean isSignalSource, byte rsLevel
+			BlockPos pos, long measuredInTick, boolean isSignalSource, FastEither<Byte, Pair<DyeColor, Byte>[]> rsLevels
 	)
 	{
+		public RemoteRedstoneData(BlockPos pos, long measuredInTick, boolean isSignalSource, byte rsLevel)
+		{
+			this(pos, measuredInTick, isSignalSource, FastEither.left(rsLevel));
+		}
+
+		public RemoteRedstoneData(BlockPos pos, long measuredInTick, boolean isSignalSource, Pair<DyeColor, Byte>[] rsLevel)
+		{
+			this(pos, measuredInTick, isSignalSource, FastEither.right(rsLevel));
+		}
+
+		private static final StreamCodec<ByteBuf, Pair<DyeColor, Byte>[]> LEVEL_ARRAY_CODEC = StreamCodec.of(
+				(buffer, pairs) -> {
+					ByteBufCodecs.writeCount(buffer, pairs.length, 16);
+					for(Pair<DyeColor, Byte> v : pairs)
+					{
+						DyeColor.STREAM_CODEC.encode(buffer, v.getFirst());
+						ByteBufCodecs.BYTE.encode(buffer, v.getSecond());
+					}
+				},
+				(buffer) -> {
+					int readCount = ByteBufCodecs.readCount(buffer, 16);
+					Pair<DyeColor, Byte>[] array = new Pair[readCount];
+					for(int j = 0; j < readCount; j++)
+						array[j] = Pair.of(
+								DyeColor.STREAM_CODEC.decode(buffer),
+								ByteBufCodecs.BYTE.decode(buffer)
+						);
+					return array;
+				}
+		);
+
 		public static final StreamCodec<ByteBuf, RemoteRedstoneData> STREAM_CODEC = StreamCodec.composite(
 				BlockPos.STREAM_CODEC, RemoteRedstoneData::pos,
 				ByteBufCodecs.VAR_LONG, RemoteRedstoneData::measuredInTick,
 				ByteBufCodecs.BOOL, RemoteRedstoneData::isSignalSource,
-				ByteBufCodecs.BYTE, RemoteRedstoneData::rsLevel,
+				FastEither.streamCodec(ByteBufCodecs.BYTE, LEVEL_ARRAY_CODEC), RemoteRedstoneData::rsLevels,
 				RemoteRedstoneData::new
 		);
 	}

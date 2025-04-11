@@ -30,6 +30,7 @@ import blusunrize.immersiveengineering.common.util.Utils;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Either;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -41,6 +42,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
@@ -58,10 +60,10 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import org.joml.Quaternionf;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.function.BiConsumer;
 
 import static blusunrize.immersiveengineering.api.IEApi.ieLoc;
+import static blusunrize.immersiveengineering.common.blocks.metal.ConnectorRedstoneBlockEntity.getColorComponent;
 
 @EventBusSubscriber(value = Dist.CLIENT, modid = Lib.MODID, bus = Bus.MOD)
 public class ItemOverlayUtils
@@ -357,7 +359,16 @@ public class ItemOverlayUtils
 			if(VoltmeterItem.lastRedstoneUpdate.isSignalSource()&&matches)
 			{
 				text.add(Component.translatable(Lib.DESC_INFO+"redstone_level", ""));
-				text.add(Component.literal(String.valueOf(VoltmeterItem.lastRedstoneUpdate.rsLevel())));
+				VoltmeterItem.lastRedstoneUpdate.rsLevels().consume(
+						aByte -> text.add(Component.literal(String.valueOf(aByte))),
+						pairs -> {
+							for(Pair<DyeColor, Byte> p : pairs)
+								text.add(Component.translatable(Lib.DESC_INFO+"redstone_level_on_channel",
+										String.valueOf(p.getSecond()),
+										getColorComponent(p.getFirst())
+								));
+						}
+				);
 			}
 		}
 

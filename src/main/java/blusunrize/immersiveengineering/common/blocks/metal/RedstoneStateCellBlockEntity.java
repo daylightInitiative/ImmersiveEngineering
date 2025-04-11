@@ -85,6 +85,12 @@ public class RedstoneStateCellBlockEntity extends ConnectorRedstoneBlockEntity
 	}
 
 	@Override
+	public boolean canConnectRedstone(@Nonnull Direction side)
+	{
+		return false;
+	}
+
+	@Override
 	public void onChange(ConnectionPoint cp, RedstoneNetworkHandler handler)
 	{
 		if(!level.isClientSide&&SafeChunkUtils.isChunkSafe(level, worldPosition))

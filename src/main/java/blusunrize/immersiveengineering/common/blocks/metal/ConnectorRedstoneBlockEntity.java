@@ -267,7 +267,7 @@ public class ConnectorRedstoneBlockEntity extends ImmersiveConnectableBlockEntit
 				.append(getColorComponent(channel));
 	}
 
-	protected static Component getColorComponent(DyeColor channel)
+	public static Component getColorComponent(DyeColor channel)
 	{
 		return Component.translatable("color.minecraft."+channel.getName());
 	}
