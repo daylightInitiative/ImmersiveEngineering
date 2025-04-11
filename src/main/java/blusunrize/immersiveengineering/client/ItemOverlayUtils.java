@@ -19,6 +19,7 @@ import blusunrize.immersiveengineering.api.wires.utils.WireLink;
 import blusunrize.immersiveengineering.client.gui.RevolverScreen;
 import blusunrize.immersiveengineering.client.utils.FontUtils;
 import blusunrize.immersiveengineering.client.utils.GuiHelper;
+import blusunrize.immersiveengineering.client.utils.SpacerComponent;
 import blusunrize.immersiveengineering.common.config.IEServerConfig;
 import blusunrize.immersiveengineering.common.items.*;
 import blusunrize.immersiveengineering.common.items.IEItemInterfaces.IBulletContainer;
@@ -358,32 +359,40 @@ public class ItemOverlayUtils
 
 			if(VoltmeterItem.lastRedstoneUpdate.isSignalSource()&&matches)
 			{
-				text.add(Component.translatable(Lib.DESC_INFO+"redstone_level", ""));
 				VoltmeterItem.lastRedstoneUpdate.rsLevels().consume(
-						aByte -> text.add(Component.literal(String.valueOf(aByte))),
+						aByte -> text.add(Component.translatable(Lib.DESC_INFO+"redstone_level", String.valueOf(aByte))),
 						pairs -> {
+							text.add(Component.translatable(Lib.DESC_INFO+"redstone_level", ""));
 							for(Pair<DyeColor, Byte> p : pairs)
-								text.add(Component.translatable(Lib.DESC_INFO+"redstone_level_on_channel",
-										String.valueOf(p.getSecond()),
+							{
+								Component c = Component.translatable(Lib.DESC_INFO+"redstone_level_on_channel",
+										p.getSecond(),
 										getColorComponent(p.getFirst())
-								));
+								);
+								// if the value is less than 10, we want a space before it which has the same width as a digit
+								text.add(p.getSecond() < 10?new SpacerComponent("0").append(c): c);
+							}
 						}
 				);
 			}
 		}
 
-		if(text!=null)
+		int i = 0;
+		RenderSystem.enableBlend();
+		int width = text.stream().reduce(0, (aggr, component) -> Integer.max(aggr, ClientUtils.font().width(component)), Integer::max);
+
+		for(Component component : text)
 		{
-			int col = 0xffffff;
-			int i = 0;
-			RenderSystem.enableBlend();
-			for(Component component : text)
-				if(component!=null)
-					graphics.drawCenteredString(
-							ClientUtils.font(), component, scaledWidth/2, scaledHeight/2+4+(i++)*(ClientUtils.font().lineHeight+2), col
-					);
-			RenderSystem.disableBlend();
+			int x = scaledWidth/2-(width/2);
+			if(component instanceof SpacerComponent spacer)
+				x += spacer.getSpaceWidth(ClientUtils.font());
+			graphics.drawString(
+					ClientUtils.font(), component,
+					x, scaledHeight/2+8+(i++)*(ClientUtils.font().lineHeight+2),
+					0xffffff
+			);
 		}
+		RenderSystem.disableBlend();
 	}
 
 	private static int leftHeight()
@@ -395,4 +404,5 @@ public class ItemOverlayUtils
 	{
 		return Minecraft.getInstance().gui.rightHeight;
 	}
+
 }
