@@ -379,22 +379,7 @@ public class ItemOverlayUtils
 				);
 		}
 
-		int i = 0;
-		RenderSystem.enableBlend();
-		int width = text.stream().reduce(0, (aggr, component) -> Integer.max(aggr, ClientUtils.font().width(component)), Integer::max);
-
-		for(Component component : text)
-		{
-			int x = scaledWidth/2-(width/2);
-			if(component instanceof SpacerComponent spacer)
-				x += spacer.getSpaceWidth(ClientUtils.font());
-			graphics.drawString(
-					ClientUtils.font(), component,
-					x, scaledHeight/2+8+(i++)*(ClientUtils.font().lineHeight+2),
-					0xffffff
-			);
-		}
-		RenderSystem.disableBlend();
+		BlockOverlayUtils.drawBlockOverlayText(graphics, text, scaledWidth, scaledHeight);
 	}
 
 	private static int leftHeight()
