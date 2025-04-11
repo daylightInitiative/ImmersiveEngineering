@@ -10,6 +10,11 @@
 - Change JEI recipes for filling buckets to not use fluid tags (BluSunrize)
 - Change the skyhook to actually use the same logic as the mace (BluSunrize)
     - Previously it was approximating it, due to missing methods in vanilla
+- Overhaul multimeter interaction with redstone blocks (BluSunrize)
+    - Fix multimeter not showing text when hovering over redstone blocks
+    - Fix multimeter not working when used on redstone connectors
+    - Show the stored value and output channel when checking state cells with the multimeter
+    - Show the in and output signals when checking probe connectors with the multimeter
 - Fix waterwheels not updating blocked in many cases (voidsong-dragonfly)
 - Fix fluid router GUI crashing (Léa Gris)
 - Fix "Superior Weaponry" achievement not triggering, caused by various factors: (BluSunrize)
@@ -30,10 +35,6 @@
 - Fix crash when saving configured Item or Fluid routers in inventories (BluSunrize)
 - Fix accumulators having broken side configs after being broken and replaced (BluSunrize)
 - Fix wirecutters taking damage in creative mode (BluSunrize)
-- Fix multimeter not showing text when hovering over redstone blocks (BluSunrize)
-- Fix multimeter not working when used on redstone connectors (BluSunrize)
-- Show the stored value and output channel when checking state cells with the multimeter (BluSunrize)
-- Ignore timer and state cell for normal multimeter overlay (BluSunrize)
 
 ##### Version 1.21.1-12.1.0-185
 - All changes from 1.20.4-11.7.0
