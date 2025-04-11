@@ -349,7 +349,7 @@ public class ItemOverlayUtils
 
 		if(rrt instanceof BlockHitResult mop)
 		{
-			matches = VoltmeterItem.lastRedstoneUpdate.pos().equals(mop);
+			matches = VoltmeterItem.lastRedstoneUpdate.pos().equals(mop.getBlockPos());
 			sinceLast = player.level().getGameTime()-VoltmeterItem.lastRedstoneUpdate.measuredInTick();
 			if(!matches||sinceLast > 20)
 				PacketDistributor.sendToServer(new MessageRequestRedstoneUpdate(mop.getBlockPos()));
