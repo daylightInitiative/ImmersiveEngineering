@@ -104,13 +104,7 @@ public class LogicCircuitHandler
 		public MutableComponent getDescription()
 		{
 			if(this.ordinal() < 16)
-			{
-				DyeColor dye = DyeColor.byId(this.ordinal());
-				// special case for black to make it more readable
-				// todo 1.21.4: use text shadows
-				int color = dye==DyeColor.BLACK?0x3a3a4f:dye.getTextureDiffuseColor();
-				return Component.translatable("color.minecraft."+dye.getName()).withColor(color);
-			}
+				return Lib.getRedstoneColorComponent(DyeColor.byId(this.ordinal()));
 			else
 				return Component.translatable(Lib.DESC_INFO+"register", this.ordinal()-16);
 		}

@@ -64,7 +64,7 @@ import java.util.ArrayList;
 import java.util.function.BiConsumer;
 
 import static blusunrize.immersiveengineering.api.IEApi.ieLoc;
-import static blusunrize.immersiveengineering.common.blocks.metal.ConnectorRedstoneBlockEntity.getColorComponent;
+import static blusunrize.immersiveengineering.api.Lib.getRedstoneColorComponent;
 
 @EventBusSubscriber(value = Dist.CLIENT, modid = Lib.MODID, bus = Bus.MOD)
 public class ItemOverlayUtils
@@ -367,7 +367,7 @@ public class ItemOverlayUtils
 							{
 								Component c = Component.translatable(Lib.DESC_INFO+"redstone_level_on_channel",
 										p.getSecond(),
-										getColorComponent(p.getFirst())
+										getRedstoneColorComponent(p.getFirst())
 								);
 								// if the value is less than 10, we want a space before it which has the same width as a digit
 								text.add(p.getSecond() < 10?new SpacerComponent("0").append(c): c);
