@@ -183,8 +183,8 @@ public class ConnectorProbeBlockEntity extends ConnectorRedstoneBlockEntity
 		if(!Utils.isScrewdriver(player.getItemInHand(InteractionHand.MAIN_HAND)))
 			return null;
 		return new Component[]{
-				Component.translatable(Lib.DESC_INFO+"redstoneChannel.rec", I18n.get("item.minecraft.firework_star."+redstoneChannel.getName())),
-				Component.translatable(Lib.DESC_INFO+"redstoneChannel.send", I18n.get("item.minecraft.firework_star."+redstoneChannelSending.getName()))
+				getChannelComponent("_receiving", redstoneChannel),
+				getChannelComponent("_sending", redstoneChannelSending),
 		};
 	}
 

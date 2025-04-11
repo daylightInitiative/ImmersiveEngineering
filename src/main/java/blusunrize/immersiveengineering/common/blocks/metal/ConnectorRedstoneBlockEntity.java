@@ -254,9 +254,22 @@ public class ConnectorRedstoneBlockEntity extends ImmersiveConnectableBlockEntit
 		if(!Utils.isScrewdriver(player.getItemInHand(InteractionHand.MAIN_HAND)))
 			return null;
 		return new Component[]{
-				Component.translatable(Lib.DESC_INFO+"redstoneChannel", I18n.get("item.minecraft.firework_star."+redstoneChannel.getName())),
+				getChannelComponent("", redstoneChannel),
 				Component.translatable(Lib.DESC_INFO+"blockSide.io."+this.ioMode.getSerializedName())
 		};
+	}
+
+	protected static Component getChannelComponent(String subtype, DyeColor channel)
+	{
+		return Component.empty()
+				.append(Component.translatable(Lib.GUI_CONFIG+"redstone_color"+subtype))
+				.append(Component.literal(" "))
+				.append(getColorComponent(channel));
+	}
+
+	protected static Component getColorComponent(DyeColor channel)
+	{
+		return Component.translatable("color.minecraft."+channel.getName());
 	}
 
 	@Override

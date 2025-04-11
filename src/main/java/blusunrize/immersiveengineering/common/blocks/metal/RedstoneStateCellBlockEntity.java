@@ -193,25 +193,16 @@ public class RedstoneStateCellBlockEntity extends ConnectorRedstoneBlockEntity
 		ItemStack equipped = player.getMainHandItem();
 		if(Utils.isScrewdriver(equipped))
 			return new Component[]{
-					Component.empty()
-							.append(Component.translatable(Lib.GUI_CONFIG+"redstone_color_set"))
-							.append(Component.literal(" "))
-							.append(Component.translatable("color.minecraft."+redstoneChannelSet.getName())),
-					Component.empty()
-							.append(Component.translatable(Lib.GUI_CONFIG+"redstone_color_reset"))
-							.append(Component.literal(" "))
-							.append(Component.translatable("color.minecraft."+redstoneChannelReset.getName())),
-					Component.empty()
-							.append(Component.translatable(Lib.GUI_CONFIG+"redstone_color_output"))
-							.append(Component.literal(" "))
-							.append(Component.translatable("color.minecraft."+redstoneChannel.getName())),
+					getChannelComponent("_set", redstoneChannelSet),
+					getChannelComponent("_reset", redstoneChannelReset),
+					getChannelComponent("_output", redstoneChannel),
 			};
 		else if(equipped.getItem()==Tools.VOLTMETER.get())
 			return new Component[]{
 					Component.translatable(Lib.DESC_INFO+"redstone_level", ""),
 					Component.translatable(Lib.DESC_INFO+"redstone_level_on_channel",
 							String.valueOf(this.output),
-							Component.translatable("color.minecraft."+redstoneChannel.getName())
+							getColorComponent(redstoneChannel)
 					),
 			};
 		return null;

@@ -216,10 +216,7 @@ public class RedstoneTimerBlockEntity extends ConnectorRedstoneBlockEntity
 			return null;
 		return new Component[]{
 				getTimeFormatted(this.timerSetting),
-				Component.empty()
-						.append(Component.translatable(Lib.GUI_CONFIG+"redstone_color_output"))
-						.append(Component.literal(" "))
-						.append(Component.translatable("color.minecraft."+redstoneChannel.getName())),
+				getChannelComponent("_output", redstoneChannel),
 		};
 	}
 
