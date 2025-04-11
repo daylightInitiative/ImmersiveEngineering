@@ -29,6 +29,7 @@
 - Fix Diesel Generator burning fuel for too short of time (Diesel Thomas)
 - Fix crash when saving configured Item or Fluid routers in inventories (BluSunrize)
 - Fix accumulators having broken side configs after being broken and replaced (BluSunrize)
+- Fix wirecutters taking damage in creative mode (BluSunrize)
 
 ##### Version 1.21.1-12.1.0-185
 - All changes from 1.20.4-11.7.0
