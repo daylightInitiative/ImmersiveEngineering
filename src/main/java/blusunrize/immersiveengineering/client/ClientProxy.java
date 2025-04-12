@@ -41,6 +41,8 @@ import blusunrize.immersiveengineering.client.render.entity.*;
 import blusunrize.immersiveengineering.client.render.tile.*;
 import blusunrize.immersiveengineering.client.render.tooltip.RevolverClientTooltip;
 import blusunrize.immersiveengineering.client.render.tooltip.RevolverServerTooltip;
+import blusunrize.immersiveengineering.client.render.tooltip.TooltipTextShadowUtils.TextShadowClientTooltip;
+import blusunrize.immersiveengineering.client.render.tooltip.TooltipTextShadowUtils.TextShadowServerTooltip;
 import blusunrize.immersiveengineering.client.utils.BasicClientProperties;
 import blusunrize.immersiveengineering.client.utils.VertexBufferHolder;
 import blusunrize.immersiveengineering.common.CommonProxy;
@@ -165,6 +167,7 @@ public class ClientProxy extends CommonProxy
 	public static void registerTooltips(RegisterClientTooltipComponentFactoriesEvent ev)
 	{
 		ev.register(RevolverServerTooltip.class, RevolverClientTooltip::new);
+		ev.register(TextShadowServerTooltip.class, TextShadowClientTooltip::new);
 	}
 
 	@SubscribeEvent
