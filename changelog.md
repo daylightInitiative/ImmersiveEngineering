@@ -36,6 +36,7 @@
 - Fix accumulators having broken side configs after being broken and replaced (BluSunrize)
 - Fix wirecutters taking damage in creative mode (BluSunrize)
 - Fix recipe for cagelamps not working (BluSunrize)
+- Fix broken lighting on the charging station (BluSunrize)
 
 ##### Version 1.21.1-12.1.0-185
 - All changes from 1.20.4-11.7.0

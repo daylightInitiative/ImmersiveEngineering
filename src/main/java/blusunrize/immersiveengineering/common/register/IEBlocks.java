@@ -630,8 +630,7 @@ public final class IEBlocks
 				"electric_lantern", ElectricLanternBlock.PROPERTIES, ElectricLanternBlock::new
 		);
 		public static final BlockEntry<HorizontalFacingEntityBlock<ChargingStationBlockEntity>> CHARGING_STATION = new BlockEntry<>(
-				// TODO move shape into block impl
-				"charging_station", dynamicShape(METAL_PROPERTIES_NO_OVERLAY), p -> new HorizontalFacingEntityBlock<>(IEBlockEntities.CHARGING_STATION, p)
+				"charging_station", METAL_PROPERTIES_DYNAMIC, p -> new HorizontalFacingEntityBlock<>(IEBlockEntities.CHARGING_STATION, p)
 		);
 		public static final BlockEntry<FluidPipeBlock> FLUID_PIPE = new BlockEntry<>("fluid_pipe", METAL_PROPERTIES_DYNAMIC, FluidPipeBlock::new);
 		public static final BlockEntry<SampleDrillBlock> SAMPLE_DRILL = new BlockEntry<>("sample_drill", METAL_PROPERTIES_NO_OCCLUSION, SampleDrillBlock::new);
