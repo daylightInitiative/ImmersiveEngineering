@@ -1,6 +1,6 @@
 {
   "type": "immersiveengineering:blueprint",
-  "category": "weird_science",
+  "category": "automatons",
   "inputs": [
     {
       "item": "immersiveengineering:thermoelectric_generator"

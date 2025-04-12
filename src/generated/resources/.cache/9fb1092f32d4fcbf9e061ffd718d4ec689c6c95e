@@ -1,4 +1,4 @@
-// 1.21.1	2025-04-12T18:35:06.7384218	Recipes
+// 1.21.1	2025-04-12T21:41:06.6078415	Recipes
 e46a17053b96b7062a3dbf804ed3e25c134fc397 data/immersiveengineering/advancement/recipes/misc/crafting/alloybrick.json
 6a92fb93f1478200a7237b19770f94285cc3d955 data/immersiveengineering/advancement/recipes/misc/crafting/alloybrick_from_slab.json
 bba88ea9b8e42c09c4e5df2344ccef6ad7ed4b8d data/immersiveengineering/advancement/recipes/misc/crafting/alloybrick_to_slab.json
@@ -789,7 +789,7 @@ f5c4a64badc0b1b02617744fec4bf740ef096c69 data/immersiveengineering/recipe/bluepr
 fd801e2546f3142c9a1b14fa57ee136c5552684c data/immersiveengineering/recipe/blueprint/mold_rod.json
 647be61843d31fa73ea0a505ab6d4738382c4bf8 data/immersiveengineering/recipe/blueprint/mold_unpacking.json
 eeb68d0a31bee1a4e52a2dce2281020b01d16341 data/immersiveengineering/recipe/blueprint/mold_wire.json
-57f79f74b0af47f13c592df51cb4d0ad91f1b061 data/immersiveengineering/recipe/blueprint/robot_wolf.json
+f5678546019cd574589e9dcdac95bf5b06f72e4e data/immersiveengineering/recipe/blueprint/robot_wolf.json
 0d0ece933357e93dc1ccaee912d50f6ec76b63ed data/immersiveengineering/recipe/blueprint/warning_sign_arrow_double_down.json
 b08ef91e12e45d7264d08d79429dd950bd56005a data/immersiveengineering/recipe/blueprint/warning_sign_arrow_double_left.json
 618320ad458428e09c3606a48ea83aeb7acfd712 data/immersiveengineering/recipe/blueprint/warning_sign_arrow_double_right.json

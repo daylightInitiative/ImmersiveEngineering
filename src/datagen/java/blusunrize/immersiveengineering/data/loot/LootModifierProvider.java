@@ -50,7 +50,7 @@ public class LootModifierProvider extends GlobalLootModifierProvider
 				LootItemBlockStatePropertyCondition.hasBlockStateProperties(Blocks.TALL_GRASS)
 		));
 		add("trial_vault_blueprint", new AddDropModifier(
-				() -> BlueprintCraftingRecipe.getTypedBlueprint("weird_science"),
+				() -> BlueprintCraftingRecipe.getTypedBlueprint("automatons"),
 				randomChance(0.062f), // same chance as Bolt Armor Trim
 				new LootBlockStateFromLocationPredicate.Builder(Blocks.VAULT)
 		));

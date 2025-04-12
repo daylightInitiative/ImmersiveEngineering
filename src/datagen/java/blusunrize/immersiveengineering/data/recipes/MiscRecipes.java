@@ -329,7 +329,7 @@ public class MiscRecipes extends IERecipeProvider
 					.build(out, toRL("blueprint/"+toPath(MetalDecoration.WARNING_SIGNS.get(icon))));
 
 		BlueprintCraftingRecipeBuilder.builder()
-				.category("weird_science")
+				.category("automatons")
 				.output(SpawnEggs.ROBOT_WOLF)
 				.input(MetalDevices.THERMOELECTRIC_GEN)
 				.input(MetalDecoration.RADIATOR)
