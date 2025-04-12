@@ -527,7 +527,7 @@ public class DecorationRecipes extends IERecipeProvider
 				.pattern("igi")
 				.define('c', IETags.copperWire)
 				.define('r', new Ingredient(new IntersectionIngredient(List.of(
-						Ingredient.of(Tags.Items.GLASS_BLOCKS_TINTED),
+						Ingredient.of(Tags.Items.GLASS_BLOCKS),
 						Ingredient.of(Tags.Items.DYED_RED)
 				))))
 				.define('i', IETags.getTagsFor(EnumMetals.IRON).nugget)
