@@ -30,6 +30,7 @@
     "accessors.TNTEntityAccess",
     "accessors.TrimModelDataAccess",
     "coremods.AbstractBlockStateMixin",
+    "coremods.BreezeDeflectionMixin",
     "coremods.ServerWorldMixin",
     "coremods.TemplateMixin",
     "coremods.WaterwheelBoundsMixin"

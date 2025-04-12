@@ -7,6 +7,7 @@
 - Add support to configure the Fluid Router with Potion Bottles (Léa Gris)
 - Add name field for circuits in the workbench (BluSunrize)
 - Add colouration to the circuit tooltips (BluSunrize)
+- Add breeze rods as railgun ammo, they can hit breezes! (BluSunrize)
 - Change JEI recipes for filling buckets to not use fluid tags (BluSunrize)
 - Change the skyhook to actually use the same logic as the mace (BluSunrize)
     - Previously it was approximating it, due to missing methods in vanilla
