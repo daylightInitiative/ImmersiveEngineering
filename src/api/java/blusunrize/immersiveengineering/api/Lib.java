@@ -55,14 +55,16 @@ public class Lib
 	public static final float[] COLOUR_F_ImmersiveOrange = {247/255f, 128/255f, 52/255f};
 	public static final int COLOUR_I_ImmersiveOrangeShadow = 0xff3e200d;
 	public static final String TEXT_SHADOW_KEY = "ie_text_shadow:";
+
 	public static MutableComponent getRedstoneColorComponent(DyeColor channel)
 	{
-		// special case for black to make it more readable
-		// todo 1.21.4: use text shadows
 		Style style = Style.EMPTY.withColor(channel.getTextureDiffuseColor());
 		if(channel==DyeColor.BLACK)
-			style = style.withInsertion(TEXT_SHADOW_KEY+"7303028");
-		return Component.translatable("color.minecraft."+channel.getName()).withStyle(style);
+			// special case for black to make it more readable
+			style = style.withColor(0x2d2c38);
+		return Component.empty()
+				.append(Component.literal("█ ").withStyle(style))
+				.append(Component.translatable("color.minecraft."+channel.getName()));
 	}
 
 
