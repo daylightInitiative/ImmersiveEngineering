@@ -156,11 +156,21 @@ public class BlockOverlayUtils
 
 	public static void drawBlockOverlayText(GuiGraphics graphics, List<Component> text, int scaledWidth, int scaledHeight)
 	{
+		if(text.isEmpty())
+			return;
 		MultiBufferSource.BufferSource buffer = Minecraft.getInstance().renderBuffers().bufferSource();
 		// determine starting position
 		int maxWidth = text.stream().reduce(0, (aggr, component) -> Integer.max(aggr, ClientUtils.font().width(component)), Integer::max);
 		int xPos = scaledWidth/2-(maxWidth/2);
 		int yPos = scaledHeight/2+16;
+		int tooltipHeight = (text.size()==1?-2: 0)+text.size()*10;
+		TooltipRenderUtil.renderTooltipBackground(graphics, xPos, yPos, maxWidth, tooltipHeight, 0,
+				0xb01c1d13,
+				0xb01c1d13,
+				0x50ff5000,
+				0x507f2800
+		);
+
 		// track lines
 		int i = 0;
 		for(Component component : text)
