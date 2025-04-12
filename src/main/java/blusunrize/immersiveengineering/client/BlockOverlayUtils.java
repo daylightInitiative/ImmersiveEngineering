@@ -33,6 +33,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.Font.DisplayMode;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.inventory.tooltip.TooltipRenderUtil;
 import net.minecraft.client.multiplayer.MultiPlayerGameMode;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -43,6 +44,8 @@ import net.minecraft.core.Direction.Axis;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.FormattedText;
+import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -68,10 +71,7 @@ import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @EventBusSubscriber(value = Dist.CLIENT, modid = Lib.MODID, bus = Bus.MOD)
 public class BlockOverlayUtils
@@ -148,6 +148,45 @@ public class BlockOverlayUtils
 
 	/* ----------- OVERLAY TEXT ----------- */
 
+	private static boolean hasCustomShadows(Component component)
+	{
+		return component.visit((style, s) -> {
+			String ins = style.getInsertion();
+			if(ins!=null&&ins.startsWith(Lib.TEXT_SHADOW_KEY))
+				return Optional.of(true);
+			return Optional.empty();
+		}, Style.EMPTY).orElse(false);
+	}
+
+	private static FormattedText getShadowText(Component component)
+	{
+		List<FormattedText> list = new ArrayList<>();
+		component.visit((style, text) -> {
+			if(style.getColor()!=null)
+			{
+				int color = style.getColor().getValue();
+				String ins = style.getInsertion();
+				if(ins!=null&&ins.startsWith(Lib.TEXT_SHADOW_KEY))
+					color = Integer.parseInt(ins.substring(Lib.TEXT_SHADOW_KEY.length()));
+				else
+				{
+					// Vanilla calculation, reduce RGB values to 25%
+					int[] rgba = {
+							Math.round((color>>16&255)*.25f),
+							Math.round((color>>8&255)*.25f),
+							Math.round((color&255)*.25f),
+							(color>>24&255),
+					};
+					color = (rgba[3]<<24)|(rgba[0]<<16)|(rgba[1]<<8)|rgba[2];
+				}
+				style = style.withColor(color);
+			}
+			list.add(FormattedText.of(text, style));
+			return Optional.empty();
+		}, Style.EMPTY);
+		return FormattedText.composite(list);
+	}
+
 	public static void drawBlockOverlayText(GuiGraphics graphics, Component[] text, int scaledWidth, int scaledHeight)
 	{
 		if(text!=null&&text.length > 0)
@@ -176,11 +215,28 @@ public class BlockOverlayUtils
 		for(Component component : text)
 		{
 			int xOffset = component instanceof SpacerComponent spacer?spacer.getSpaceWidth(ClientUtils.font()): 0;
-			ClientUtils.font().drawInBatch(
-					Language.getInstance().getVisualOrder(component),
-					xPos+xOffset, yPos+(i++)*ClientUtils.font().lineHeight, 0xffffffff, true,
-					graphics.pose().last().pose(), buffer, DisplayMode.NORMAL, 0, 0xf000f0
-			);
+			if(hasCustomShadows(component))
+			{
+				Matrix4f matrix = graphics.pose().last().pose();
+				FormattedText shadowed = getShadowText(component);
+				ClientUtils.font().drawInBatch(
+						Language.getInstance().getVisualOrder(shadowed),
+						xPos+xOffset+1, yPos+1+(i)*10, 0xff404040, false,
+						matrix, buffer, DisplayMode.NORMAL, 0, 0xf000f0
+				);
+				matrix.translate(0, 0, 0.03F);
+				ClientUtils.font().drawInBatch(
+						Language.getInstance().getVisualOrder(component),
+						xPos+xOffset, yPos+(i++)*10, 0xffffffff, false,
+						matrix, buffer, DisplayMode.NORMAL, 0, 0xf000f0
+				);
+			}
+			else
+				ClientUtils.font().drawInBatch(
+						Language.getInstance().getVisualOrder(component),
+						xPos+xOffset, yPos+(i++)*10, 0xffffffff, true,
+						graphics.pose().last().pose(), buffer, DisplayMode.NORMAL, 0, 0xf000f0
+				);
 		}
 		buffer.endBatch();
 	}

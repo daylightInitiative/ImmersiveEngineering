@@ -13,6 +13,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
@@ -53,12 +54,15 @@ public class Lib
 	public static final int COLOUR_I_ImmersiveOrange = 0xfff78034;
 	public static final float[] COLOUR_F_ImmersiveOrange = {247/255f, 128/255f, 52/255f};
 	public static final int COLOUR_I_ImmersiveOrangeShadow = 0xff3e200d;
+	public static final String TEXT_SHADOW_KEY = "ie_text_shadow:";
 	public static MutableComponent getRedstoneColorComponent(DyeColor channel)
 	{
 		// special case for black to make it more readable
 		// todo 1.21.4: use text shadows
-		int color = channel==DyeColor.BLACK?0x3a3a4f:channel.getTextureDiffuseColor();
-		return Component.translatable("color.minecraft."+channel.getName()).withColor(color);
+		Style style = Style.EMPTY.withColor(channel.getTextureDiffuseColor());
+		if(channel==DyeColor.BLACK)
+			style = style.withInsertion(TEXT_SHADOW_KEY+"7303028");
+		return Component.translatable("color.minecraft."+channel.getName()).withStyle(style);
 	}
 
 
