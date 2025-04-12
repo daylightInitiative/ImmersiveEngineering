@@ -14,7 +14,6 @@ import blusunrize.immersiveengineering.api.excavator.MineralMix;
 import blusunrize.immersiveengineering.api.multiblocks.blocks.env.IMultiblockBEHelper;
 import blusunrize.immersiveengineering.api.multiblocks.blocks.logic.IMultiblockBE;
 import blusunrize.immersiveengineering.api.multiblocks.blocks.logic.IMultiblockState;
-import blusunrize.immersiveengineering.client.render.tooltip.TooltipTextShadowUtils;
 import blusunrize.immersiveengineering.client.utils.IERenderTypes;
 import blusunrize.immersiveengineering.client.utils.RenderUtils;
 import blusunrize.immersiveengineering.client.utils.SpacerComponent;
@@ -70,7 +69,10 @@ import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 @EventBusSubscriber(value = Dist.CLIENT, modid = Lib.MODID, bus = Bus.MOD)
 public class BlockOverlayUtils
@@ -175,17 +177,11 @@ public class BlockOverlayUtils
 		for(Component component : text)
 		{
 			int xOffset = component instanceof SpacerComponent spacer?spacer.getSpaceWidth(ClientUtils.font()): 0;
-			if(TooltipTextShadowUtils.hasCustomShadows(component))
-			{
-				Matrix4f matrix = graphics.pose().last().pose();
-				TooltipTextShadowUtils.drawWithCustomShadows(matrix, component, xPos+xOffset, yPos+(i++)*10, buffer);
-			}
-			else
-				ClientUtils.font().drawInBatch(
-						Language.getInstance().getVisualOrder(component),
-						xPos+xOffset, yPos+(i++)*10, 0xffffffff, true,
-						graphics.pose().last().pose(), buffer, DisplayMode.NORMAL, 0, 0xf000f0
-				);
+			ClientUtils.font().drawInBatch(
+					Language.getInstance().getVisualOrder(component),
+					xPos+xOffset, yPos+(i++)*10, 0xffffffff, true,
+					graphics.pose().last().pose(), buffer, DisplayMode.NORMAL, 0, 0xf000f0
+			);
 		}
 		buffer.endBatch();
 	}

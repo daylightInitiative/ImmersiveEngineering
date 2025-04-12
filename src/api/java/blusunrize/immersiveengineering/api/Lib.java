@@ -54,7 +54,6 @@ public class Lib
 	public static final int COLOUR_I_ImmersiveOrange = 0xfff78034;
 	public static final float[] COLOUR_F_ImmersiveOrange = {247/255f, 128/255f, 52/255f};
 	public static final int COLOUR_I_ImmersiveOrangeShadow = 0xff3e200d;
-	public static final String TEXT_SHADOW_KEY = "ie_text_shadow:";
 
 	public static MutableComponent getRedstoneColorComponent(DyeColor channel)
 	{
