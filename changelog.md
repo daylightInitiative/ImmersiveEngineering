@@ -1,4 +1,4 @@
-##### Version 1.21.1-12.1.1-pre
+##### Version 1.21.1-12.1.1-186
 - Add Automaton Wolves! (BluSunrize)
     - They are spawned with a new item, which requires a blueprint that can only drop from Trial Chamber Vaults
     - They spawn with extra health and increased damage but are otherwise just subtype of wolves and behave the same
