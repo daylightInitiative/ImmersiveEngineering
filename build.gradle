@@ -271,7 +271,7 @@ abstract class GenerateUpdateJSON extends DefaultTask {
                         }
                         if (mcVer == null) {
                             throw new NullPointerException("Could not find MC version for " + currentVersion);
-                        } else if (mcVer == getBuildingForVersion()) {
+                        } else if (mcVer == getBuildingForVersion().get()) {
                             if (!changelogForVersions.containsKey(mcVer)) {
                                 promos.put(mcVer + RECOMMENDED, currentVersion)
                                 promos.put(mcVer + LATEST, currentVersion)
