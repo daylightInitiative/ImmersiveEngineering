@@ -141,6 +141,7 @@ public class IEContent
 		IEEntityDataSerializers.REGISTER.register(modBus);
 		IEIngredients.REGISTER.register(modBus);
 		IEDataAttachments.REGISTER.register(modBus);
+		IEItemSubPredicates.REGISTER.register(modBus);
 		MultiblockAdvancementTrigger.REGISTER.register(modBus);
 		IEStats.modConstruction(modBus);
 		IEItems.init(modBus);

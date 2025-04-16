@@ -163,9 +163,19 @@ public class AdvancementBuilder
 	public AdvancementBuilder hasItems(ItemLike... items)
 	{
 		return this.addCriterion("has_item", InventoryChangeTrigger.TriggerInstance.hasItems(
-				ItemPredicate.Builder.item().of(items).build())
-		);
+				ItemPredicate.Builder.item().of(items).build()
+		));
 	}
+
+	public <T extends ItemSubPredicate> AdvancementBuilder hasItemWithPredicate(ItemLike item, ItemSubPredicate.Type<T> type, T subPredicate)
+	{
+		return this.addCriterion("has_item", InventoryChangeTrigger.TriggerInstance.hasItems(
+				ItemPredicate.Builder.item().of(item)
+						.withSubPredicate(type, subPredicate)
+						.build()
+		));
+	}
+
 
 	public AdvancementBuilder placeBlocks(Collection<? extends BlockEntry<?>> blocks)
 	{
