@@ -10,6 +10,7 @@ package blusunrize.immersiveengineering.client;
 
 import blusunrize.immersiveengineering.ImmersiveEngineering;
 import blusunrize.immersiveengineering.api.IEApiDataComponents;
+import blusunrize.immersiveengineering.api.ManualHelper;
 import blusunrize.immersiveengineering.api.client.TextUtils;
 import blusunrize.immersiveengineering.api.crafting.BlastFurnaceFuel;
 import blusunrize.immersiveengineering.api.crafting.BlueprintCraftingRecipe;
@@ -21,6 +22,7 @@ import blusunrize.immersiveengineering.api.tool.conveyor.ConveyorHandler;
 import blusunrize.immersiveengineering.api.tool.upgrade.UpgradeEffect;
 import blusunrize.immersiveengineering.api.wires.GlobalWireNetwork;
 import blusunrize.immersiveengineering.client.gui.BlastFurnaceScreen;
+import blusunrize.immersiveengineering.client.gui.elements.ManualUnlockToast;
 import blusunrize.immersiveengineering.client.render.tile.BlueprintRenderer;
 import blusunrize.immersiveengineering.client.render.tile.BlueprintRenderer.BlueprintLines;
 import blusunrize.immersiveengineering.client.utils.GuiHelper;
@@ -39,14 +41,19 @@ import blusunrize.immersiveengineering.common.network.MessageScrollwheelItem;
 import blusunrize.immersiveengineering.common.register.IEDataComponents;
 import blusunrize.immersiveengineering.common.register.IEPotions;
 import blusunrize.immersiveengineering.common.util.Utils;
+import blusunrize.immersiveengineering.mixin.accessors.client.AdvancementToastAccess;
 import blusunrize.immersiveengineering.mixin.accessors.client.WorldRendererAccess;
+import blusunrize.lib.manual.ManualEntry;
+import blusunrize.lib.manual.ManualInstance;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.ChatFormatting;
+import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.toasts.AdvancementToast;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HeadedModel;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -638,5 +645,30 @@ public class ClientEventHandler implements ResourceManagerReloadListener
 	{
 		if(event.getEntity().level().isClientSide&&event.getEntity() instanceof AbstractMinecart)
 			PacketDistributor.sendToServer(new MessageMinecartShaderSync(event.getEntity().getId(), Optional.empty()));
+	}
+
+	@SubscribeEvent
+	public void onToast(ToastAddEvent event)
+	{
+		if(event.getToast() instanceof AdvancementToast advToast)
+		{
+			AdvancementHolder advancement = ((AdvancementToastAccess)advToast).getAdvancement();
+			ManualInstance manual = ManualHelper.getManual();
+			if(manual.contentsByName.isEmpty()) // we need to load the manual if not already done
+				manual.reload();
+			List<ManualEntry> entries = manual.contentsByName.values().stream()
+					.filter(entry -> entry.getRequiredAdvancement().map(loc -> loc.equals(advancement.id())).orElse(false))
+					.toList();
+			if(!entries.isEmpty())
+			{
+				// wrap the toast if it has a title, cancel the original
+				Optional<AdvancementToast> wrapped = advancement.value().display().map(
+						displayInfo -> displayInfo.getTitle().getString().isEmpty()?null: advToast
+				);
+				event.setCanceled(true);
+				// then enqueue the manual toast
+				ClientUtils.mc().getToasts().addToast(new ManualUnlockToast(wrapped, entries));
+			}
+		}
 	}
 }
