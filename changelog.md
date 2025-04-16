@@ -1,3 +1,6 @@
+##### Version 1.21.1-12.1.2-pre
+- Fix circuit table closing when inventory key is pressed (BluSunrize)
+
 ##### Version 1.21.1-12.1.1-186
 - Add Automaton Wolves! (BluSunrize)
     - They are spawned with a new item, which requires a blueprint that can only drop from Trial Chamber Vaults

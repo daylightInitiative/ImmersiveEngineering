@@ -39,6 +39,7 @@ import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
+import org.lwjgl.glfw.GLFW;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -247,6 +248,15 @@ public class CircuitTableScreen extends IEContainerScreen<CircuitTableMenu>
 			}
 			graphics.drawString(this.font, "x "+amount, 30, 18+20*i, col.getTextColor());
 		}
+	}
+
+	@Override
+	public boolean keyPressed(int key, int scancode, int modifiers)
+	{
+		if(this.name.isFocused()&&key!=GLFW.GLFW_KEY_ESCAPE)
+			if(this.name.keyPressed(key, scancode, modifiers)||this.name.canConsumeInput())
+				return true;
+		return super.keyPressed(key, scancode, modifiers);
 	}
 
 	@Override
