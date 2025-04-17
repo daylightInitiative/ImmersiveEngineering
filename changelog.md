@@ -1,4 +1,7 @@
 ##### Version 1.21.1-12.1.2-pre
+- Adjust the Automaton Wolves (BluSunrize)
+    - They can no longer be healed with meat, this also prevents breeding them.
+    - Instead, they can be repaired with metal plates and a hammer
 - Fix circuit table closing when inventory key is pressed (BluSunrize)
 
 ##### Version 1.21.1-12.1.1-186
