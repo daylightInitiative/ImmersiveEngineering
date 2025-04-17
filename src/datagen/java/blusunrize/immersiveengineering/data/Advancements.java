@@ -27,8 +27,9 @@ import blusunrize.immersiveengineering.common.register.IEBlocks;
 import blusunrize.immersiveengineering.common.register.IEBlocks.MetalDevices;
 import blusunrize.immersiveengineering.common.register.IEBlocks.WoodenDecoration;
 import blusunrize.immersiveengineering.common.register.IEBlocks.WoodenDevices;
-import blusunrize.immersiveengineering.common.register.IEEntityTypes;
 import blusunrize.immersiveengineering.common.register.IEFluids;
+import blusunrize.immersiveengineering.common.register.IEItemSubPredicates;
+import blusunrize.immersiveengineering.common.register.IEItemSubPredicates.ItemBlueprintPredicate;
 import blusunrize.immersiveengineering.common.register.IEItems.*;
 import blusunrize.immersiveengineering.common.register.IEPotions;
 import blusunrize.immersiveengineering.common.world.Villages;
@@ -269,6 +270,13 @@ public class Advancements extends AdvancementProvider
 				.icon(Misc.ICON_RAVENHOLM).codeTriggered().loot("shader_masterwork").save(consumer);
 		AdvancementHolder bttf = AdvancementBuilder.child("secret_bttf", upgradePowerpack).challenge().hidden()
 				.icon(Misc.ICON_BTTF).codeTriggered().loot("shader_masterwork").save(consumer);
+
+		/* MANUAL UNLOCKS */
+		AdvancementBuilder.setPage("manual");
+		AdvancementHolder manualUnlocks = AdvancementBuilder.hiddenRoot().codeTriggered().save(consumer);
+		AdvancementBuilder.child("automatons", manualUnlocks)
+				.hasItemWithPredicate(Misc.BLUEPRINT, IEItemSubPredicates.BLUEPRINT.get(), new ItemBlueprintPredicate("automatons"))
+				.saveForManual(consumer);
 	}
 
 	private static Path createPath(Path pathIn, AdvancementHolder advancementIn)

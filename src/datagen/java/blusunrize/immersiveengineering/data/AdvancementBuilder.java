@@ -20,6 +20,7 @@ import net.minecraft.advancements.critereon.*;
 import net.minecraft.advancements.critereon.ItemUsedOnLocationTrigger.TriggerInstance;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -55,6 +56,11 @@ public class AdvancementBuilder
 	public static void setPage(String page)
 	{
 		AdvancementBuilder.page = page;
+	}
+
+	public static AdvancementBuilder hiddenRoot()
+	{
+		return new AdvancementBuilder(page+"_root");
 	}
 
 	public static AdvancementBuilder root(String bg)
@@ -213,6 +219,8 @@ public class AdvancementBuilder
 
 	private Advancement.Builder withDisplay()
 	{
+		if(this.icon==null)
+			return this.builder;
 		return this.builder.display(new DisplayInfo(
 				this.icon,
 				Component.translatable("advancement.immersiveengineering."+this.name),
@@ -223,6 +231,20 @@ public class AdvancementBuilder
 				!this.quiet,
 				this.hidden
 		));
+	}
+
+	public void saveForManual(Consumer<AdvancementHolder> consumer)
+	{
+		this.builder.display(new DisplayInfo(
+				new ItemStack(Tools.MANUAL),
+				CommonComponents.EMPTY,
+				CommonComponents.EMPTY,
+				Optional.empty(),
+				AdvancementType.TASK,
+				true,
+				false,
+				true
+		)).save(consumer, Lib.MODID+":"+AdvancementBuilder.page+"/"+this.name);
 	}
 
 	public AdvancementHolder save(Consumer<AdvancementHolder> consumer)

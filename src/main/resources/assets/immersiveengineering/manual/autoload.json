@@ -129,7 +129,8 @@
       "chemical_thrower",
       "razor_wire",
       "tesla_coil",
-      "turrets"
+      "turrets",
+      "automaton_wolves"
     ]
   },
   "multiblock_constructions": {

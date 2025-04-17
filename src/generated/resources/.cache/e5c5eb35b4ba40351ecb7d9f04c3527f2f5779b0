@@ -1,4 +1,4 @@
-// 1.21.1	2025-04-06T11:13:32.418443	Advancements
+// 1.21.1	2025-04-17T11:54:45.8899868	Advancements
 a56c7cdc987c927d83a5d45b1a0691a332636df0 data/immersiveengineering/advancement/main/buy_oremap.json
 6aeb82e9126df35ae4ffad9315152d4b80c3014c data/immersiveengineering/advancement/main/buy_shaderbag.json
 e09defe04c195d77ae4e0327762f4af55ac6a5a2 data/immersiveengineering/advancement/main/chorus_cloche.json
@@ -25,6 +25,8 @@ be09ad46e862b1a51ada272276979ad1fe69c08b data/immersiveengineering/advancement/m
 e1fa8bc0e63378ef2c82a8c7ae59a3e39ca9b9d9 data/immersiveengineering/advancement/main/secret_friedbird.json
 594e896493067ac7ed5718f40c29ad79c736a377 data/immersiveengineering/advancement/main/secret_luckofthedraw.json
 f92263ed7d681b341719d97f1c0e523cdc81d1d8 data/immersiveengineering/advancement/main/villager.json
+18b3b2a65db0b36421e7cf92b9d04b32daa34148 data/immersiveengineering/advancement/manual/automatons.json
+e51e82919651a2a9866aebf3585c0f4df3eb1174 data/immersiveengineering/advancement/manual/manual_root.json
 aca46b975224ee86d1baf9710f6b94b9889d9186 data/immersiveengineering/advancement/multiblocks/craft_duroplast.json
 8a364e16ae4aef6f2306812040ae2bb372b14b31 data/immersiveengineering/advancement/multiblocks/craft_sheetmetal.json
 324dc75532378b21cb391f9979d770a212043cbd data/immersiveengineering/advancement/multiblocks/liquid_concrete.json
