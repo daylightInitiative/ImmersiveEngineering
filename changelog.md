@@ -5,6 +5,7 @@
 - Add a manual entry for the Automaton Wolves (BluSunrize)
     - This entry is only unlocked when picking up their blueprint!
 - Fix circuit table closing when inventory key is pressed (BluSunrize)
+- Fix assembler not saving its stored patterns with the world (BluSunrize)
 
 ##### Version 1.21.1-12.1.1-186
 - Add Automaton Wolves! (BluSunrize)
