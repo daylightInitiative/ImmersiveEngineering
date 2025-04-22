@@ -7,6 +7,7 @@
 - Fix circuit table closing when inventory key is pressed (BluSunrize)
 - Fix assembler not saving its stored patterns with the world (BluSunrize)
 - Fix JEI pattern button crashing when used in the assembler (BluSunrize)
+- Fix fluid pipes causing forced chunkloads when building their network (BluSunrize)
 
 ##### Version 1.21.1-12.1.1-186
 - Add Automaton Wolves! (BluSunrize)
