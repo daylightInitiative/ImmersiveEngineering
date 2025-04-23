@@ -834,6 +834,12 @@ public final class IEBlocks
 		registerStairs(StoneDecoration.CONCRETE_LEADED);
 		registerWall(StoneDecoration.SLAG_BRICK);
 		registerWall(StoneDecoration.CLINKER_BRICK);
+		registerWall(StoneDecoration.HEMPCRETE);
+		registerWall(StoneDecoration.HEMPCRETE_BRICK);
+		registerWall(StoneDecoration.CONCRETE);
+		registerWall(StoneDecoration.CONCRETE_BRICK);
+		registerWall(StoneDecoration.CONCRETE_TILE);
+		registerWall(StoneDecoration.CONCRETE_LEADED);
 
 		for(BlockEntry<?> entry : BlockEntry.ALL_ENTRIES)
 		{

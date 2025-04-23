@@ -4,6 +4,7 @@
     - Instead, they can be repaired with metal plates and a hammer
 - Add a manual entry for the Automaton Wolves (BluSunrize)
     - This entry is only unlocked when picking up their blueprint!
+- Add wall blocks for hempcrete, concrete and their variations!
 - Change Fluid Pumps to allow inverting their redstone control with a screwdriver (BluSunrize)
 - Allow vanilla wall blocks to connect to windows (BluSunrize)
 - Fix circuit table closing when inventory key is pressed (BluSunrize)

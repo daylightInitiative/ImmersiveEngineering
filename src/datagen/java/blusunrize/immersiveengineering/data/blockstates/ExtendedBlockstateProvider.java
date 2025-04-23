@@ -297,6 +297,17 @@ public abstract class ExtendedBlockstateProvider extends BlockStateProvider
 				}, StairBlock.WATERLOGGED);
 	}
 
+	protected void wallForSingle(Supplier<? extends Block> full, ResourceLocation bottomTexture, ResourceLocation sideTexture, ResourceLocation topTexture)
+	{
+		final IEWallBlock b = IEBlocks.TO_WALL.get(BuiltInRegistries.BLOCK.getKey(full.get())).get();
+		wallBlock(b,
+				wallModelTopped(name(b)+"_post", "wall_post_topped", bottomTexture, sideTexture, topTexture),
+				wallModelTopped(name(b)+"_side", "wall_side_topped", bottomTexture, sideTexture, topTexture),
+				wallModelTopped(name(b)+"_side_tall", "wall_side_tall_topped", bottomTexture, sideTexture, topTexture)
+		);
+		itemModel(() -> b, wallModelToppedInventory(name(b), bottomTexture, sideTexture, topTexture));
+	}
+
 	protected void wallForMultiEight(Supplier<? extends Block> b, ResourceLocation bottomTexture, ResourceLocation sideTexture, ResourceLocation topTexture)
 	{
 		ResourceLocation[] bottomTextures = new ResourceLocation[8];

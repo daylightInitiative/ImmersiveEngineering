@@ -255,6 +255,30 @@ public class BlockStates extends ExtendedBlockstateProvider
 				rl("block/stone_decoration/clinker_brick/clinker_brick"),
 				rl("block/stone_decoration/clinker_brick/clinker_brick_wall"),
 				rl("block/stone_decoration/clinker_brick/clinker_brick_top"));
+		wallForMultiEight(StoneDecoration.HEMPCRETE,
+				rl("block/stone_decoration/hempcrete/hempcrete"),
+				rl("block/stone_decoration/hempcrete/hempcrete"),
+				rl("block/stone_decoration/hempcrete/hempcrete"));
+		wallForMultiEight(StoneDecoration.HEMPCRETE_BRICK,
+				rl("block/stone_decoration/hempcrete_brick/hempcrete_brick"),
+				rl("block/stone_decoration/hempcrete_brick/hempcrete_brick"),
+				rl("block/stone_decoration/hempcrete_brick/hempcrete_brick"));
+		wallForMultiEight(StoneDecoration.CONCRETE,
+				rl("block/stone_decoration/concrete/concrete"),
+				rl("block/stone_decoration/concrete/concrete"),
+				rl("block/stone_decoration/concrete/concrete"));
+		wallForMultiEight(StoneDecoration.CONCRETE_BRICK,
+				rl("block/stone_decoration/concrete_brick/concrete_brick"),
+				rl("block/stone_decoration/concrete_brick/concrete_brick"),
+				rl("block/stone_decoration/concrete_brick/concrete_brick"));
+		wallForMultiEight(StoneDecoration.CONCRETE_TILE,
+				rl("block/stone_decoration/concrete_tile/concrete_tile"),
+				rl("block/stone_decoration/concrete_tile/concrete_tile"),
+				rl("block/stone_decoration/concrete_tile/concrete_tile"));
+		wallForSingle(StoneDecoration.CONCRETE_LEADED,
+				rl("block/stone_decoration/concrete_leaded"),
+				rl("block/stone_decoration/concrete_leaded"),
+				rl("block/stone_decoration/concrete_leaded_wall_top"));
 
 		postBlock(WoodenDecoration.TREATED_POST, rl("block/wooden_decoration/post"));
 		postBlock(MetalDecoration.STEEL_POST, rl("block/metal_decoration/steel_post"));
