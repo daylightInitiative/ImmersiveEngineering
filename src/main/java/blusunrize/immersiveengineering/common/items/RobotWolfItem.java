@@ -113,7 +113,7 @@ public class RobotWolfItem extends IEBaseItem
 		else if(wolf.getHealth() < wolf.getMaxHealth())
 		{
 			// Robot wolves are repaired with hammers & plates
-			ItemUtils.isHoldingBoth(event.getEntity(), IETags.hammers, IETags.plates).ifPresent(heldItems -> {
+			ItemUtils.isHoldingBoth(event.getEntity(), IETags.hammers, IETags.repairsAutomaton).ifPresent(heldItems -> {
 				wolf.heal(16);
 				// Damage the hammer, consume the plate
 				heldItems.getFirst().stack().hurtAndBreak(1, event.getEntity(), heldItems.getFirst().slot());
