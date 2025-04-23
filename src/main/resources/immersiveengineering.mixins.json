@@ -33,6 +33,7 @@
     "coremods.BreezeDeflectionMixin",
     "coremods.ServerWorldMixin",
     "coremods.TemplateMixin",
+    "coremods.WallMixin",
     "coremods.WaterwheelBoundsMixin"
   ],
   "client": [

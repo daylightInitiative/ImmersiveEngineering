@@ -5,6 +5,7 @@
 - Add a manual entry for the Automaton Wolves (BluSunrize)
     - This entry is only unlocked when picking up their blueprint!
 - Change Fluid Pumps to allow inverting their redstone control with a screwdriver (BluSunrize)
+- Allow vanilla wall blocks to connect to windows (BluSunrize)
 - Fix circuit table closing when inventory key is pressed (BluSunrize)
 - Fix assembler not saving its stored patterns with the world (BluSunrize)
 - Fix JEI pattern button crashing when used in the assembler (BluSunrize)
