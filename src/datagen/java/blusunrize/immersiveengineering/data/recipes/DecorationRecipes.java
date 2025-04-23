@@ -282,6 +282,12 @@ public class DecorationRecipes extends IERecipeProvider
 
 		addWall(StoneDecoration.SLAG_BRICK, out);
 		addWall(StoneDecoration.CLINKER_BRICK, out);
+		addWall(StoneDecoration.HEMPCRETE, out);
+		addWall(StoneDecoration.HEMPCRETE_BRICK, out);
+		addWall(StoneDecoration.CONCRETE, out);
+		addWall(StoneDecoration.CONCRETE_BRICK, out);
+		addWall(StoneDecoration.CONCRETE_TILE, out);
+		addWall(StoneDecoration.CONCRETE_LEADED, out);
 
 		addStonecuttingRecipe(Ingredients.SLAG, StoneDecoration.SLAG_BRICK, out);
 		addStonecuttingRecipe(StoneDecoration.SLAG_BRICK, IEBlocks.TO_SLAB.get(StoneDecoration.SLAG_BRICK.getId()), 2, out);
