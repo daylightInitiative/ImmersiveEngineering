@@ -1,4 +1,4 @@
-##### Version 1.21.1-12.1.2-pre
+##### Version 1.21.1-12.2.0-pre
 - Adjust the Automaton Wolves (BluSunrize)
     - They can no longer be healed with meat, this also prevents breeding them.
     - Instead, they can be repaired with metal plates and a hammer
@@ -7,6 +7,8 @@
 - Add wall blocks for hempcrete, concrete and their variations!
 -  (BluSunrize)
 - Change Fluid Pumps to allow inverting their redstone control with a screwdriver (BluSunrize)
+- Change IE to use NeoForge's native fluid ingredients in recipes (BluSunrize)
+    - This is a breaking change for any addons, but there isn't any released so we should be safe
 - Allow vanilla wall blocks to connect to windows (BluSunrize)
 - Fix circuit table closing when inventory key is pressed (BluSunrize)
 - Fix assembler not saving its stored patterns with the world (BluSunrize)
