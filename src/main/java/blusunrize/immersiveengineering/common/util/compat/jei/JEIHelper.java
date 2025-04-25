@@ -68,11 +68,13 @@ import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @JeiPlugin
 public class JEIHelper implements IModPlugin
@@ -156,27 +158,27 @@ public class JEIHelper implements IModPlugin
 		registration.addRecipes(JEIRecipeTypes.BLAST_FUEL, getRecipes(BlastFurnaceFuel.RECIPES));
 		registration.addRecipes(JEIRecipeTypes.CLOCHE, getRecipes(ClocheRecipe.RECIPES));
 		registration.addRecipes(JEIRecipeTypes.CLOCHE_FERTILIZER, getRecipes(ClocheFertilizer.RECIPES));
-		registration.addRecipes(JEIRecipeTypes.METAL_PRESS, getFiltered(MetalPressRecipe.STANDARD_RECIPES, IJEIRecipe::listInJEI));
+		registration.addRecipes(JEIRecipeTypes.METAL_PRESS, getFilteredAndSorted(MetalPressRecipe.STANDARD_RECIPES, IJEIRecipe::listInJEI, compareInRecipe(o -> o.mold.getDescriptionId())));
 		registration.addRecipes(JEIRecipeTypes.CRUSHER, getFiltered(CrusherRecipe.RECIPES, IJEIRecipe::listInJEI));
 		registration.addRecipes(JEIRecipeTypes.SAWMILL, getFiltered(SawmillRecipe.RECIPES, IJEIRecipe::listInJEI));
-		registration.addRecipes(JEIRecipeTypes.BLUEPRINT, getFiltered(BlueprintCraftingRecipe.RECIPES, IJEIRecipe::listInJEI));
+		registration.addRecipes(JEIRecipeTypes.BLUEPRINT, getFilteredAndSorted(BlueprintCraftingRecipe.RECIPES, IJEIRecipe::listInJEI, compareInRecipe(o -> o.blueprintCategory)));
 		registration.addRecipes(JEIRecipeTypes.SQUEEZER, getFiltered(SqueezerRecipe.RECIPES, IJEIRecipe::listInJEI));
 		registration.addRecipes(JEIRecipeTypes.FERMENTER, getFiltered(FermenterRecipe.RECIPES, IJEIRecipe::listInJEI));
 		registration.addRecipes(JEIRecipeTypes.REFINERY, getFiltered(RefineryRecipe.RECIPES, IJEIRecipe::listInJEI));
-		registration.addRecipes(JEIRecipeTypes.ARC_FURNACE_RECYCLING, getFiltered(ArcFurnaceRecipe.RECIPES, input -> input.isSpecialType(ArcRecyclingRecipe.SPECIAL_TYPE)&&input.listInJEI()));
-		registration.addRecipes(JEIRecipeTypes.ARC_FURNACE, getFiltered(ArcFurnaceRecipe.RECIPES, input -> input.isNotSpecialType()&&input.listInJEI()));
+		registration.addRecipes(JEIRecipeTypes.ARC_FURNACE_RECYCLING, getFilteredAndSorted(ArcFurnaceRecipe.RECIPES, input -> input.isSpecialType(ArcRecyclingRecipe.SPECIAL_TYPE)&&input.listInJEI(), compareIDs()));
+		registration.addRecipes(JEIRecipeTypes.ARC_FURNACE, getFilteredAndSorted(ArcFurnaceRecipe.RECIPES, input -> input.isNotSpecialType()&&input.listInJEI(), compareIDs()));
 		getPartitioned(MixerRecipe.RECIPES, r -> {
 			if(r.getFluidOutputs().stream().anyMatch(s -> s.is(IETags.fluidPotion)))
 				return JEIRecipeTypes.MIXER_POTIONS;
 			else
 				return JEIRecipeTypes.MIXER;
-		}).forEach(registration::addRecipes);
+		}, compareIDs()).forEach(registration::addRecipes);
 		getPartitioned(BottlingMachineRecipe.RECIPES, r -> {
 			if(r.getItemOutputs().stream().anyMatch(s -> s.is(Tags.Items.POTIONS)||s.is(BulletHandler.getBulletItem(IEBullets.POTION))))
 				return JEIRecipeTypes.BOTTLING_MACHINE_POTIONS;
 			else
 				return JEIRecipeTypes.BOTTLING_MACHINE;
-		}).forEach(registration::addRecipes);
+		}, compareIDs()).forEach(registration::addRecipes);
 		registration.addRecipes(JEIRecipeTypes.BOTTLING_MACHINE_BUCKETS, getFluidBucketRecipes());
 	}
 
@@ -187,20 +189,41 @@ public class JEIHelper implements IModPlugin
 
 	private <T extends Recipe<?>> List<RecipeHolder<T>> getFiltered(CachedRecipeList<T> cachedList, Predicate<T> include)
 	{
-		return cachedList.getRecipes(Minecraft.getInstance().level).stream()
-				.filter(h -> include.test(h.value()))
-				.toList();
+		return getFilteredAndSorted(cachedList, include, null);
+	}
+
+	private <T extends Recipe<?>> List<RecipeHolder<T>> getFilteredAndSorted(CachedRecipeList<T> cachedList, Predicate<T> include, @Nullable Comparator<RecipeHolder<T>> sorting)
+	{
+		Stream<RecipeHolder<T>> ret = cachedList.getRecipes(Minecraft.getInstance().level).stream()
+				.filter(h -> include.test(h.value()));
+		if(sorting!=null)
+			ret = ret.sorted(sorting);
+		return ret.toList();
 	}
 
 	private <T extends MultiblockRecipe> Map<RecipeType<RecipeHolder<T>>, List<RecipeHolder<T>>> getPartitioned(
-			CachedRecipeList<T> cachedList, Function<T, RecipeType<RecipeHolder<T>>> grouping
+			CachedRecipeList<T> cachedList, Function<T, RecipeType<RecipeHolder<T>>> grouping, Comparator<RecipeHolder<T>> sorting
 	)
 	{
 		return cachedList.getRecipes(Minecraft.getInstance().level).stream()
 				.filter(h -> h.value().listInJEI()) // filter to JEI visible
-				.sorted()
+				.sorted(sorting)
 				.collect(Collectors.groupingBy(h -> grouping.apply(h.value()))); // group with function
 	}
+
+	private <T extends Recipe<?>, C extends Comparable<? super C>> Comparator<RecipeHolder<T>> compareIDs()
+	{
+		return (h1, h2) -> h1.id().compareNamespaced(h2.id());
+	}
+
+	private <T extends Recipe<?>, C extends Comparable<? super C>> Comparator<RecipeHolder<T>> compareInRecipe(Function<? super T, C> keyExtractor)
+	{
+		return (h1, h2) -> {
+			int ret = keyExtractor.apply(h1.value()).compareTo(keyExtractor.apply(h2.value()));
+			return ret!=0?ret: h1.id().compareNamespaced(h2.id());
+		};
+	}
+
 
 	@Override
 	public void registerRecipeTransferHandlers(IRecipeTransferRegistration registration)
