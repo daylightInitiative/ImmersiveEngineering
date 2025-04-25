@@ -1388,5 +1388,8 @@
   "config.jade.plugin_immersiveengineering.multiblock_tank": "Multiblock Tank",
   "config.jade.plugin_immersiveengineering.multiblock_inventory": "Multiblock Inventory",
   "desc.immersiveengineering.jei.category.fertilizer": "Garden Cloche Fertilizer",
-  "desc.immersiveengineering.jei.cloche_modifier": "Growth Modifier: %1$s"
+  "desc.immersiveengineering.jei.cloche_modifier": "Growth Modifier: %1$s",
+  "desc.immersiveengineering.jei.category.recycling": " - Recycling",
+  "desc.immersiveengineering.jei.category.potions": " - Potions",
+  "desc.immersiveengineering.jei.category.buckets": " - Bucket Filling"
 }

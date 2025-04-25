@@ -53,8 +53,7 @@ public class ArcFurnaceRecipeCategory extends IERecipeCategory<ArcFurnaceRecipe>
 	public static ArcFurnaceRecipeCategory getRecycling(IGuiHelper helper)
 	{
 		ArcFurnaceRecipeCategory cat = new ArcFurnaceRecipeCategory(helper, JEIRecipeTypes.ARC_FURNACE_RECYCLING);
-		cat.title.append(" - Recycling");
-		cat.setIcon(helper.drawableBuilder(IEApi.ieLoc("textures/gui/recycle.png"), 0, 0, 16, 16).setTextureSize(16, 16).build());
+		cat.title.append(Component.translatable(Lib.DESC+"jei.category.recycling"));
 		cat.setIcon(new DoubleIcon(
 				cat.getIcon(),
 				helper.drawableBuilder(IEApi.ieLoc("textures/gui/recycle.png"), 0, 0, 18, 18).setTextureSize(18, 18).build()
