@@ -65,7 +65,8 @@ public class MixerRecipeCategory extends IERecipeCategory<MixerRecipe>
 		cat.title.append(Component.translatable(Lib.DESC+"jei.category.potions"));
 		cat.setIcon(new DoubleIcon(
 				cat.getIcon(),
-				helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, PotionContents.createItemStack(Items.POTION, Potions.HEALING))
+				helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, PotionContents.createItemStack(Items.POTION, Potions.HEALING)),
+				0.5f
 		));
 		return cat;
 	}

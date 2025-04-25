@@ -49,10 +49,7 @@ public class ClocheRecipeCategory extends IERecipeCategory<ClocheRecipe>
 		super(helper, JEIRecipeTypes.CLOCHE, "block.immersiveengineering.cloche");
 		ResourceLocation background = IEApi.ieLoc("textures/gui/cloche.png");
 		setBackground(helper.createDrawable(background, 0, 0, 176, 77));
-		setIcon(new DoubleIcon(
-				helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, IEBlocks.MetalDevices.CLOCHE.asItem().getDefaultInstance()),
-				helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, Misc.FERTILIZER.get().getDefaultInstance())
-		));
+		setIcon(new ItemStack(IEBlocks.MetalDevices.CLOCHE));
 		tankOverlay = helper.createDrawable(background, 176, 30, 20, 51);
 		arrow = helper.drawableBuilder(background, 181, 1, 13, 13).buildAnimated(200, IDrawableAnimated.StartDirection.LEFT, false);
 	}

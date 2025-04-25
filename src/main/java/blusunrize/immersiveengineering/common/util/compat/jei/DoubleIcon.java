@@ -17,7 +17,7 @@ import net.minecraft.client.gui.GuiGraphics;
  * Heavily inspired by Create, which is published under MIT license.
  * Thanks folks!
  */
-public record DoubleIcon(IDrawable main, IDrawable secondary) implements IDrawable
+public record DoubleIcon(IDrawable main, IDrawable secondary, float scale) implements IDrawable
 {
 	@Override
 	public int getWidth()
@@ -42,7 +42,6 @@ public record DoubleIcon(IDrawable main, IDrawable secondary) implements IDrawab
 		main.draw(graphics, 1, 1);
 
 		matrixStack.pushPose();
-		float scale = .5f;
 		matrixStack.translate(18-scale*secondary.getWidth(), 18-scale*secondary.getHeight(), 100);
 		matrixStack.scale(scale, scale, scale);
 		secondary.draw(graphics, 0, 0);

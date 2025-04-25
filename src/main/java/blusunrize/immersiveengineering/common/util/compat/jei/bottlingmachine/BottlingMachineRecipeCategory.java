@@ -62,7 +62,8 @@ public class BottlingMachineRecipeCategory extends IERecipeCategory<BottlingMach
 		cat.title.append(Component.translatable(Lib.DESC+"jei.category.potions"));
 		cat.setIcon(new DoubleIcon(
 				cat.getIcon(),
-				helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, PotionContents.createItemStack(Items.POTION, Potions.HEALING))
+				helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, PotionContents.createItemStack(Items.POTION, Potions.HEALING)),
+				0.5f
 		));
 		return cat;
 	}
@@ -73,7 +74,8 @@ public class BottlingMachineRecipeCategory extends IERecipeCategory<BottlingMach
 		cat.title.append(Component.translatable(Lib.DESC+"jei.category.buckets"));
 		cat.setIcon(new DoubleIcon(
 				cat.getIcon(),
-				helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, Items.WATER_BUCKET.getDefaultInstance())
+				helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, Items.WATER_BUCKET.getDefaultInstance()),
+				0.5f
 		));
 		return cat;
 	}
