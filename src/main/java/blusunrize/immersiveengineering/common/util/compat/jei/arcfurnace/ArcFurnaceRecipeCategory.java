@@ -9,10 +9,12 @@
 package blusunrize.immersiveengineering.common.util.compat.jei.arcfurnace;
 
 import blusunrize.immersiveengineering.api.IEApi;
+import blusunrize.immersiveengineering.api.Lib;
 import blusunrize.immersiveengineering.api.crafting.ArcFurnaceRecipe;
 import blusunrize.immersiveengineering.client.ClientUtils;
 import blusunrize.immersiveengineering.common.register.IEMultiblockLogic;
 import blusunrize.immersiveengineering.common.util.Utils;
+import blusunrize.immersiveengineering.common.util.compat.jei.DoubleIcon;
 import blusunrize.immersiveengineering.common.util.compat.jei.IERecipeCategory;
 import blusunrize.immersiveengineering.common.util.compat.jei.JEIHelper;
 import blusunrize.immersiveengineering.common.util.compat.jei.JEIRecipeTypes;
@@ -30,9 +32,6 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
-
-import java.util.Arrays;
-import java.util.List;
 
 public class ArcFurnaceRecipeCategory extends IERecipeCategory<ArcFurnaceRecipe>
 {
@@ -56,6 +55,10 @@ public class ArcFurnaceRecipeCategory extends IERecipeCategory<ArcFurnaceRecipe>
 		ArcFurnaceRecipeCategory cat = new ArcFurnaceRecipeCategory(helper, JEIRecipeTypes.ARC_FURNACE_RECYCLING);
 		cat.title.append(" - Recycling");
 		cat.setIcon(helper.drawableBuilder(IEApi.ieLoc("textures/gui/recycle.png"), 0, 0, 16, 16).setTextureSize(16, 16).build());
+		cat.setIcon(new DoubleIcon(
+				cat.getIcon(),
+				helper.drawableBuilder(IEApi.ieLoc("textures/gui/recycle.png"), 0, 0, 18, 18).setTextureSize(18, 18).build()
+		));
 		return cat;
 	}
 

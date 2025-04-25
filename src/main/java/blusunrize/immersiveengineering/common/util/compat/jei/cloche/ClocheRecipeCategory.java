@@ -12,9 +12,12 @@ import blusunrize.immersiveengineering.api.IEApi;
 import blusunrize.immersiveengineering.api.crafting.ClocheFertilizer;
 import blusunrize.immersiveengineering.api.crafting.ClocheRecipe;
 import blusunrize.immersiveengineering.common.register.IEBlocks;
+import blusunrize.immersiveengineering.common.register.IEItems.Misc;
+import blusunrize.immersiveengineering.common.util.compat.jei.DoubleIcon;
 import blusunrize.immersiveengineering.common.util.compat.jei.IERecipeCategory;
 import blusunrize.immersiveengineering.common.util.compat.jei.JEIHelper;
 import blusunrize.immersiveengineering.common.util.compat.jei.JEIRecipeTypes;
+import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawableAnimated;
 import mezz.jei.api.gui.drawable.IDrawableStatic;
@@ -46,7 +49,10 @@ public class ClocheRecipeCategory extends IERecipeCategory<ClocheRecipe>
 		super(helper, JEIRecipeTypes.CLOCHE, "block.immersiveengineering.cloche");
 		ResourceLocation background = IEApi.ieLoc("textures/gui/cloche.png");
 		setBackground(helper.createDrawable(background, 0, 0, 176, 77));
-		setIcon(new ItemStack(IEBlocks.MetalDevices.CLOCHE));
+		setIcon(new DoubleIcon(
+				helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, IEBlocks.MetalDevices.CLOCHE.asItem().getDefaultInstance()),
+				helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, Misc.FERTILIZER.get().getDefaultInstance())
+		));
 		tankOverlay = helper.createDrawable(background, 176, 30, 20, 51);
 		arrow = helper.drawableBuilder(background, 181, 1, 13, 13).buildAnimated(200, IDrawableAnimated.StartDirection.LEFT, false);
 	}
