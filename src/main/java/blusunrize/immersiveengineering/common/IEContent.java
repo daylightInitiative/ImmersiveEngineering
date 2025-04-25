@@ -194,7 +194,7 @@ public class IEContent
 		//Fluid Ingredients
 		AssemblerHandler.registerSpecialIngredientConverter((o, remain) -> {
 			if(o.getCustomIngredient() instanceof IngredientFluidStack fluidIngred)
-				return new FluidTagRecipeQuery(fluidIngred.getFluidTagInput());
+				return new FluidTagRecipeQuery(fluidIngred.fluidIngredient());
 			else
 				return null;
 		});
