@@ -10,12 +10,15 @@ package blusunrize.immersiveengineering.common.util.compat.jei;
 
 import blusunrize.immersiveengineering.api.IEApi;
 import blusunrize.immersiveengineering.api.IEApiDataComponents;
+import blusunrize.immersiveengineering.api.IETags;
 import blusunrize.immersiveengineering.api.crafting.*;
 import blusunrize.immersiveengineering.api.crafting.cache.CachedRecipeList;
+import blusunrize.immersiveengineering.api.tool.BulletHandler;
 import blusunrize.immersiveengineering.api.tool.conveyor.ConveyorHandler;
 import blusunrize.immersiveengineering.api.tool.conveyor.IConveyorType;
 import blusunrize.immersiveengineering.client.gui.*;
 import blusunrize.immersiveengineering.common.gui.CraftingTableMenu;
+import blusunrize.immersiveengineering.common.items.bullets.IEBullets;
 import blusunrize.immersiveengineering.common.register.IEBlocks.MetalDevices;
 import blusunrize.immersiveengineering.common.register.IEBlocks.WoodenDevices;
 import blusunrize.immersiveengineering.common.register.IEDataComponents;
@@ -48,6 +51,7 @@ import mezz.jei.api.gui.ingredient.IRecipeSlotRichTooltipCallback;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.subtypes.ISubtypeInterpreter;
 import mezz.jei.api.ingredients.subtypes.UidContext;
+import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.registration.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Holder;
@@ -61,11 +65,14 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.neoforged.neoforge.common.Tags;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @JeiPlugin
 public class JEIHelper implements IModPlugin
@@ -129,8 +136,11 @@ public class JEIHelper implements IModPlugin
 				new RefineryRecipeCategory(guiHelper),
 				ArcFurnaceRecipeCategory.getDefault(guiHelper),
 				ArcFurnaceRecipeCategory.getRecycling(guiHelper),
-				new BottlingMachineRecipeCategory(guiHelper),
-				new MixerRecipeCategory(guiHelper)
+				MixerRecipeCategory.getDefault(guiHelper),
+				MixerRecipeCategory.getPotions(guiHelper),
+				BottlingMachineRecipeCategory.getDefault(guiHelper),
+				BottlingMachineRecipeCategory.getPotions(guiHelper),
+				BottlingMachineRecipeCategory.getBuckets(guiHelper)
 		);
 
 		slotDrawable = guiHelper.getSlotDrawable();
@@ -155,9 +165,19 @@ public class JEIHelper implements IModPlugin
 		registration.addRecipes(JEIRecipeTypes.REFINERY, getFiltered(RefineryRecipe.RECIPES, IJEIRecipe::listInJEI));
 		registration.addRecipes(JEIRecipeTypes.ARC_FURNACE_RECYCLING, getFiltered(ArcFurnaceRecipe.RECIPES, input -> input.isSpecialType(ArcRecyclingRecipe.SPECIAL_TYPE)&&input.listInJEI()));
 		registration.addRecipes(JEIRecipeTypes.ARC_FURNACE, getFiltered(ArcFurnaceRecipe.RECIPES, input -> input.isNotSpecialType()&&input.listInJEI()));
-		registration.addRecipes(JEIRecipeTypes.BOTTLING_MACHINE, getFiltered(BottlingMachineRecipe.RECIPES, IJEIRecipe::listInJEI));
-		registration.addRecipes(JEIRecipeTypes.BOTTLING_MACHINE, getFluidBucketRecipes());
-		registration.addRecipes(JEIRecipeTypes.MIXER, getFiltered(MixerRecipe.RECIPES, IJEIRecipe::listInJEI));
+		getPartitioned(MixerRecipe.RECIPES, r -> {
+			if(r.getFluidOutputs().stream().anyMatch(s -> s.is(IETags.fluidPotion)))
+				return JEIRecipeTypes.MIXER_POTIONS;
+			else
+				return JEIRecipeTypes.MIXER;
+		}).forEach(registration::addRecipes);
+		getPartitioned(BottlingMachineRecipe.RECIPES, r -> {
+			if(r.getItemOutputs().stream().anyMatch(s -> s.is(Tags.Items.POTIONS)||s.is(BulletHandler.getBulletItem(IEBullets.POTION))))
+				return JEIRecipeTypes.BOTTLING_MACHINE_POTIONS;
+			else
+				return JEIRecipeTypes.BOTTLING_MACHINE;
+		}).forEach(registration::addRecipes);
+		registration.addRecipes(JEIRecipeTypes.BOTTLING_MACHINE_BUCKETS, getFluidBucketRecipes());
 	}
 
 	private <T extends Recipe<?>> List<RecipeHolder<T>> getRecipes(CachedRecipeList<T> cachedList)
@@ -170,6 +190,16 @@ public class JEIHelper implements IModPlugin
 		return cachedList.getRecipes(Minecraft.getInstance().level).stream()
 				.filter(h -> include.test(h.value()))
 				.toList();
+	}
+
+	private <T extends MultiblockRecipe> Map<RecipeType<RecipeHolder<T>>, List<RecipeHolder<T>>> getPartitioned(
+			CachedRecipeList<T> cachedList, Function<T, RecipeType<RecipeHolder<T>>> grouping
+	)
+	{
+		return cachedList.getRecipes(Minecraft.getInstance().level).stream()
+				.filter(h -> h.value().listInJEI()) // filter to JEI visible
+				.sorted()
+				.collect(Collectors.groupingBy(h -> grouping.apply(h.value()))); // group with function
 	}
 
 	@Override
@@ -202,8 +232,8 @@ public class JEIHelper implements IModPlugin
 		registration.addRecipeCatalyst(IEMultiblockLogic.FERMENTER.iconStack(), JEIRecipeTypes.FERMENTER);
 		registration.addRecipeCatalyst(IEMultiblockLogic.REFINERY.iconStack(), JEIRecipeTypes.REFINERY);
 		registration.addRecipeCatalyst(IEMultiblockLogic.ARC_FURNACE.iconStack(), JEIRecipeTypes.ARC_FURNACE, JEIRecipeTypes.ARC_FURNACE_RECYCLING);
-		registration.addRecipeCatalyst(IEMultiblockLogic.BOTTLING_MACHINE.iconStack(), JEIRecipeTypes.BOTTLING_MACHINE);
-		registration.addRecipeCatalyst(IEMultiblockLogic.MIXER.iconStack(), JEIRecipeTypes.MIXER);
+		registration.addRecipeCatalyst(IEMultiblockLogic.BOTTLING_MACHINE.iconStack(), JEIRecipeTypes.BOTTLING_MACHINE, JEIRecipeTypes.BOTTLING_MACHINE_POTIONS);
+		registration.addRecipeCatalyst(IEMultiblockLogic.MIXER.iconStack(), JEIRecipeTypes.MIXER, JEIRecipeTypes.MIXER_POTIONS);
 	}
 
 	@Override
@@ -217,7 +247,7 @@ public class JEIHelper implements IModPlugin
 		registration.addRecipeClickArea(FermenterScreen.class, 90, 19, 20, 33, JEIRecipeTypes.FERMENTER);
 		registration.addRecipeClickArea(RefineryScreen.class, 92, 24, 14, 20, JEIRecipeTypes.REFINERY);
 		registration.addRecipeClickArea(ArcFurnaceScreen.class, 81, 38, 23, 35, JEIRecipeTypes.ARC_FURNACE, JEIRecipeTypes.ARC_FURNACE_RECYCLING);
-		registration.addRecipeClickArea(MixerScreen.class, 52, 11, 16, 47, JEIRecipeTypes.MIXER);
+		registration.addRecipeClickArea(MixerScreen.class, 52, 11, 16, 47, JEIRecipeTypes.MIXER, JEIRecipeTypes.MIXER_POTIONS);
 
 		registration.addRecipeClickArea(ModWorkbenchScreen.class, 4, 41, 53, 18, JEIRecipeTypes.BLUEPRINT);
 		registration.addRecipeClickArea(AutoWorkbenchScreen.class, 90, 12, 39, 37, JEIRecipeTypes.BLUEPRINT);

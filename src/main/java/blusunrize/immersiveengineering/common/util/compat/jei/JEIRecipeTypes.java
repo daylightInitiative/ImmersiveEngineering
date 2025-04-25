@@ -24,6 +24,8 @@ public class JEIRecipeTypes
 	public static final RecipeType<RecipeHolder<BlastFurnaceRecipe>> BLAST_FURNACE = create(IERecipeTypes.BLAST_FURNACE);
 	public static final RecipeType<RecipeHolder<BlueprintCraftingRecipe>> BLUEPRINT = create(IERecipeTypes.BLUEPRINT);
 	public static final RecipeType<RecipeHolder<BottlingMachineRecipe>> BOTTLING_MACHINE = create(IERecipeTypes.BOTTLING_MACHINE);
+	public static final RecipeType<RecipeHolder<BottlingMachineRecipe>> BOTTLING_MACHINE_BUCKETS = createManual(IEApi.ieLoc("bottling_buckets"));
+	public static final RecipeType<RecipeHolder<BottlingMachineRecipe>> BOTTLING_MACHINE_POTIONS = createManual(IEApi.ieLoc("bottling_potions"));
 	public static final RecipeType<RecipeHolder<ClocheRecipe>> CLOCHE = create(IERecipeTypes.CLOCHE);
 	public static final RecipeType<RecipeHolder<ClocheFertilizer>> CLOCHE_FERTILIZER = create(IERecipeTypes.FERTILIZER);
 	public static final RecipeType<RecipeHolder<CokeOvenRecipe>> COKE_OVEN = create(IERecipeTypes.COKE_OVEN);
@@ -31,6 +33,7 @@ public class JEIRecipeTypes
 	public static final RecipeType<RecipeHolder<FermenterRecipe>> FERMENTER = create(IERecipeTypes.FERMENTER);
 	public static final RecipeType<RecipeHolder<MetalPressRecipe>> METAL_PRESS = create(IERecipeTypes.METAL_PRESS);
 	public static final RecipeType<RecipeHolder<MixerRecipe>> MIXER = create(IERecipeTypes.MIXER);
+	public static final RecipeType<RecipeHolder<MixerRecipe>> MIXER_POTIONS = createManual(IEApi.ieLoc("mixer_potions"));
 	public static final RecipeType<RecipeHolder<RefineryRecipe>> REFINERY = create(IERecipeTypes.REFINERY);
 	public static final RecipeType<RecipeHolder<SawmillRecipe>> SAWMILL = create(IERecipeTypes.SAWMILL);
 	public static final RecipeType<RecipeHolder<SqueezerRecipe>> SQUEEZER = create(IERecipeTypes.SQUEEZER);
