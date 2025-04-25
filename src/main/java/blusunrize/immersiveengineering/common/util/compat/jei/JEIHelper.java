@@ -42,7 +42,6 @@ import blusunrize.immersiveengineering.common.util.compat.jei.refinery.RefineryR
 import blusunrize.immersiveengineering.common.util.compat.jei.sawmill.SawmillRecipeCategory;
 import blusunrize.immersiveengineering.common.util.compat.jei.squeezer.SqueezerRecipeCategory;
 import blusunrize.immersiveengineering.common.util.compat.jei.workbench.WorkbenchRecipeCategory;
-import com.mojang.datafixers.util.Either;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.RecipeTypes;
@@ -55,7 +54,6 @@ import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.registration.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.Holder;
-import net.minecraft.core.component.DataComponentPredicate;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -66,6 +64,7 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Comparator;
@@ -281,8 +280,6 @@ public class JEIHelper implements IModPlugin
 		registration.addGhostIngredientHandler(FluidSorterScreen.class, new FluidSorterGhostHandler());
 	}
 
-
-	// TODO these throw when joining servers!
 	private List<RecipeHolder<BottlingMachineRecipe>> getFluidBucketRecipes()
 	{
 		return BuiltInRegistries.FLUID.holders()
@@ -296,7 +293,7 @@ public class JEIHelper implements IModPlugin
 							new BottlingMachineRecipe(
 									new TagOutputList(new TagOutput(bucket)),
 									IngredientWithSize.of(new ItemStack(Items.BUCKET)),
-									new FluidTagInput(Either.right(List.of(key)), 1000, DataComponentPredicate.EMPTY)
+									SizedFluidIngredient.of(holder.value(), 1000)
 							)
 					);
 				}).toList();

@@ -30,7 +30,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static blusunrize.immersiveengineering.common.crafting.PotionHelper.getFluidTagForType;
+import static blusunrize.immersiveengineering.common.crafting.PotionHelper.getFluidIngredientForType;
 import static blusunrize.immersiveengineering.common.fluids.PotionFluid.getFluidStackForType;
 
 /**
@@ -56,17 +56,17 @@ public class PotionRecipeGenerators
 				new BottlingMachineRecipe(
 						new TagOutputList(new TagOutput(PotionContents.createItemStack(Items.POTION, potion))),
 						IngredientWithSize.of(new ItemStack(Items.GLASS_BOTTLE)),
-						getFluidTagForType(potion, 250, PotionFluid.PotionBottleType.REGULAR)
+						getFluidIngredientForType(potion, 250, PotionFluid.PotionBottleType.REGULAR)
 				),
 				new BottlingMachineRecipe(
 						new TagOutputList(new TagOutput(PotionContents.createItemStack(Items.SPLASH_POTION, potion))),
 						IngredientWithSize.of(new ItemStack(Items.GLASS_BOTTLE)),
-						getFluidTagForType(potion, 250, PotionFluid.PotionBottleType.SPLASH)
+						getFluidIngredientForType(potion, 250, PotionFluid.PotionBottleType.SPLASH)
 				),
 				new BottlingMachineRecipe(
 						new TagOutputList(new TagOutput(PotionContents.createItemStack(Items.LINGERING_POTION, potion))),
 						IngredientWithSize.of(new ItemStack(Items.GLASS_BOTTLE)),
-						getFluidTagForType(potion, 250, PotionFluid.PotionBottleType.LINGERING)
+						getFluidIngredientForType(potion, 250, PotionFluid.PotionBottleType.LINGERING)
 				)
 		};
 
@@ -76,7 +76,7 @@ public class PotionRecipeGenerators
 			return new BottlingMachineRecipe(
 					new TagOutputList(new TagOutput(PotionContents.createItemStack(potionBulletItem, potion))),
 					new IngredientWithSize(Ingredient.of(potionBulletItem)),
-					getFluidTagForType(potion, 250, PotionFluid.PotionBottleType.REGULAR)
+					getFluidIngredientForType(potion, 250, PotionFluid.PotionBottleType.REGULAR)
 			);
 		};
 
@@ -115,17 +115,17 @@ public class PotionRecipeGenerators
 			for(PotionBottleType bottle : PotionFluid.PotionBottleType.values())
 				existing.add(new MixerRecipe(
 						getFluidStackForType(Optional.of(output), FluidType.BUCKET_VOLUME, bottle),
-						getFluidTagForType(input, FluidType.BUCKET_VOLUME, bottle), List.of(reagent), 6400)
+						getFluidIngredientForType(input, FluidType.BUCKET_VOLUME, bottle), List.of(reagent), 6400)
 				);
 			// bottle changes
 			existing.add(new MixerRecipe(
 					getFluidStackForType(Optional.of(output), FluidType.BUCKET_VOLUME, PotionFluid.PotionBottleType.SPLASH),
-					getFluidTagForType(output, FluidType.BUCKET_VOLUME, PotionFluid.PotionBottleType.REGULAR),
+					getFluidIngredientForType(output, FluidType.BUCKET_VOLUME, PotionFluid.PotionBottleType.REGULAR),
 					List.of(new IngredientWithSize(Tags.Items.GUNPOWDERS)), 6400
 			));
 			existing.add(new MixerRecipe(
 					getFluidStackForType(Optional.of(output), FluidType.BUCKET_VOLUME, PotionFluid.PotionBottleType.LINGERING),
-					getFluidTagForType(output, FluidType.BUCKET_VOLUME, PotionFluid.PotionBottleType.SPLASH),
+					getFluidIngredientForType(output, FluidType.BUCKET_VOLUME, PotionFluid.PotionBottleType.SPLASH),
 					List.of(IngredientWithSize.of(Items.DRAGON_BREATH.getDefaultInstance())), 6400
 			));
 		}

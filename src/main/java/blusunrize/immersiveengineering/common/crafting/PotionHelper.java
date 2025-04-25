@@ -10,16 +10,14 @@
 package blusunrize.immersiveengineering.common.crafting;
 
 import blusunrize.immersiveengineering.ImmersiveEngineering;
-import blusunrize.immersiveengineering.api.IETags;
-import blusunrize.immersiveengineering.api.crafting.FluidTagInput;
 import blusunrize.immersiveengineering.api.crafting.IngredientWithSize;
 import blusunrize.immersiveengineering.common.fluids.PotionFluid.PotionBottleType;
 import blusunrize.immersiveengineering.common.register.IEDataComponents;
+import blusunrize.immersiveengineering.common.register.IEFluids;
 import blusunrize.immersiveengineering.mixin.accessors.PotionBrewingAccess;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentPredicate;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -30,23 +28,24 @@ import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.common.brewing.BrewingRecipe;
 import net.neoforged.neoforge.common.brewing.IBrewingRecipe;
+import net.neoforged.neoforge.fluids.crafting.DataComponentFluidIngredient;
+import net.neoforged.neoforge.fluids.crafting.FluidIngredient;
+import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 
 public class PotionHelper
 {
-	public static FluidTagInput getFluidTagForType(Holder<Potion> type, int amount, PotionBottleType potionBottleType)
+	public static SizedFluidIngredient getFluidIngredientForType(Holder<Potion> type, int amount, PotionBottleType potionBottleType)
 	{
 		if(type==Potions.WATER||type==null)
-			return new FluidTagInput(FluidTags.WATER, amount);
+			return SizedFluidIngredient.of(FluidTags.WATER, amount);
 		else
 		{
-			CompoundTag nbt = new CompoundTag();
-			nbt.putString("Potion", type.unwrapKey().orElseThrow().location().toString());
-
 			DataComponentPredicate.Builder pred = DataComponentPredicate.builder().expect(DataComponents.POTION_CONTENTS, new PotionContents(type));
 			if(potionBottleType!=null)
 				pred.expect(IEDataComponents.POTION_BOTTLE_TYPE.get(), potionBottleType);
-			return new FluidTagInput(IETags.fluidPotion, amount, pred.build());
+			FluidIngredient fluidIngredient = DataComponentFluidIngredient.of(false, pred.build(), IEFluids.POTION);
+			return new SizedFluidIngredient(fluidIngredient, amount);
 		}
 	}
 

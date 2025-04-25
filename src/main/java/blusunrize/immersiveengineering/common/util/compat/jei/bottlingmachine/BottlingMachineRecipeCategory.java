@@ -35,6 +35,7 @@ import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.neoforged.neoforge.fluids.FluidType;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class BottlingMachineRecipeCategory extends IERecipeCategory<BottlingMachineRecipe>
@@ -97,10 +98,10 @@ public class BottlingMachineRecipeCategory extends IERecipeCategory<BottlingMach
 					.addItemStack(outputs.get(i))
 					.setBackground(JEIHelper.slotDrawable, -1, -1);
 
-		int tankSize = Math.max(FluidType.BUCKET_VOLUME, recipe.fluidInput.getAmount());
+		int tankSize = Math.max(FluidType.BUCKET_VOLUME, recipe.fluidInput.amount());
 		builder.addSlot(RecipeIngredientRole.INPUT, 24, 2)
 				.setFluidRenderer(tankSize, false, 16, 52)
-				.addIngredients(NeoForgeTypes.FLUID_STACK, recipe.fluidInput.getMatchingFluidStacks())
+				.addIngredients(NeoForgeTypes.FLUID_STACK, Arrays.asList(recipe.fluidInput.getFluids()))
 				.addRichTooltipCallback(JEIHelper.fluidTooltipCallback);
 	}
 

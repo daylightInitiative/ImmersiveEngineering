@@ -74,10 +74,10 @@ public class MixerRecipeCategory extends IERecipeCategory<MixerRecipe>
 	@Override
 	public void setRecipe(IRecipeLayoutBuilder builder, MixerRecipe recipe, IFocusGroup focuses)
 	{
-		int tankSize = Math.max(2*FluidType.BUCKET_VOLUME, Math.max(recipe.fluidInput.getAmount(), recipe.fluidOutput.getAmount()));
+		int tankSize = Math.max(2*FluidType.BUCKET_VOLUME, Math.max(recipe.fluidInput.amount(), recipe.fluidOutput.getAmount()));
 		builder.addSlot(RecipeIngredientRole.INPUT, 48, 3)
 				.setFluidRenderer(tankSize, false, 58, 47)
-				.addIngredients(NeoForgeTypes.FLUID_STACK, recipe.fluidInput.getMatchingFluidStacks())
+				.addIngredients(NeoForgeTypes.FLUID_STACK, Arrays.asList(recipe.fluidInput.getFluids()))
 				.addRichTooltipCallback(JEIHelper.fluidTooltipCallback);
 
 		builder.addSlot(RecipeIngredientRole.OUTPUT, 139, 3)
