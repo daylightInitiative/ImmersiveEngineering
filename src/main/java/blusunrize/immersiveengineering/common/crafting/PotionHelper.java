@@ -13,6 +13,8 @@ import blusunrize.immersiveengineering.ImmersiveEngineering;
 import blusunrize.immersiveengineering.api.IETags;
 import blusunrize.immersiveengineering.api.crafting.FluidTagInput;
 import blusunrize.immersiveengineering.api.crafting.IngredientWithSize;
+import blusunrize.immersiveengineering.common.fluids.PotionFluid.PotionBottleType;
+import blusunrize.immersiveengineering.common.register.IEDataComponents;
 import blusunrize.immersiveengineering.mixin.accessors.PotionBrewingAccess;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentPredicate;
@@ -32,7 +34,7 @@ import net.neoforged.neoforge.server.ServerLifecycleHooks;
 
 public class PotionHelper
 {
-	public static FluidTagInput getFluidTagForType(Holder<Potion> type, int amount)
+	public static FluidTagInput getFluidTagForType(Holder<Potion> type, int amount, PotionBottleType potionBottleType)
 	{
 		if(type==Potions.WATER||type==null)
 			return new FluidTagInput(FluidTags.WATER, amount);
@@ -40,9 +42,11 @@ public class PotionHelper
 		{
 			CompoundTag nbt = new CompoundTag();
 			nbt.putString("Potion", type.unwrapKey().orElseThrow().location().toString());
-			return new FluidTagInput(IETags.fluidPotion, amount, DataComponentPredicate.builder()
-					.expect(DataComponents.POTION_CONTENTS, new PotionContents(type))
-					.build());
+
+			DataComponentPredicate.Builder pred = DataComponentPredicate.builder().expect(DataComponents.POTION_CONTENTS, new PotionContents(type));
+			if(potionBottleType!=null)
+				pred.expect(IEDataComponents.POTION_BOTTLE_TYPE.get(), potionBottleType);
+			return new FluidTagInput(IETags.fluidPotion, amount, pred.build());
 		}
 	}
 

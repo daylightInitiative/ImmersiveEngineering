@@ -779,7 +779,7 @@ public class Utils
 			var potionContents = stack.get(POTION_CONTENTS);
 			return (potionContents==null)?
 					getFluidContained(stack).orElse(FluidStack.EMPTY):
-					PotionFluid.getFluidStackForType(potionContents.potion(), 250);
+					PotionFluid.getFluidStackForType(potionContents.potion(), 250, PotionFluid.PotionBottleType.fromItem(stack.getItemHolder()));
 		}
 	}
 }

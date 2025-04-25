@@ -19,6 +19,8 @@ import blusunrize.immersiveengineering.api.wires.utils.WireLink;
 import blusunrize.immersiveengineering.common.blocks.metal.CapacitorBlockEntity.CapacitorState;
 import blusunrize.immersiveengineering.common.blocks.metal.FeedthroughBlockEntity;
 import blusunrize.immersiveengineering.common.blocks.metal.TurretBlockEntity.TurretConfig;
+import blusunrize.immersiveengineering.common.fluids.PotionFluid.PotionBottleType;
+import blusunrize.immersiveengineering.common.fluids.PotionFluid;
 import blusunrize.immersiveengineering.common.items.ChemthrowerItem.ChemthrowerData;
 import blusunrize.immersiveengineering.common.items.CoresampleItem;
 import blusunrize.immersiveengineering.common.items.CoresampleItem.CoresampleMapData;
@@ -130,6 +132,7 @@ public class IEDataComponents
 					.networkSynchronized(ByteBufCodecs.INT)
 					.build()
 	);
+	public static DeferredHolder<DataComponentType<?>, DataComponentType<PotionBottleType>> POTION_BOTTLE_TYPE = make("potion_bottle_type", PotionFluid.PotionBottleType.CODEC);
 
 	public static void init(IEventBus bus)
 	{
