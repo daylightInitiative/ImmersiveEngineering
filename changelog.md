@@ -9,6 +9,7 @@
 - Change Fluid Pumps to allow inverting their redstone control with a screwdriver (BluSunrize)
 - Change IE to use NeoForge's native fluid ingredients in recipes (BluSunrize)
     - This is a breaking change for any addons, but there isn't any released so we should be safe
+    - This also finally allows Create potions to be used in the Mixer & Bottling Machine
 - Allow vanilla wall blocks to connect to windows (BluSunrize)
 - Fix circuit table closing when inventory key is pressed (BluSunrize)
 - Fix assembler not saving its stored patterns with the world (BluSunrize)

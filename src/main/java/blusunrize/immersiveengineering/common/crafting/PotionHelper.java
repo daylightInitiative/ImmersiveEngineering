@@ -28,13 +28,19 @@ import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.common.brewing.BrewingRecipe;
 import net.neoforged.neoforge.common.brewing.IBrewingRecipe;
+import net.neoforged.neoforge.fluids.crafting.CompoundFluidIngredient;
 import net.neoforged.neoforge.fluids.crafting.DataComponentFluidIngredient;
 import net.neoforged.neoforge.fluids.crafting.FluidIngredient;
 import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 
+import java.util.function.BiFunction;
+import java.util.function.Function;
+
 public class PotionHelper
 {
+	public static BiFunction<Holder<Potion>, PotionBottleType, FluidIngredient> CREATE_POTION_BUILDER;
+
 	public static SizedFluidIngredient getFluidIngredientForType(Holder<Potion> type, int amount, PotionBottleType potionBottleType)
 	{
 		if(type==Potions.WATER||type==null)
@@ -45,6 +51,14 @@ public class PotionHelper
 			if(potionBottleType!=null)
 				pred.expect(IEDataComponents.POTION_BOTTLE_TYPE.get(), potionBottleType);
 			FluidIngredient fluidIngredient = DataComponentFluidIngredient.of(false, pred.build(), IEFluids.POTION);
+
+			// Support Create if installed
+			if(CREATE_POTION_BUILDER!=null)
+				fluidIngredient = CompoundFluidIngredient.of(
+						fluidIngredient,
+						CREATE_POTION_BUILDER.apply(type, potionBottleType)
+				);
+
 			return new SizedFluidIngredient(fluidIngredient, amount);
 		}
 	}
