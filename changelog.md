@@ -5,7 +5,7 @@
 - Add a manual entry for the Automaton Wolves (BluSunrize)
     - This entry is only unlocked when picking up their blueprint!
 - Add wall blocks for hempcrete, concrete and their variations!
--  (BluSunrize)
+- Add splash & lingering potion recipes to the mixer & bottling machine (BluSunrize)
 - Change Fluid Pumps to allow inverting their redstone control with a screwdriver (BluSunrize)
 - Change IE to use NeoForge's native fluid ingredients in recipes (BluSunrize)
     - This is a breaking change for any addons, but there isn't any released so we should be safe
