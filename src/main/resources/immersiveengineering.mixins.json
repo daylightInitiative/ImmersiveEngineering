@@ -31,7 +31,6 @@
     "accessors.TrimModelDataAccess",
     "coremods.AbstractBlockStateMixin",
     "coremods.BreezeDeflectionMixin",
-    "coremods.NeoForgeMixin",
     "coremods.ServerWorldMixin",
     "coremods.TemplateMixin",
     "coremods.WallMixin",
