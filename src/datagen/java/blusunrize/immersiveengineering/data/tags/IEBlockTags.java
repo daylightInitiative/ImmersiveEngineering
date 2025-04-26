@@ -87,6 +87,7 @@ public class IEBlockTags extends BlockTagsProvider
 		tag(BlockTags.WOODEN_TRAPDOORS)
 				.add(WoodenDecoration.TRAPDOOR.get())
 				.add(WoodenDecoration.TRAPDOOR_FRAMED.get());
+		registerSigns(WoodenDecoration.SIGN, MetalDecoration.STEEL_SIGN, MetalDecoration.ALU_SIGN);
 		tag(BlockTags.PLANKS).add(WoodenDecoration.FIBERBOARD.get());
 		tag(IETags.fencesSteel)
 				.add(MetalDecoration.STEEL_FENCE.get());
@@ -687,6 +688,17 @@ public class IEBlockTags extends BlockTagsProvider
 			default -> throw new IllegalArgumentException("No tag available for "+level.name());
 		};
 		tag(tag).add(block.get());
+	}
+
+	private void registerSigns(SignHolder... signs)
+	{
+		for(SignHolder holder : signs)
+		{
+			tag(BlockTags.STANDING_SIGNS).add(holder.sign().get());
+			tag(BlockTags.WALL_SIGNS).add(holder.wall().get());
+			tag(BlockTags.CEILING_HANGING_SIGNS).add(holder.hanging().get());
+			tag(BlockTags.WALL_HANGING_SIGNS).add(holder.wallHanging().get());
+		}
 	}
 
 	private void checkAllRegisteredForBreaking()

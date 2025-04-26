@@ -1,4 +1,4 @@
-// 1.21.1	2025-04-23T20:11:44.7041666	Tags for minecraft:block mod id immersiveengineering
+// 1.21.1	2025-04-26T11:01:16.9334125	Tags for minecraft:block mod id immersiveengineering
 23e0570e60d941c629a243d8c02fbf74523eee75 data/chiselsandbits/tags/block/chiselable/forced.json
 bb2e9cd3d85c96526d774c4c6023d900f99a15bc data/c/tags/block/fences/aluminum.json
 c9ee95be2edb84e91278b0fef1cbc9dea336b664 data/c/tags/block/fences/steel.json
@@ -66,6 +66,7 @@ b7ae6076dcdde66b8bd7c303e7f5ea5e58ba24f1 data/immersiveengineering/tags/block/sc
 485ca26048e0c430a7ab442ed9e5b1a1ea596bb5 data/immersiveengineering/tags/block/treated_wood_slab.json
 9acd1b4c75ce6ff1914c8b9852a3e6d29bb85403 data/minecraft/tags/block/azalea_root_replaceable.json
 9acd1b4c75ce6ff1914c8b9852a3e6d29bb85403 data/minecraft/tags/block/bamboo_plantable_on.json
+4489768dac585a31f75376b8ead4e8780bbc94ca data/minecraft/tags/block/ceiling_hanging_signs.json
 3cd6a3f387dbdf003ef362dd1a6c26b1d8322e17 data/minecraft/tags/block/climbable.json
 570f4747fd57b1bd476af0e54e7c4b0542ec975d data/minecraft/tags/block/crops.json
 a2a8f45efe8798f97765aeee47cf9da51ffd3c30 data/minecraft/tags/block/dead_bush_may_place_on.json
@@ -83,8 +84,11 @@ da83d2c4f2c93e3c8b94aaa7391d094b109192f9 data/minecraft/tags/block/planks.json
 13e61703d17f2edebaa53906f2ff9a3beb4709f1 data/minecraft/tags/block/slabs.json
 252c5620ae4ddfd7acb69280b47ec9bd69b60bc9 data/minecraft/tags/block/snow_layer_cannot_survive_on.json
 bbd9a9fd5180792793e77d07c66775c573ddbaee data/minecraft/tags/block/stairs.json
+f74b55e37c92308c08312abefa8c1726975fb754 data/minecraft/tags/block/standing_signs.json
 46c5600ed93fc7d8c77be69bf583cd3e973a4b2c data/minecraft/tags/block/trapdoors.json
 4d63735e1bd6fcad9a87f31c2c711c54d679dcd4 data/minecraft/tags/block/walls.json
+1a27b7d0e774e904303b487bd3173d5d7898eacc data/minecraft/tags/block/wall_hanging_signs.json
+f30fc04b457f3fc0fa7be1d1f78fb6617807ca8c data/minecraft/tags/block/wall_signs.json
 e56e6d646c605a7b25c35712343a261c49707d0b data/minecraft/tags/block/wither_immune.json
 078e5b168cce6b9b501cc2b5efe7cc0898b6f58e data/minecraft/tags/block/wooden_doors.json
 31aec3619b657eb55bc44a76ed1dba40e168472b data/minecraft/tags/block/wooden_fences.json
