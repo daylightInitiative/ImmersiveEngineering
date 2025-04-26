@@ -418,7 +418,7 @@ public class Villages
 		}
 	}
 
-	public static record RerollingItemListing(String functionKey) implements ItemListing
+	public record RerollingItemListing(String functionKey) implements ItemListing
 	{
 		private static final String RANDOMIZED_OFFERS_KEY = "immersiveengineering:randomized_offers";
 		private static final Map<String, GenerateOffer> OFFER_FUNCTIONS = new HashMap<>();
@@ -433,7 +433,7 @@ public class Villages
 		public MerchantOffer getOffer(Entity trader, @Nonnull RandomSource random)
 		{
 			Player player = null;
-			if(trader instanceof AbstractVillager villager)
+			if(trader instanceof AbstractVillager villager&&!villager.level().isClientSide())
 			{
 				player = villager.getTradingPlayer();
 

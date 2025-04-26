@@ -1,3 +1,6 @@
+##### Version 1.21.1-12.2.1-pre
+- Fix error for mods like JustEnoughResources querying IE's villager trades (BluSunrize)
+
 ##### Version 1.21.1-12.2.0-187
 - Adjust the Automaton Wolves (BluSunrize)
     - They can no longer be healed with meat, this also prevents breeding them.
