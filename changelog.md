@@ -16,6 +16,7 @@
 - Fix JEI pattern button crashing when used in the assembler (BluSunrize)
 - Fix fluid pipes causing forced chunkloads when building their network (BluSunrize)
 - Fix signs losing their content when moved by Create contraptions (BluSunrize)
+- Fix broken link in the manual (BluSunrize)
 
 ##### Version 1.21.1-12.1.1-186
 - Add Automaton Wolves! (BluSunrize)
