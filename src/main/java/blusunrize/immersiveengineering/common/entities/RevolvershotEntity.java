@@ -43,6 +43,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.PacketDistributor;
 
+import javax.annotation.Nonnull;
 import java.util.UUID;
 
 public class RevolvershotEntity extends IEProjectileEntity
@@ -219,10 +220,11 @@ public class RevolvershotEntity extends IEProjectileEntity
 		return false;
 	}
 
+	@Nonnull
 	@Override
 	protected ItemStack getDefaultPickupItem()
 	{
-		return ItemStack.EMPTY;
+		return BulletHandler.getBulletStack(IEBullets.CASULL);
 	}
 
 	@Override

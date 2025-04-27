@@ -10,6 +10,7 @@ package blusunrize.immersiveengineering.common.entities;
 
 import blusunrize.immersiveengineering.common.config.IEServerConfig;
 import blusunrize.immersiveengineering.common.register.IEEntityTypes;
+import blusunrize.immersiveengineering.common.register.IEItems.Tools;
 import blusunrize.immersiveengineering.common.util.IEDamageSources;
 import blusunrize.immersiveengineering.common.util.Utils;
 import blusunrize.immersiveengineering.mixin.accessors.AbstractArrowAccess;
@@ -60,9 +61,16 @@ public class SawbladeEntity extends IEProjectileEntity
 
 	@Nonnull
 	@Override
-	protected ItemStack getDefaultPickupItem()
+	protected ItemStack getPickupItem()
 	{
 		return ammo;
+	}
+
+	@Nonnull
+	@Override
+	protected ItemStack getDefaultPickupItem()
+	{
+		return Tools.SAWBLADE.asItem().getDefaultInstance();
 	}
 
 	public void setAmmoSynced()

@@ -12,6 +12,7 @@ import blusunrize.immersiveengineering.api.tool.RailgunHandler;
 import blusunrize.immersiveengineering.api.tool.RailgunHandler.IRailgunProjectile;
 import blusunrize.immersiveengineering.common.config.IEServerConfig;
 import blusunrize.immersiveengineering.common.register.IEEntityTypes;
+import blusunrize.immersiveengineering.common.register.IEItems.Ingredients;
 import blusunrize.immersiveengineering.common.util.IEDamageSources;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -57,10 +58,18 @@ public class RailgunShotEntity extends IEProjectileEntity
 		builder.define(dataMarker_ammo, ItemStack.EMPTY);
 	}
 
+	@Nonnull
+	@Override
+	protected ItemStack getPickupItem()
+	{
+		return ammo;
+	}
+
+	@Nonnull
 	@Override
 	protected ItemStack getDefaultPickupItem()
 	{
-		return ammo;
+		return Ingredients.STICK_STEEL.asItem().getDefaultInstance();
 	}
 
 	public void setAmmoSynced()

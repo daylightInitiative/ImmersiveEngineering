@@ -4,6 +4,7 @@
     - They won't target teammates or animals tamed by teammates
     - This does *not* apply to bullets fired by turrets 
 - Fix error for mods like JustEnoughResources querying IE's villager trades (BluSunrize)
+- Fix errors when saving IE's projectile entities (BluSunrize)
 
 ##### Version 1.21.1-12.2.0-187
 - Adjust the Automaton Wolves (BluSunrize)
