@@ -3,6 +3,9 @@
     - They won't shoot your wolves (or other animals tamed by the shooter anymore)
     - They won't target teammates or animals tamed by teammates
     - This does *not* apply to bullets fired by turrets 
+- Change Wolfpack Cartridges to apply a buff to nearby tamed wolves when used! (BluSunrize)
+    - Your wolves (and your allies' wolves) gain speed and strength
+    - Your wolves will focus on the hit target, if they don't already have a mob they are targeting
 - Fix error for mods like JustEnoughResources querying IE's villager trades (BluSunrize)
 - Fix errors when saving IE's projectile entities (BluSunrize)
 
