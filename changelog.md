@@ -8,6 +8,7 @@
     - Your wolves will focus on the hit target, if they don't already have a mob they are targeting
 - Fix error for mods like JustEnoughResources querying IE's villager trades (BluSunrize)
 - Fix errors when saving IE's projectile entities (BluSunrize)
+- Fix wooden supports on sheetmetal tanks having the wrong bounding box (BluSunrize)
 
 ##### Version 1.21.1-12.2.0-187
 - Adjust the Automaton Wolves (BluSunrize)

@@ -47,7 +47,7 @@ import java.util.function.Supplier;
 
 public class SheetmetalTankLogic implements IServerTickableComponent<State>, MBOverlayText<State>
 {
-	private static final SiloTankShapes SHAPE_GETTER = new SiloTankShapes(4);
+	private static final SiloTankShapes SHAPE_GETTER = new SiloTankShapes(4, false);
 	public static final BlockPos IO_POS = new BlockPos(1, 0, 1);
 	private static final BlockPos INPUT_POS = new BlockPos(1, 4, 1);
 

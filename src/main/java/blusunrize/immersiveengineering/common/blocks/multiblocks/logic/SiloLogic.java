@@ -39,7 +39,7 @@ import java.util.function.Supplier;
 
 public class SiloLogic implements IMultiblockLogic<State>, IServerTickableComponent<State>
 {
-	private static final SiloTankShapes SHAPE_GETTER = new SiloTankShapes(6);
+	private static final SiloTankShapes SHAPE_GETTER = new SiloTankShapes(6, true);
 	private static final int MAX_STORAGE = 41472;
 	public static final BlockPos OUTPUT_POS = new BlockPos(1, 0, 1);
 	private static final Set<BlockPos> IO_OFFSETS = Set.of(OUTPUT_POS, new BlockPos(1, 6, 1));
