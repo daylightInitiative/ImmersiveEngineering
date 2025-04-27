@@ -6,6 +6,10 @@
 - Change Wolfpack Cartridges to apply a buff to nearby tamed wolves when used! (BluSunrize)
     - Your wolves (and your allies' wolves) gain speed and strength
     - Your wolves will focus on the hit target, if they don't already have a mob they are targeting
+- Change Sheetmetal Tanks & Silos to be formed from *any* Sheetmetal! (BluSunrize)
+    - This allows making them with whatever metal you have on hand
+    - They memorize their structure and will return those blocks again
+    - Their colour can not be adjusted with this, because that would require a massive rework of their models
 - Fix error for mods like JustEnoughResources querying IE's villager trades (BluSunrize)
 - Fix errors when saving IE's projectile entities (BluSunrize)
 - Fix wooden supports on sheetmetal tanks having the wrong bounding box (BluSunrize)

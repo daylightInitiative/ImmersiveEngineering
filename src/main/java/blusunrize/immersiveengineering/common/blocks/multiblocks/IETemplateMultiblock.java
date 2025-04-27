@@ -9,6 +9,7 @@
 package blusunrize.immersiveengineering.common.blocks.multiblocks;
 
 import blusunrize.immersiveengineering.api.IEProperties;
+import blusunrize.immersiveengineering.api.multiblocks.BlockMatcher.MatcherPredicate;
 import blusunrize.immersiveengineering.api.multiblocks.ClientMultiblocks.MultiblockManualData;
 import blusunrize.immersiveengineering.api.multiblocks.TemplateMultiblock;
 import blusunrize.immersiveengineering.api.multiblocks.blocks.MultiblockRegistration;
@@ -39,6 +40,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -52,6 +54,15 @@ public abstract class IETemplateMultiblock extends TemplateMultiblock
 	)
 	{
 		super(loc, masterFromOrigin, triggerFromOrigin, size, ImmutableMap.of());
+		this.logic = logic;
+	}
+
+	public IETemplateMultiblock(
+			ResourceLocation loc, BlockPos masterFromOrigin, BlockPos triggerFromOrigin, BlockPos size,
+			MultiblockRegistration<?> logic, List<MatcherPredicate> additionalPredicates
+	)
+	{
+		super(loc, masterFromOrigin, triggerFromOrigin, size, additionalPredicates);
 		this.logic = logic;
 	}
 
