@@ -11,11 +11,14 @@ package blusunrize.immersiveengineering.common.entities;
 import blusunrize.immersiveengineering.api.tool.BulletHandler.IBullet;
 import blusunrize.immersiveengineering.common.register.IEEntityTypes;
 import com.mojang.datafixers.util.Unit;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.scores.PlayerTeam;
 
 public class RevolvershotHomingEntity extends RevolvershotEntity
 {
@@ -76,10 +79,24 @@ public class RevolvershotHomingEntity extends RevolvershotEntity
 		double r = 20D;
 		AABB aabb = new AABB(getX()-r, getY()-r, getZ()-r, getX()+r, getY()+r, getZ()+r);
 		LivingEntity target = null;
+		Entity shooter = getOwner();
+		PlayerTeam team = shooter!=null?shooter.getTeam(): null;
 		for(LivingEntity o : level().getEntitiesOfClass(LivingEntity.class, aabb))
-			if(o!=null&&!o.equals(getOwner()))
-				if(target==null||o.distanceToSqr(this) < target.distanceToSqr(this))
-					target = o;
+		{
+			if(o.equals(getOwner())) // don't hit yourself
+				continue;
+			if(team!=null&&team.equals(o.getTeam())) // don't hit your teammates
+				continue;
+			if(o instanceof TamableAnimal tamable&&tamable.getOwner()!=null)
+			{
+				if(tamable.getOwner().equals(shooter)) // don't hit your wolves
+					continue;
+				if(team!=null&&team.equals(tamable.getOwner().getTeam())) // don't hit your team's wolves
+					continue;
+			}
+			if(target==null||o.distanceToSqr(this) < target.distanceToSqr(this))
+				target = o;
+		}
 		return target;
 	}
 }
