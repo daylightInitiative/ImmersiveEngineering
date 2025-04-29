@@ -13,6 +13,7 @@
 - Fix error for mods like JustEnoughResources querying IE's villager trades (BluSunrize)
 - Fix errors when saving IE's projectile entities (BluSunrize)
 - Fix wooden supports on sheetmetal tanks having the wrong bounding box (BluSunrize)
+- Fix revolver perks not combining correctly on crafting (BluSunrize)
 
 ##### Version 1.21.1-12.2.0-187
 - Adjust the Automaton Wolves (BluSunrize)
