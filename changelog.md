@@ -15,6 +15,7 @@
 - Fix wooden supports on sheetmetal tanks having the wrong bounding box (BluSunrize)
 - Fix revolver perks not combining correctly on crafting (BluSunrize)
 - Fix JEI recipe transfer not working in the Engineer's Crafting Table (BluSunrize)
+- Fix inverted rendering for the buzzsaw, drill and chemthrower (BluSunrize)
 
 ##### Version 1.21.1-12.2.0-187
 - Adjust the Automaton Wolves (BluSunrize)
