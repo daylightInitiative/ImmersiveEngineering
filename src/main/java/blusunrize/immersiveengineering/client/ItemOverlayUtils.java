@@ -60,7 +60,9 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import org.joml.Quaternionf;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.function.BiConsumer;
+import java.util.function.Predicate;
 
 import static blusunrize.immersiveengineering.api.IEApi.ieLoc;
 import static blusunrize.immersiveengineering.api.Lib.getRedstoneColorComponent;
@@ -68,6 +70,26 @@ import static blusunrize.immersiveengineering.api.Lib.getRedstoneColorComponent;
 @EventBusSubscriber(value = Dist.CLIENT, modid = Lib.MODID, bus = Bus.MOD)
 public class ItemOverlayUtils
 {
+	private static final List<SubtitleOffset> SUBTITLE_OFFSETS = List.of(
+			new SubtitleOffset(s -> s.getItem() instanceof ChemthrowerItem, 60f),
+			new SubtitleOffset(s -> s.getItem() instanceof DrillItem||s.getItem() instanceof BuzzsawItem, 70f),
+			new SubtitleOffset(s -> s.getItem() instanceof RevolverItem||s.getItem() instanceof SpeedloaderItem
+					||(s.getItem() instanceof IEShieldItem shield&&!shield.getUpgrades(s).entries().isEmpty()), 80f),
+			new SubtitleOffset(s -> s.getItem() instanceof RailgunItem, 90f)
+	);
+
+	public static void handleTooltipOffset(GuiGraphics guiGraphics, boolean pre)
+	{
+		Player player = ClientUtils.mc().player;
+		if(player==null)
+			return;
+		ItemStack rightHandItem = HumanoidArm.RIGHT==player.getMainArm()?player.getMainHandItem(): player.getOffhandItem();
+		SUBTITLE_OFFSETS.forEach(c -> {
+			if(c.cond.test(rightHandItem))
+				guiGraphics.pose().translate(pre?-c.offset: c.offset, 0, 0);
+		});
+	}
+
 	@SubscribeEvent
 	public static void register(RegisterGuiLayersEvent ev)
 	{
@@ -292,7 +314,7 @@ public class ItemOverlayUtils
 			return;
 		boolean boundLeft = ItemUtils.getLivingHand(player, hand)==HumanoidArm.LEFT;
 		float dx = boundLeft?16: (scaledWidth-16-64);
-		float dy = scaledHeight;
+		float dy = scaledHeight-16;
 		var transform = graphics.pose();
 		transform.pushPose();
 		transform.translate(dx, dy, 0);
@@ -394,4 +416,7 @@ public class ItemOverlayUtils
 		return Minecraft.getInstance().gui.rightHeight;
 	}
 
+	record SubtitleOffset(Predicate<ItemStack> cond, float offset)
+	{
+	}
 }

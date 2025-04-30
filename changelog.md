@@ -10,6 +10,7 @@
     - This allows making them with whatever metal you have on hand
     - They memorize their structure and will return those blocks again
     - Their colour can not be adjusted with this, because that would require a massive rework of their models
+- Re-add offset for subtitles when rendering displays for held items (BluSunrize)
 - Fix error for mods like JustEnoughResources querying IE's villager trades (BluSunrize)
 - Fix errors when saving IE's projectile entities (BluSunrize)
 - Fix wooden supports on sheetmetal tanks having the wrong bounding box (BluSunrize)

@@ -318,6 +318,9 @@ public class ClientEventHandler implements ResourceManagerReloadListener
 	@SubscribeEvent
 	public void onRenderOverlayPre(RenderGuiLayerEvent.Pre event)
 	{
+		if(event.getName().equals(VanillaGuiLayers.SUBTITLE_OVERLAY))
+			ItemOverlayUtils.handleTooltipOffset(event.getGuiGraphics(), true);
+
 		// early exit if not handling zooming
 		if(!event.getName().equals(VanillaGuiLayers.CROSSHAIR)||!ZoomHandler.isZooming)
 			return;
@@ -397,6 +400,13 @@ public class ClientEventHandler implements ResourceManagerReloadListener
 		graphics.drawString(ClientUtils.font(), (1/zoomSteps[curStep])+"x", 0, 0, 0xffffff, false);
 		RenderSystem.disableBlend();
 		transform.popPose();
+	}
+
+	@SubscribeEvent
+	public void onRenderOverlayPost(RenderGuiLayerEvent.Post event)
+	{
+		if(event.getName().equals(VanillaGuiLayers.SUBTITLE_OVERLAY))
+			ItemOverlayUtils.handleTooltipOffset(event.getGuiGraphics(), false);
 	}
 
 	@SubscribeEvent()
