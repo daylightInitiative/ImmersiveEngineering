@@ -28,7 +28,6 @@ import blusunrize.immersiveengineering.common.network.MessageRequestRedstoneUpda
 import blusunrize.immersiveengineering.common.register.IEItems.Misc;
 import blusunrize.immersiveengineering.common.register.IEItems.Tools;
 import blusunrize.immersiveengineering.common.util.Utils;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
@@ -61,7 +60,6 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import org.joml.Quaternionf;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.function.BiConsumer;
 
 import static blusunrize.immersiveengineering.api.IEApi.ieLoc;
@@ -157,9 +155,8 @@ public class ItemOverlayUtils
 		if(bullets!=null)
 		{
 			int bulletAmount = ((IBulletContainer)equipped.getItem()).getBulletCount(equipped);
-			HumanoidArm side = ItemUtils.getLivingHand(player, hand);
-			boolean right = side==HumanoidArm.RIGHT;
-			float dx = right?scaledWidth-32-48: 48;
+			boolean boundLeft = ItemUtils.getLivingHand(player, hand)==HumanoidArm.LEFT;
+			float dx = boundLeft?48: scaledWidth-32-48;
 			float dy = scaledHeight-64;
 			PoseStack transform = graphics.pose();
 			transform.pushPose();
@@ -178,7 +175,7 @@ public class ItemOverlayUtils
 		int chargeLevel = duration < 72000?Math.min(99, (int)(duration/(float)chargeTime*100)): 0;
 		float scale = 1.5f;
 
-		boolean boundLeft = (player.getMainArm()==HumanoidArm.RIGHT)==(hand==InteractionHand.OFF_HAND);
+		boolean boundLeft = ItemUtils.getLivingHand(player, hand)==HumanoidArm.LEFT;
 		int dx = boundLeft?24: (scaledWidth-24-64);
 		int dy = scaledHeight-16;
 		var transform = graphics.pose();
@@ -199,12 +196,12 @@ public class ItemOverlayUtils
 		transform.popPose();
 	}
 
-	public static void renderFluidTankOverlay(GuiGraphics graphics, int scaledWidth, int scaledHeight,
+	public static void renderFluidTankOverlay(GuiGraphics graphics, int xStart, int scaledHeight,
 											  Player player, InteractionHand hand, ItemStack equipped, boolean renderFluidUse,
 											  BiConsumer<GuiGraphics, IFluidHandlerItem> additionalRender)
 	{
 		var transform = graphics.pose();
-		float dx = scaledWidth-16;
+		float dx = xStart;
 		float dy = scaledHeight;
 		transform.pushPose();
 		transform.translate(dx, dy, 0);
@@ -244,7 +241,9 @@ public class ItemOverlayUtils
 	public static void renderDrillOverlay(GuiGraphics graphics, int scaledWidth, int scaledHeight,
 										  Player player, InteractionHand hand, ItemStack equipped)
 	{
-		renderFluidTankOverlay(graphics, scaledWidth, scaledHeight, player, hand, equipped, false, (builder, handler) -> {
+		boolean boundLeft = ItemUtils.getLivingHand(player, hand)==HumanoidArm.LEFT;
+		int xStart = boundLeft?60: scaledWidth-16;
+		renderFluidTankOverlay(graphics, xStart, scaledHeight, player, hand, equipped, false, (builder, handler) -> {
 			builder.blitSprite(ieLoc("hud/gauge_with_item"), -54, -73, 66, 72);
 			ItemStack head = ((DrillItem)equipped.getItem()).getHead(equipped);
 			if(!head.isEmpty())
@@ -255,7 +254,9 @@ public class ItemOverlayUtils
 	public static void renderBuzzsawOverlay(GuiGraphics graphics, int scaledWidth, int scaledHeight,
 											Player player, InteractionHand hand, ItemStack equipped)
 	{
-		renderFluidTankOverlay(graphics, scaledWidth, scaledHeight, player, hand, equipped, false, (builder, handler) -> {
+		boolean boundLeft = ItemUtils.getLivingHand(player, hand)==HumanoidArm.LEFT;
+		int xStart = boundLeft?60: scaledWidth-16;
+		renderFluidTankOverlay(graphics, xStart, scaledHeight, player, hand, equipped, false, (builder, handler) -> {
 			builder.blitSprite(ieLoc("hud/gauge_with_item"), -54, -73, 66, 72);
 			ItemStack blade = ((BuzzsawItem)equipped.getItem()).getHead(equipped);
 			if(!blade.isEmpty())
@@ -266,18 +267,19 @@ public class ItemOverlayUtils
 	public static void renderChemthrowerOverlay(GuiGraphics graphics, int scaledWidth, int scaledHeight,
 												Player player, InteractionHand hand, ItemStack equipped)
 	{
-		renderFluidTankOverlay(graphics, scaledWidth, scaledHeight, player, hand, equipped, true, (builder, handler) -> {
+		boolean boundLeft = ItemUtils.getLivingHand(player, hand)==HumanoidArm.LEFT;
+		int xStart = boundLeft?54: scaledWidth-16;
+		renderFluidTankOverlay(graphics, xStart, scaledHeight, player, hand, equipped, true, (builder, handler) -> {
 			builder.blitSprite(ieLoc("hud/gauge_no_item"), -41, -73, 53, 72);
 			boolean ignite = ChemthrowerItem.isIgniteEnable(equipped);
 			builder.blitSprite(ieLoc(ignite?"hud/with_flame": "hud/no_flame"), -32, -43, 12, 12);
-
-			builder.blitSprite(ieLoc("hud/text_label"), -100, -20, 64, 16);
+			builder.blitSprite(ieLoc("hud/text_label"), -52, -93, 64, 16);
 			FluidStack fuel = handler.getFluidInTank(0);
 			if(!fuel.isEmpty())
 			{
 				String name = ClientUtils.font().substrByWidth(fuel.getHoverName(), 50).getString().trim();
 				int width = ClientUtils.font().width(name);
-				graphics.drawString(ClientUtils.font(), name, -68-width/2, -15, 0x333333, false);
+				graphics.drawString(ClientUtils.font(), name, -20-width/2, -88, 0x333333, false);
 			}
 		});
 	}
@@ -288,7 +290,7 @@ public class ItemOverlayUtils
 		var upgrades = ((IEShieldItem)equipped.getItem()).getUpgrades(equipped);
 		if(upgrades.entries().isEmpty())
 			return;
-		boolean boundLeft = (player.getMainArm()==HumanoidArm.RIGHT)==(hand==InteractionHand.OFF_HAND);
+		boolean boundLeft = ItemUtils.getLivingHand(player, hand)==HumanoidArm.LEFT;
 		float dx = boundLeft?16: (scaledWidth-16-64);
 		float dy = scaledHeight;
 		var transform = graphics.pose();

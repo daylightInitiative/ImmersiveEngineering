@@ -16,6 +16,7 @@
 - Fix revolver perks not combining correctly on crafting (BluSunrize)
 - Fix JEI recipe transfer not working in the Engineer's Crafting Table (BluSunrize)
 - Fix inverted rendering for the buzzsaw, drill and chemthrower (BluSunrize)
+- Fix overlay for buzzsaw, drill and chemthrower not displaying on the left hand side (BluSunrize)
 
 ##### Version 1.21.1-12.2.0-187
 - Adjust the Automaton Wolves (BluSunrize)
