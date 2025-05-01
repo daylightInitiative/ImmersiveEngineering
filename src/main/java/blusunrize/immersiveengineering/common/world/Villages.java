@@ -358,7 +358,6 @@ public class Villages
 			String offerIndexS = String.valueOf(offerIndex);
 			if(randomizedOffers.contains(offerIndexS))
 			{
-				System.out.println("Regenerate offer");
 				GenerateOffer offerFunction = RerollingItemListing.OFFER_FUNCTIONS.get(randomizedOffers.getString(offerIndexS));
 				MerchantOffer offer = offerFunction.generateOffer(villager, ev.getEntity(), villager.getRandom());
 				offer.increaseUses();

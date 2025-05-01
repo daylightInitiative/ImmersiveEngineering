@@ -227,7 +227,6 @@ public class DirectionalMiningExplosion extends Explosion
 					// actually do damage & knockback
 					entity.hurt(damageSource, damage);
 					entity.setDeltaMovement(entity.getDeltaMovement().add(org.joml.Math.clamp(-5f, 5f, x2*knockback), org.joml.Math.clamp(-5f, 5f, y2*knockback), org.joml.Math.clamp(-5f, 5f, z2*knockback)));
-					System.out.println(entity.getDeltaMovement().length());
 				}
 			}
 	}
