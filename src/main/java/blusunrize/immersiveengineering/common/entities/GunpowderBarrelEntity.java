@@ -16,10 +16,13 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.game.ClientboundExplodePacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.network.syncher.SynchedEntityData.Builder;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
@@ -170,6 +173,19 @@ public class GunpowderBarrelEntity extends PrimedTnt
 			{
 				if(!this.level().isClientSide()) explosion.explode();
 				explosion.finalizeExplosion(true);
+
+				if(level() instanceof ServerLevel serverLevel)
+					for(ServerPlayer serverplayer : serverLevel.players())
+						if(serverplayer.distanceToSqr(getX(), getY(), getZ()) < 4096.0)
+							serverplayer.connection.send(new ClientboundExplodePacket(
+									getX(), getY(), getZ(), 5,
+									explosion.getToBlow(),
+									explosion.getHitPlayers().get(serverplayer),
+									explosion.getBlockInteraction(),
+									explosion.getSmallExplosionParticles(),
+									explosion.getLargeExplosionParticles(),
+									explosion.getExplosionSound()
+							));
 			}
 			this.discard();
 		}

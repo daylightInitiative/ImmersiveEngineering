@@ -19,6 +19,7 @@
 - Fix inverted rendering for the buzzsaw, drill and chemthrower (BluSunrize)
 - Fix overlay for buzzsaw, drill and chemthrower not displaying on the left hand side (BluSunrize)
 - Fix shaders not being removed from tools properly (BluSunrize)
+- Fix gunpowder barrels not having sound and particles (BluSunrize)
 
 ##### Version 1.21.1-12.2.0-187
 - Adjust the Automaton Wolves (BluSunrize)
