@@ -35,7 +35,7 @@ public class GunpowderBarrelBlock extends TntBlock
 			.ignitedByLava()
 			.instrument(NoteBlockInstrument.BASS)
 			.sound(SoundType.WOOD)
-			.strength(2, 5);
+			.strength(2, 0);
 
 	public GunpowderBarrelBlock(BlockBehaviour.Properties props)
 	{
