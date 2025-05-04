@@ -198,6 +198,7 @@ public class BlockStates extends ExtendedBlockstateProvider
 		cubeAll(MetalDecoration.ENGINEERING_RS, rl("block/metal_decoration/redstone_engineering"));
 		cubeAll(MetalDecoration.ENGINEERING_HEAVY, rl("block/metal_decoration/heavy_engineering"));
 		cubeAll(MetalDecoration.ENGINEERING_LIGHT, rl("block/metal_decoration/light_engineering"));
+		cubeAll(MetalDecoration.ENGINEERING_RESONANZ, rl("block/metal_decoration/resonanz_engineering"));
 		cubeAll(MetalDecoration.GENERATOR, rl("block/metal_decoration/generator"));
 		cubeAll(MetalDecoration.RADIATOR, rl("block/metal_decoration/radiator"));
 

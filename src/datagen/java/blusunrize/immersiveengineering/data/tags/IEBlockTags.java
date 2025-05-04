@@ -415,7 +415,7 @@ public class IEBlockTags extends BlockTagsProvider
 				Connectors.REDSTONE_BREAKER.get(), Connectors.CURRENT_TRANSFORMER.get(), Connectors.POST_TRANSFORMER.get());
 		// multiblock components
 		tag.add(MetalDecoration.LV_COIL.get(), MetalDecoration.MV_COIL.get(), MetalDecoration.MV_COIL.get());
-		tag.add(MetalDecoration.ENGINEERING_RS.get(), MetalDecoration.ENGINEERING_LIGHT.get(), MetalDecoration.ENGINEERING_HEAVY.get(), MetalDecoration.RADIATOR.get(), MetalDecoration.GENERATOR.get());
+		tag.add(MetalDecoration.ENGINEERING_RS.get(), MetalDecoration.ENGINEERING_LIGHT.get(), MetalDecoration.ENGINEERING_HEAVY.get(), MetalDecoration.ENGINEERING_RESONANZ.get(), MetalDecoration.RADIATOR.get(), MetalDecoration.GENERATOR.get());
 		// multiblock blocks?
 		tag.add(IEMultiblocks.CRUSHER.getBlock(), IEMultiblocks.SAWMILL.getBlock(), IEMultiblocks.ARC_FURNACE.getBlock(), IEMultiblocks.ASSEMBLER.getBlock(),
 				IEMultiblocks.AUTO_WORKBENCH.getBlock(), IEMultiblocks.BOTTLING_MACHINE.getBlock(), IEMultiblocks.BUCKET_WHEEL.getBlock(),
@@ -592,6 +592,7 @@ public class IEBlockTags extends BlockTagsProvider
 				MetalDecoration.ENGINEERING_RS,
 				MetalDecoration.ENGINEERING_HEAVY,
 				MetalDecoration.ENGINEERING_LIGHT,
+				MetalDecoration.ENGINEERING_RESONANZ,
 				MetalDecoration.GENERATOR,
 				MetalDecoration.RADIATOR,
 				MetalDecoration.STEEL_FENCE,
