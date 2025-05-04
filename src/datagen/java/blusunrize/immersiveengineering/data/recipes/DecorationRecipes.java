@@ -605,6 +605,15 @@ public class DecorationRecipes extends IERecipeProvider
 				.unlockedBy("has_electrum_ingot", has(IETags.getTagsFor(EnumMetals.ELECTRUM).ingot))
 				.unlockedBy("has_component_steel", has(Ingredients.COMPONENT_STEEL))
 				.save(out, toRL(toPath(MetalDecoration.ENGINEERING_HEAVY)));
+		shapedMisc(MetalDecoration.ENGINEERING_RESONANZ, 4)
+				.pattern("igi")
+				.pattern("geg")
+				.pattern("igi")
+				.define('i', IETags.getItemTag(IETags.getTagsFor(EnumMetals.LEAD).sheetmetal))
+				.define('e', Items.ECHO_SHARD)
+				.define('g', Ingredients.COMPONENT_ELECTRONIC_ADV)
+				.unlockedBy("has_echo_shard", has(Items.ECHO_SHARD))
+				.save(out, toRL(toPath(MetalDecoration.ENGINEERING_RESONANZ)));
 		shapedMisc(MetalDecoration.GENERATOR, 4)
 				.pattern("ici")
 				.pattern("cgc")
