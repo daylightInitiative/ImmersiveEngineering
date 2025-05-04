@@ -54,8 +54,8 @@ public class IEMultiblocks
 	public static IETemplateMultiblock SHEETMETAL_TANK;
 	public static IETemplateMultiblock SILO;
 	public static IETemplateMultiblock SQUEEZER;
-
 	public static IETemplateMultiblock RADIO_TOWER;
+	public static IETemplateMultiblock CHUNK_LOADER;
 
 	public static void init()
 	{
@@ -140,6 +140,7 @@ public class IEMultiblocks
 						new TransformedMultiblock(BUCKET_WHEEL, new Vec3i(1, -2, 4), Rotation.COUNTERCLOCKWISE_90)
 				)));
 		RADIO_TOWER = register(new RadioTowerMultiblock());
+		CHUNK_LOADER = register(new ChunkLoaderMultiblock());
 	}
 
 	private static <T extends IMultiblock>

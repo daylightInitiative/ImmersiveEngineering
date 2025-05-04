@@ -140,6 +140,7 @@
     "immersiveengineering:tank",
     "immersiveengineering:silo",
     "immersiveengineering:squeezer",
-    "immersiveengineering:radio_tower"
+    "immersiveengineering:radio_tower",
+    "immersiveengineering:chunk_loader"
   ]
 }

@@ -160,6 +160,7 @@
   "block.immersiveengineering.capacitor_lv": "LV Accumulator",
   "block.immersiveengineering.capacitor_mv": "MV Accumulator",
   "block.immersiveengineering.charging_station": "Charging Station",
+  "block.immersiveengineering.chunk_loader": "Resonant Observer",
   "block.immersiveengineering.chute_aluminum": "Aluminium Sheetmetal Chute",
   "block.immersiveengineering.chute_colored_black": "Black Sheetmetal Chute",
   "block.immersiveengineering.chute_colored_blue": "Blue Sheetmetal Chute",

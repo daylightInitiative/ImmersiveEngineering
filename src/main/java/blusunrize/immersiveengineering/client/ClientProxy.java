@@ -142,6 +142,7 @@ public class ClientProxy extends CommonProxy
 		IEOBJCallbacks.register(rl("structural_connector"), StructuralConnectorCallbacks.INSTANCE);
 		IEOBJCallbacks.register(rl("turret"), TurretCallbacks.INSTANCE);
 		IEOBJCallbacks.register(rl("workbench"), WorkbenchCallbacks.INSTANCE);
+		IEOBJCallbacks.register(rl("chunk_loader"), ChunkLoaderCallbacks.INSTANCE);
 
 		IEOBJCallbacks.register(rl("submodel"), DynamicSubmodelCallbacks.INSTANCE);
 
