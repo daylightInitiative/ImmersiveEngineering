@@ -303,7 +303,7 @@ public class ItemModels extends TRSRItemModelProvider
 		addItemModels("", IEItems.Misc.FERTILIZER);
 		for(BannerEntry holder : IEBannerPatterns.ALL_BANNERS)
 			addItemModel("banner_pattern_"+holder.name(), holder.item());
-		addItemModels("", IEItems.Misc.ICON_BIRTHDAY, IEItems.Misc.ICON_LUCKY,
+		addItemModels("", IEItems.Misc.ICON_BIRTHDAY, IEItems.Misc.ICON_LUCKY, IEItems.Misc.ICON_ACHTUNG,
 				IEItems.Misc.ICON_DRILLBREAK, IEItems.Misc.ICON_RAVENHOLM, IEItems.Misc.ICON_FRIED, IEItems.Misc.ICON_BTTF);
 
 		withExistingParent(name(SpawnEggs.EGG_FUSILIER), ResourceLocation.withDefaultNamespace("item/template_spawn_egg"));

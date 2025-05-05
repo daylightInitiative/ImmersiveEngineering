@@ -1,4 +1,4 @@
-// 1.21.1	2025-04-17T11:54:45.8899868	Advancements
+// 1.21.1	2025-05-05T14:28:40.6967885	Advancements
 a56c7cdc987c927d83a5d45b1a0691a332636df0 data/immersiveengineering/advancement/main/buy_oremap.json
 6aeb82e9126df35ae4ffad9315152d4b80c3014c data/immersiveengineering/advancement/main/buy_shaderbag.json
 e09defe04c195d77ae4e0327762f4af55ac6a5a2 data/immersiveengineering/advancement/main/chorus_cloche.json
@@ -22,6 +22,7 @@ e4a1347098753c2283c59add7b54c1a4816efda2 data/immersiveengineering/advancement/m
 50c8d1a5b1e0fa8be50f0160dfe292a92318c37a data/immersiveengineering/advancement/main/place_conveyor.json
 be09ad46e862b1a51ada272276979ad1fe69c08b data/immersiveengineering/advancement/main/place_dynamo.json
 85902b55044128472397412105c30fb943ebdb5a data/immersiveengineering/advancement/main/place_windmill.json
+a7c74ac1f070da5d78ba6239f0e96c16bb774ed4 data/immersiveengineering/advancement/main/secret_achtung.json
 e1fa8bc0e63378ef2c82a8c7ae59a3e39ca9b9d9 data/immersiveengineering/advancement/main/secret_friedbird.json
 594e896493067ac7ed5718f40c29ad79c736a377 data/immersiveengineering/advancement/main/secret_luckofthedraw.json
 f92263ed7d681b341719d97f1c0e523cdc81d1d8 data/immersiveengineering/advancement/main/villager.json

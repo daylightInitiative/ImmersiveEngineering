@@ -292,5 +292,12 @@
       "immersiveengineering:buzzer"
     ],
     "subtitle": "subtitle.immersiveengineering.buzzer"
+  },
+  "note_block_resonanz": {
+    "category": "block",
+    "sounds": [
+      "immersiveengineering:note_block_resonanz"
+    ],
+    "subtitle": "subtitles.block.note_block.note"
   }
 }

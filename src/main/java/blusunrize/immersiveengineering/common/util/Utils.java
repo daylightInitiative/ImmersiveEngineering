@@ -406,6 +406,18 @@ public class Utils
 		return Math.abs(d) < .25;
 	}
 
+	public static boolean hasIEAdvancement(Player player, String name)
+	{
+		if(player instanceof ServerPlayer)
+		{
+			PlayerAdvancements advancements = ((ServerPlayer)player).getAdvancements();
+			ServerAdvancementManager manager = ((ServerLevel)player.getCommandSenderWorld()).getServer().getAdvancements();
+			AdvancementHolder advancement = manager.get(IEApi.ieLoc(name));
+			if(advancement!=null)
+				return advancements.getOrStartProgress(advancement).isDone();
+		}
+		return false;
+	}
 	public static void unlockIEAdvancement(Player player, String name)
 	{
 		if(player instanceof ServerPlayer)
