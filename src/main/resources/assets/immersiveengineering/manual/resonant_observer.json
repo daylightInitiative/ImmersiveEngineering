@@ -1,0 +1,6 @@
+{
+  "structure": {
+    "type": "multiblock",
+    "name": "multiblocks/chunk_loader"
+  }
+}

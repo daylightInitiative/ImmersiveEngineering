@@ -1,0 +1,10 @@
+Resonant Observer
+A song we all dance to, ...
+§o...but few can hear§r<br>
+There is a curiosity about this world, not easily described. It appears as if any machine and living being simply stops moving when no one is close enough to perceive it.<br>
+But no engineer can afford to waste their time standing next to the machine to keep it running - so an artificial observer shall do so instead!<np>
+<&structure>
+The resonant observer relies on the strange qualities of echo shards and the highly sensitive sculk sensor to keep an area of up to 16 blocks around it active and working, even if no one is nearby.<np>
+To operate, the observer needs energy, input through the port on the §lright side§r of the structure.<br>
+To protocol its observations, it also requires a supply of §2paper§r, fed in through the port on the §lleft side§r.<br>
+Applying a redstone signal to the control panel at the front will disable the machine, this behavior can be inverted by use of the Engineer's Screwdriver.<br>
