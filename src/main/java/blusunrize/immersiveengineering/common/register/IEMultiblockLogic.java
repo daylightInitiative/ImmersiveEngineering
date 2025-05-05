@@ -176,7 +176,7 @@ public class IEMultiblockLogic
 	public static final MultiblockRegistration<ChunkLoaderLogic.State> CHUNK_LOADER = metal(new ChunkLoaderLogic(), "chunk_loader")
 			.structure(() -> IEMultiblocks.CHUNK_LOADER)
 			.redstone(s -> s.rsState, ChunkLoaderLogic.REDSTONE_POS)
-			//			.gui(IEMenuTypes.RADIO_TOWER)
+			.gui(IEMenuTypes.CHUNK_LOADER)
 			.build();
 
 	private static <S extends IMultiblockState>

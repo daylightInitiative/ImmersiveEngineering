@@ -15,6 +15,7 @@ import blusunrize.immersiveengineering.common.gui.sync.GenericDataSerializers.Da
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -62,6 +63,14 @@ public class GenericContainerData<T>
 	public static GenericContainerData<Float> float32(Supplier<Float> get, Consumer<Float> set)
 	{
 		return new GenericContainerData<>(GenericDataSerializers.FLOAT, get, set);
+	}
+
+	public static GenericContainerData<?> strings(List<String> list)
+	{
+		return new GenericContainerData<>(GenericDataSerializers.STRINGS, () -> list, s -> {
+			list.clear();
+			list.addAll(s);
+		});
 	}
 
 	public boolean needsUpdate()

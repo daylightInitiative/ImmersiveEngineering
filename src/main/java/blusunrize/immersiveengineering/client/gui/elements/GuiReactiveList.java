@@ -36,6 +36,9 @@ public class GuiReactiveList extends Button
 	private boolean needsSlider = false;
 	protected int perPage;
 	private final float textScale = 1;
+	public int textColor = 0xE0E0E0;
+	public int textColorHovered = Lib.COLOUR_I_ImmersiveOrange;
+	public boolean textShadow = true;
 
 	protected int offset;
 	private int maxOffset;
@@ -121,7 +124,7 @@ public class GuiReactiveList extends Button
 		for(int i = 0; i < Math.min(perPage, entries.size()); i++)
 		{
 			int j = offset+i;
-			int col = 0xE0E0E0;
+			int col = this.textColor;
 			boolean selectionHover = isHovered&&mmY >= i*fr.lineHeight&&mmY < (i+1)*fr.lineHeight;
 			if(selectionHover)
 			{
@@ -133,7 +136,7 @@ public class GuiReactiveList extends Button
 				}
 				else
 					hoverTimer++;
-				col = Lib.COLOUR_I_ImmersiveOrange;
+				col = this.textColorHovered;
 			}
 			if(j > entries.size()-1)
 				j = entries.size()-1;
@@ -151,7 +154,7 @@ public class GuiReactiveList extends Button
 			float tx = ((getX()+padding[2])/textScale);
 			float ty = ((getY()+padding[0]+(fr.lineHeight*i))/textScale);
 			graphics.pose().translate(tx, ty, 0);
-			graphics.drawString(fr, s, 0, 0, col);
+			graphics.drawString(fr, s, 0, 0, col, textShadow);
 			graphics.pose().translate(-tx, -ty, 0);
 		}
 		graphics.pose().scale(1/textScale, 1/textScale, 1);

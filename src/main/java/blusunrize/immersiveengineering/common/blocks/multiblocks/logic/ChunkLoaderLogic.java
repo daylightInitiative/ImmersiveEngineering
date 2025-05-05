@@ -35,10 +35,13 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.core.SectionPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.capabilities.Capabilities.EnergyStorage;
 import net.neoforged.neoforge.capabilities.Capabilities.ItemHandler;
@@ -46,10 +49,13 @@ import net.neoforged.neoforge.common.world.chunk.TicketController;
 import net.neoforged.neoforge.common.world.chunk.TicketSet;
 import net.neoforged.neoforge.items.IItemHandler;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class ChunkLoaderLogic
 		implements IMultiblockLogic<State>, IServerTickableComponent<State>, IClientTickableComponent<State>
@@ -82,11 +88,12 @@ public class ChunkLoaderLogic
 		final State state = context.getState();
 		if(!(context.getLevel().getRawLevel() instanceof ServerLevel serverLevel))
 			return;
+		boolean isActive = state.refreshTimer > 0;
 		BlockPos masterPos = context.getLevel().toAbsolute(ChunkLoaderMultiblock.MASTER_OFFSET);
 		int energy_required = IEServerConfig.MACHINES.resonant_observer_consumption.get();
 		if(state.rsState.isEnabled(context)&&state.energy.extractEnergy(energy_required, true)==energy_required)
 		{
-			if(state.refreshTimer==0&&!state.inventory.getStackInSlot(0).isEmpty())
+			if(!isActive&&!state.inventory.getStackInSlot(0).isEmpty())
 			{
 				// consume paper
 				state.inventory.getStackInSlot(0).shrink(1);
@@ -97,13 +104,16 @@ public class ChunkLoaderLogic
 				// mark chunks for loading
 				forceChunks(serverLevel, masterPos, true);
 			}
-			else if(state.refreshTimer > 0)
+			else if(isActive)
 				state.refreshTimer--;
 			else
 				forceChunks(serverLevel, masterPos, false);
 		}
-		else
+		else if(isActive)
+		{
+			state.refreshTimer = 0;
 			forceChunks(serverLevel, masterPos, false);
+		}
 	}
 
 	private void forceChunks(ServerLevel level, BlockPos masterPos, boolean add)
@@ -112,7 +122,7 @@ public class ChunkLoaderLogic
 			TICKET_CONTROLLER.forceChunk(level, masterPos, chunk.x, chunk.z, add, true);
 	}
 
-	private ChunkPos[] getChunks(BlockPos masterPos)
+	private static ChunkPos[] getChunks(BlockPos masterPos)
 	{
 		int chunkX = SectionPos.blockToSectionCoord(masterPos.getX());
 		int chunkZ = SectionPos.blockToSectionCoord(masterPos.getZ());
@@ -159,7 +169,7 @@ public class ChunkLoaderLogic
 		public final SlotwiseItemHandler inventory;
 		public final AveragingEnergyStorage energy = new AveragingEnergyStorage(ENERGY_CAPACITY);
 		public final RSState rsState = RSState.enabledByDefault();
-		private int refreshTimer = 0;
+		public int refreshTimer = 0;
 
 		private final IItemHandler input;
 
@@ -191,13 +201,29 @@ public class ChunkLoaderLogic
 		@Override
 		public void writeSyncNBT(CompoundTag nbt, Provider provider)
 		{
-			// write a dummy value to prevent NPE exceptions
-			nbt.putBoolean("npe_avoid", true);
+			nbt.putInt("refreshTimer", refreshTimer);
 		}
 
 		@Override
 		public void readSyncNBT(CompoundTag nbt, Provider provider)
 		{
+			refreshTimer = nbt.getInt("refreshTimer");
+		}
+
+		public List<String> getNearbyBlockEntities(IMultiblockContext<State> ctx)
+		{
+			BlockPos masterPos = ctx.getLevel().toAbsolute(ChunkLoaderMultiblock.MASTER_OFFSET);
+			ChunkPos[] chunks = ChunkLoaderLogic.getChunks(masterPos);
+			Level level = ctx.getLevel().getRawLevel();
+			Map<MutableComponent, Long> all = Arrays.stream(chunks)
+					// find all block entities in the area
+					.flatMap(pos -> level.getChunk(pos.x, pos.z).getBlockEntities().values().stream())
+					// filter to ticking ones
+					.filter(blockEntity -> !masterPos.equals(blockEntity.getBlockPos())&&blockEntity.getBlockState().getTicker(level, blockEntity.getType())!=null)
+					// collect them into a map by count
+					.collect(Collectors.groupingBy(blockEntity -> blockEntity.getBlockState().getBlock().getName(), Collectors.counting()));
+			// then make that into strings - yes this will be serverside localization, I don't care.
+			return all.entrySet().stream().map(entry -> Component.literal(+entry.getValue()+"x ").append(entry.getKey()).getString()).toList();
 		}
 	}
 }

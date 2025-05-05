@@ -95,6 +95,7 @@ public class Lib
 	public static final String GUIID_AutoWorkbench = "autoworkbench";
 	public static final String GUIID_Mixer = "mixer";
 	public static final String GUIID_RadioTower = "radiotower";
+	public static final String GUIID_ChunkLoader = "chunkloader";
 	public static final String GUIID_Turret_Gun = "turret_gun";
 	public static final String GUIID_Turret_Chem = "turret_chem";
 	public static final String GUIID_FluidSorter = "fluidsorter";
