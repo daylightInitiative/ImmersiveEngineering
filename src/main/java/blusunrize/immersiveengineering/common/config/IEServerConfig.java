@@ -294,6 +294,7 @@ public class IEServerConfig
 			}
 			radio_tower_consumption = addPositive(builder, "radio_tower_consumption", 128, "The Flux the Radio Tower will consume per tick to remain active");
 			resonant_observer_consumption = addPositive(builder, "resonant_observer_consumption", 128, "The Flux the Resonant Observer will consume per tick to remain active");
+			resonant_observer_paper_duration= addPositive(builder, "resonant_observer_paper_duration", 60, "The duration in seconds that a single piece of paper will fuel the Resonant Observer for");
 			builder.pop();
 		}
 
@@ -432,6 +433,7 @@ public class IEServerConfig
 		public final DoubleValue excavator_initial_depletion;
 		public final IntValue radio_tower_consumption;
 		public final IntValue resonant_observer_consumption;
+		public final IntValue resonant_observer_paper_duration;
 	}
 
 	public static class Ores

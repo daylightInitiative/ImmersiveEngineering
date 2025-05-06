@@ -99,8 +99,8 @@ public class ChunkLoaderLogic
 					state.inventory.getStackInSlot(0).shrink(1);
 					// consume energy
 					state.energy.extractEnergy(energy_required, false);
-					// set timer to 1 minute
-					state.refreshTimer = 60*20;
+					// set timer to the seconds configured in the config
+					state.refreshTimer = 20 * IEServerConfig.MACHINES.resonant_observer_paper_duration.get();
 					// mark chunks for loading
 					forceChunks(context, true);
 				}
