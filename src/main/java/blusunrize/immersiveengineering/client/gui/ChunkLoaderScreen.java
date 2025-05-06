@@ -46,10 +46,7 @@ public class ChunkLoaderScreen extends IEContainerScreen<ChunkLoaderMenu>
 				list -> {
 				},
 				() -> menu.blockEntityList
-		).setPadding(0, 0, 4, 4);
-		widget.textColor = 0x918d85;
-		widget.textColorHovered = 0x918d85;
-		widget.textShadow = false;
+		).setPadding(0, 0, 4, 4).setTextStyling(0x918d85, 0x918d85, false);
 		this.addRenderableWidget(widget);
 	}
 

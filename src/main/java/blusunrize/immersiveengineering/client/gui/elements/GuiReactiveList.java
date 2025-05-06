@@ -36,9 +36,9 @@ public class GuiReactiveList extends Button
 	private boolean needsSlider = false;
 	protected int perPage;
 	private final float textScale = 1;
-	public int textColor = 0xE0E0E0;
-	public int textColorHovered = Lib.COLOUR_I_ImmersiveOrange;
-	public boolean textShadow = true;
+	private int textColor = 0xE0E0E0;
+	private int textColorHovered = Lib.COLOUR_I_ImmersiveOrange;
+	private boolean textShadow = true;
 
 	protected int offset;
 	private int maxOffset;
@@ -67,6 +67,14 @@ public class GuiReactiveList extends Button
 			needsSlider = false;
 			this.maxOffset = this.offset = 0;
 		}
+	}
+
+	public GuiReactiveList setTextStyling(int textColor, int textColorHovered, boolean textShadow)
+	{
+		this.textColor = textColor;
+		this.textColorHovered = textColorHovered;
+		this.textShadow = textShadow;
+		return this;
 	}
 
 	public GuiReactiveList setPadding(int up, int down, int left, int right)
