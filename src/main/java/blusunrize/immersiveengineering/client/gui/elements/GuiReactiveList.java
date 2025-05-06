@@ -18,11 +18,12 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.List;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static blusunrize.immersiveengineering.api.IEApi.ieLoc;
 
-public class GuiReactiveList extends Button
+public class GuiReactiveList<E> extends Button
 {
 	private static final ResourceLocation SCROLL_TOP = ieLoc("slider_vertical/top");
 	private static final ResourceLocation SCROLL_BOTTOM = ieLoc("slider_vertical/bottom");
@@ -31,7 +32,8 @@ public class GuiReactiveList extends Button
 	private static final ResourceLocation SCROLL_BUTTON_BOTTOM = ieLoc("slider_vertical/button_bottom");
 	private static final ResourceLocation SCROLL_BUTTON_CENTER = ieLoc("slider_vertical/button_center");
 
-	protected Supplier<List<String>> entries;
+	protected Supplier<List<E>> entries;
+	protected Function<E, String> toStringFunction;
 	private final int[] padding = {0, 0, 0, 0};
 	private boolean needsSlider = false;
 	protected int perPage;
@@ -46,10 +48,16 @@ public class GuiReactiveList extends Button
 	private int targetEntry = -1;
 	private int hoverTimer = 0;
 
-	public GuiReactiveList(int x, int y, int w, int h, IIEPressable<? extends GuiReactiveList> handler, Supplier<List<String>> entries)
+	public GuiReactiveList(int x, int y, int w, int h, IIEPressable<? extends GuiReactiveList> handler, Supplier<List<E>> entries, Function<E, String> toStringFunction)
 	{
 		super(x, y, w, h, Component.empty(), handler, DEFAULT_NARRATION);
 		this.entries = entries;
+		this.toStringFunction = toStringFunction;
+	}
+
+	public static GuiReactiveList<String> build(int x, int y, int w, int h, IIEPressable<? extends GuiReactiveList<String>> handler, Supplier<List<String>> stringEntries)
+	{
+		return new GuiReactiveList<>(x, y, w, h, handler, stringEntries, s -> s);
 	}
 
 	private void recalculateEntries()
@@ -69,7 +77,7 @@ public class GuiReactiveList extends Button
 		}
 	}
 
-	public GuiReactiveList setTextStyling(int textColor, int textColorHovered, boolean textShadow)
+	public GuiReactiveList<E> setTextStyling(int textColor, int textColorHovered, boolean textShadow)
 	{
 		this.textColor = textColor;
 		this.textColorHovered = textColorHovered;
@@ -77,7 +85,7 @@ public class GuiReactiveList extends Button
 		return this;
 	}
 
-	public GuiReactiveList setPadding(int up, int down, int left, int right)
+	public GuiReactiveList<E> setPadding(int up, int down, int left, int right)
 	{
 		this.padding[0] = up;
 		this.padding[1] = down;
@@ -105,7 +113,7 @@ public class GuiReactiveList extends Button
 	public void renderWidget(GuiGraphics graphics, int mx, int my, float partialTicks)
 	{
 		recalculateEntries();
-		final List<String> entries = this.entries.get();
+		final List<E> entries = this.entries.get();
 		Font fr = ClientUtils.mc().font;
 
 		int mmY = my-this.getY();
@@ -148,7 +156,7 @@ public class GuiReactiveList extends Button
 			}
 			if(j > entries.size()-1)
 				j = entries.size()-1;
-			String s = entries.get(j);
+			String s = this.toStringFunction.apply(entries.get(j));
 			int overLength = s.length()-fr.plainSubstrByWidth(s, strWidth).length();
 			if(overLength > 0)//String is too long
 			{
