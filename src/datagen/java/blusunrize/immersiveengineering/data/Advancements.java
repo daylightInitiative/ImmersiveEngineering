@@ -279,6 +279,9 @@ public class Advancements extends AdvancementProvider
 		AdvancementBuilder.child("automatons", manualUnlocks)
 				.hasItemWithPredicate(Misc.BLUEPRINT, IEItemSubPredicates.BLUEPRINT.get(), new ItemBlueprintPredicate("automatons"))
 				.saveForManual(consumer);
+		AdvancementBuilder.child("resonanz", manualUnlocks)
+				.hasItems(Items.ECHO_SHARD)
+				.saveForManual(consumer);
 	}
 
 	private static Path createPath(Path pathIn, AdvancementHolder advancementIn)

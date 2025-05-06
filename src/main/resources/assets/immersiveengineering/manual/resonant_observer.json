@@ -1,4 +1,5 @@
 {
+  "require_advancement": "immersiveengineering:manual/resonanz",
   "structure": {
     "type": "multiblock",
     "name": "multiblocks/chunk_loader"
