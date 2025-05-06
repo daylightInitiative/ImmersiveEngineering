@@ -83,41 +83,43 @@ public class ChunkLoaderLogic
 	@Override
 	public void tickServer(IMultiblockContext<State> context)
 	{
-		final State state = context.getState();
-		if(!(context.getLevel().getRawLevel() instanceof ServerLevel serverLevel))
+		if(!(context.getLevel().getRawLevel() instanceof ServerLevel))
 			return;
-		boolean isActive = state.refreshTimer > 0;
-		BlockPos masterPos = context.getLevel().toAbsolute(ChunkLoaderMultiblock.MASTER_OFFSET);
+		final State state = context.getState();
 		int energy_required = IEServerConfig.MACHINES.resonant_observer_consumption.get();
 		if(state.rsState.isEnabled(context)&&state.energy.extractEnergy(energy_required, true)==energy_required)
 		{
-			if(!isActive&&!state.inventory.getStackInSlot(0).isEmpty())
-			{
-				// consume paper
-				state.inventory.getStackInSlot(0).shrink(1);
-				// consume energy
-				state.energy.extractEnergy(energy_required, false);
-				// set timer to 1 minute
-				state.refreshTimer = 60*20;
-				// mark chunks for loading
-				forceChunks(serverLevel, masterPos, true);
-			}
-			else if(isActive)
+			if(state.refreshTimer > 0)
 				state.refreshTimer--;
-			else
-				forceChunks(serverLevel, masterPos, false);
+
+			if(state.refreshTimer <= 0)
+				if(!state.inventory.getStackInSlot(0).isEmpty())
+				{
+					// consume paper
+					state.inventory.getStackInSlot(0).shrink(1);
+					// consume energy
+					state.energy.extractEnergy(energy_required, false);
+					// set timer to 1 minute
+					state.refreshTimer = 60*20;
+					// mark chunks for loading
+					forceChunks(context, true);
+				}
+				else
+					forceChunks(context, false);
 		}
-		else if(isActive)
+		else if(state.refreshTimer > 0)
 		{
 			state.refreshTimer = 0;
-			forceChunks(serverLevel, masterPos, false);
+			forceChunks(context, false);
 		}
 	}
 
-	private void forceChunks(ServerLevel level, BlockPos masterPos, boolean add)
+	private void forceChunks(IMultiblockContext<State> ctx, boolean add)
 	{
-		for(ChunkPos chunk : getChunks(masterPos))
-			TICKET_CONTROLLER.forceChunk(level, masterPos, chunk.x, chunk.z, add, true);
+		BlockPos masterPos = ctx.getLevel().toAbsolute(ChunkLoaderMultiblock.MASTER_OFFSET);
+		if((ctx.getLevel().getRawLevel() instanceof ServerLevel serverLevel))
+			for(ChunkPos chunk : getChunks(masterPos))
+				TICKET_CONTROLLER.forceChunk(serverLevel, masterPos, chunk.x, chunk.z, add, true);
 	}
 
 	private static ChunkPos[] getChunks(BlockPos masterPos)
@@ -135,6 +137,12 @@ public class ChunkLoaderLogic
 	@Override
 	public void tickClient(IMultiblockContext<State> context)
 	{
+	}
+
+	@Override
+	public void onRemoved(IMultiblockContext<State> context)
+	{
+		forceChunks(context, false);
 	}
 
 	@Override
