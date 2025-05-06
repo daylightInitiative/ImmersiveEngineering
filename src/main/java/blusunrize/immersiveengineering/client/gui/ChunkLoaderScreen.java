@@ -12,14 +12,18 @@ import blusunrize.immersiveengineering.client.gui.elements.GuiReactiveList;
 import blusunrize.immersiveengineering.client.gui.info.EnergyInfoArea;
 import blusunrize.immersiveengineering.client.gui.info.InfoArea;
 import blusunrize.immersiveengineering.common.gui.ChunkLoaderMenu;
+import blusunrize.immersiveengineering.common.gui.ChunkLoaderMenu.NearbyBlockEntity;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.Rect2i;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.VibrationParticleOption;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.gameevent.BlockPositionSource;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -40,13 +44,21 @@ public class ChunkLoaderScreen extends IEContainerScreen<ChunkLoaderMenu>
 	protected void init()
 	{
 		super.init();
-
-		GuiReactiveList widget = new GuiReactiveList(
+		GuiReactiveList<NearbyBlockEntity> widget = new GuiReactiveList<>(
 				leftPos+8, topPos+52, 96, 85,
-				list -> {
+				e -> {
+					List<NearbyBlockEntity> list = menu.blockEntityList.get();
+					BlockPos cystal = menu.crystalPos.get();
+					if(e.selectedOption >= 0&&!list.isEmpty())
+						list.get(e.selectedOption).pos().forEach(pos -> minecraft.level.addParticle(
+								new VibrationParticleOption(new BlockPositionSource(pos), 60),
+								cystal.getX()+.5, cystal.getY()+.5, cystal.getZ()+.5,
+								0.0, 0.0, 0.0
+						));
 				},
-				() -> menu.blockEntityList
-		).setPadding(0, 0, 4, 4).setTextStyling(0x918d85, 0x918d85, false);
+				menu.blockEntityList,
+				NearbyBlockEntity::getDisplayString
+		).setPadding(0, 0, 4, 4).setTextStyling(0x918d85, 0xada9a1, false);
 		this.addRenderableWidget(widget);
 	}
 

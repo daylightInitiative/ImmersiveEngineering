@@ -35,13 +35,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.core.SectionPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.capabilities.Capabilities.EnergyStorage;
 import net.neoforged.neoforge.capabilities.Capabilities.ItemHandler;
@@ -51,11 +50,10 @@ import net.neoforged.neoforge.items.IItemHandler;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ChunkLoaderLogic
 		implements IMultiblockLogic<State>, IServerTickableComponent<State>, IClientTickableComponent<State>
@@ -210,20 +208,16 @@ public class ChunkLoaderLogic
 			refreshTimer = nbt.getInt("refreshTimer");
 		}
 
-		public List<String> getNearbyBlockEntities(IMultiblockContext<State> ctx)
+		public Stream<BlockEntity> getNearbyBlockEntities(IMultiblockContext<State> ctx)
 		{
 			BlockPos masterPos = ctx.getLevel().toAbsolute(ChunkLoaderMultiblock.MASTER_OFFSET);
 			ChunkPos[] chunks = ChunkLoaderLogic.getChunks(masterPos);
 			Level level = ctx.getLevel().getRawLevel();
-			Map<MutableComponent, Long> all = Arrays.stream(chunks)
+			return Arrays.stream(chunks)
 					// find all block entities in the area
 					.flatMap(pos -> level.getChunk(pos.x, pos.z).getBlockEntities().values().stream())
 					// filter to ticking ones
-					.filter(blockEntity -> !masterPos.equals(blockEntity.getBlockPos())&&blockEntity.getBlockState().getTicker(level, blockEntity.getType())!=null)
-					// collect them into a map by count
-					.collect(Collectors.groupingBy(blockEntity -> blockEntity.getBlockState().getBlock().getName(), Collectors.counting()));
-			// then make that into strings - yes this will be serverside localization, I don't care.
-			return all.entrySet().stream().map(entry -> Component.literal(+entry.getValue()+"x ").append(entry.getKey()).getString()).toList();
+					.filter(blockEntity -> !masterPos.equals(blockEntity.getBlockPos())&&blockEntity.getBlockState().getTicker(level, blockEntity.getType())!=null);
 		}
 	}
 }

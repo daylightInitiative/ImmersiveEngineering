@@ -14,19 +14,36 @@ import blusunrize.immersiveengineering.api.energy.MutableEnergyStorage;
 import blusunrize.immersiveengineering.common.blocks.multiblocks.logic.ChunkLoaderLogic;
 import blusunrize.immersiveengineering.common.blocks.multiblocks.logic.ChunkLoaderLogic.State;
 import blusunrize.immersiveengineering.common.gui.sync.GenericContainerData;
+import blusunrize.immersiveengineering.common.gui.sync.GenericDataSerializers;
 import blusunrize.immersiveengineering.common.gui.sync.GetterAndSetter;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentSerialization;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collector;
 
 public class ChunkLoaderMenu extends IEContainerMenu
 {
+	private static BlockPos CRYSTAL_POS = new BlockPos(1, 3, 1);
+
 	public static ChunkLoaderMenu makeServer(
 			MenuType<?> type, int id, Inventory invPlayer, MultiblockMenuContext<State> ctx
 	)
@@ -37,8 +54,24 @@ public class ChunkLoaderMenu extends IEContainerMenu
 				invPlayer,
 				state.inventory,
 				state.energy,
-				state.getNearbyBlockEntities(ctx.mbContext()),
-				GetterAndSetter.getterOnly(()->state.refreshTimer)
+				GetterAndSetter.getterOnly(() -> state.getNearbyBlockEntities(ctx.mbContext())
+						.sorted(Comparator.comparing(blockEntity -> blockEntity.getBlockState().getBlock().getName().getString()))
+						.collect(Collector.of(
+								ArrayListMultimap::create,
+								(blockListMap, blockEntity) -> blockListMap.put(blockEntity.getBlockState().getBlock(), blockEntity.getBlockPos()),
+								(m1, m2) -> {
+									for(Block key : m2.keySet())
+										m1.get(key).addAll(m2.get(key));
+									return m1;
+								}, (Function<Multimap<Block, BlockPos>, List<NearbyBlockEntity>>)blockBlockPosMultimap -> {
+									List<NearbyBlockEntity> list = new ArrayList<>(blockBlockPosMultimap.keySet().size());
+									blockBlockPosMultimap.asMap().forEach((block, blockPos) -> list.add(new NearbyBlockEntity(block.getName(), List.copyOf(blockPos))));
+									return list;
+								})
+						)
+				),
+				GetterAndSetter.getterOnly(() -> state.refreshTimer),
+				GetterAndSetter.constant(ctx.mbContext().getLevel().toAbsolute(CRYSTAL_POS))
 		);
 	}
 
@@ -49,24 +82,28 @@ public class ChunkLoaderMenu extends IEContainerMenu
 				invPlayer,
 				new ItemStackHandler(1),
 				new MutableEnergyStorage(ChunkLoaderLogic.ENERGY_CAPACITY),
-				new ArrayList<>(),
-				GetterAndSetter.standalone(0)
+				GetterAndSetter.standalone(List.of()),
+				GetterAndSetter.standalone(0),
+				GetterAndSetter.standalone(BlockPos.ZERO)
 		);
 	}
 
 	public final IEnergyStorage energy;
-	public final List<String> blockEntityList;
+	public final GetterAndSetter<List<NearbyBlockEntity>> blockEntityList;
 	public final GetterAndSetter<Integer> refreshTimer;
+	public final GetterAndSetter<BlockPos> crystalPos;
 
 	public ChunkLoaderMenu(
 			MenuContext ctx, Inventory inventoryPlayer, IItemHandler inv,
-			IMutableEnergyStorage energy, List<String> blockEntityList, GetterAndSetter<Integer> refreshTimer
+			IMutableEnergyStorage energy, GetterAndSetter<List<NearbyBlockEntity>> blockEntityList,
+			GetterAndSetter<Integer> refreshTimer, GetterAndSetter<BlockPos> crystalPos
 	)
 	{
 		super(ctx);
 		this.energy = energy;
 		this.blockEntityList = blockEntityList;
 		this.refreshTimer = refreshTimer;
+		this.crystalPos = crystalPos;
 
 		this.addSlot(new IESlot.Tagged(inv, ownSlotCount++, 124, 94, IETags.paper));
 
@@ -76,7 +113,22 @@ public class ChunkLoaderMenu extends IEContainerMenu
 		for(int i = 0; i < 9; i++)
 			addSlot(new Slot(inventoryPlayer, i, 8+i*18, 218));
 		addGenericData(GenericContainerData.energy(energy));
-		addGenericData(GenericContainerData.strings(blockEntityList));
+		addGenericData(new GenericContainerData<>(GenericDataSerializers.NEARBY_BLOCK_ENTITIES, blockEntityList));
 		addGenericData(GenericContainerData.int32(refreshTimer.getter(), refreshTimer.setter()));
+		addGenericData(new GenericContainerData<>(GenericDataSerializers.BLOCK_POS, crystalPos));
+	}
+
+	public record NearbyBlockEntity(Component name, List<BlockPos> pos)
+	{
+		public static final StreamCodec<RegistryFriendlyByteBuf, NearbyBlockEntity> STREAM_CODEC = StreamCodec.composite(
+				ComponentSerialization.STREAM_CODEC, NearbyBlockEntity::name,
+				BlockPos.STREAM_CODEC.apply(ByteBufCodecs.list()), NearbyBlockEntity::pos,
+				NearbyBlockEntity::new
+		);
+
+		public String getDisplayString()
+		{
+			return pos.size()+"x"+name.getString();
+		}
 	}
 }

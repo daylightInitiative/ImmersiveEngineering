@@ -9,13 +9,14 @@
 
 package blusunrize.immersiveengineering.common.gui.sync;
 
-import blusunrize.immersiveengineering.api.utils.codec.IECodecs;
 import blusunrize.immersiveengineering.api.utils.codec.IEStreamCodecs;
 import blusunrize.immersiveengineering.common.blocks.wooden.SorterBlockEntity.FilterConfig;
 import blusunrize.immersiveengineering.common.gui.ArcFurnaceMenu.ProcessSlot;
+import blusunrize.immersiveengineering.common.gui.ChunkLoaderMenu.NearbyBlockEntity;
 import blusunrize.immersiveengineering.common.gui.MixerMenu;
 import blusunrize.immersiveengineering.common.gui.MixerMenu.SlotProgress;
 import blusunrize.immersiveengineering.common.gui.RadioTowerMenu.NearbyComponents;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -73,6 +74,10 @@ public class GenericDataSerializers
 	);
 	public static final DataSerializer<NearbyComponents> RADIO_TOWER_NEARBY = register(NearbyComponents.STREAM_CODEC);
 	public static final DataSerializer<FilterConfig> FILTER_CONFIG = register(FilterConfig.CODEC.streamCodec());
+	public static final DataSerializer<List<NearbyBlockEntity>> NEARBY_BLOCK_ENTITIES = register(
+			NearbyBlockEntity.STREAM_CODEC.apply(ByteBufCodecs.list())
+	);
+	public static final DataSerializer<BlockPos> BLOCK_POS = register(BlockPos.STREAM_CODEC);
 
 	private static <T> DataSerializer<T> register(StreamCodec<? super RegistryFriendlyByteBuf, T> codec)
 	{
