@@ -40,8 +40,11 @@ public class ChunkLoaderShapes implements Function<BlockPos, VoxelShape>
 		if(pos.getY()==1&&!isCorner)
 		{
 			// Item hatch or redstone panel
-			if(pos.getX()==0||pos.getZ()==0)
+			if(pos.getX()==0||pos.getZ()==2)
 				return Shapes.block();
+			// Printer
+			if(pos.getZ()==0)
+				return Shapes.or(base, Shapes.box(0, .6875, .25, 1, 1, .5));
 			// Power plug
 			if(pos.getX()==2)
 				return Shapes.or(base, Shapes.box(.5, .25, .25, 1, .75, .75));

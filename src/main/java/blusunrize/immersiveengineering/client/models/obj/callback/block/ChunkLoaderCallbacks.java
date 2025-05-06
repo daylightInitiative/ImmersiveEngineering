@@ -10,7 +10,8 @@
 package blusunrize.immersiveengineering.client.models.obj.callback.block;
 
 import blusunrize.immersiveengineering.api.client.ieobj.BlockCallback;
-import com.mojang.datafixers.util.Unit;
+import blusunrize.immersiveengineering.api.multiblocks.blocks.logic.IMultiblockBE;
+import blusunrize.immersiveengineering.common.blocks.multiblocks.logic.ChunkLoaderLogic.State;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockAndTintGetter;
@@ -19,20 +20,23 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nonnull;
 
-public class ChunkLoaderCallbacks implements BlockCallback<Unit>
+public class ChunkLoaderCallbacks implements BlockCallback<Boolean>
 {
 	public static final ChunkLoaderCallbacks INSTANCE = new ChunkLoaderCallbacks();
 
 	@Override
-	public Unit extractKey(@Nonnull BlockAndTintGetter level, @Nonnull BlockPos pos, @Nonnull BlockState state, BlockEntity blockEntity)
+	public Boolean extractKey(@Nonnull BlockAndTintGetter level, @Nonnull BlockPos pos, @Nonnull BlockState blockState, BlockEntity blockEntity)
 	{
+		if(blockEntity instanceof IMultiblockBE<?> multiblockBE&&
+				multiblockBE.getHelper().getState() instanceof State state)
+			return state.renderAsActive;
 		return getDefaultKey();
 	}
 
 	@Override
-	public Unit getDefaultKey()
+	public Boolean getDefaultKey()
 	{
-		return Unit.INSTANCE;
+		return false;
 	}
 
 	@Override
@@ -42,12 +46,14 @@ public class ChunkLoaderCallbacks implements BlockCallback<Unit>
 	}
 
 	@Override
-	public boolean shouldRenderGroup(Unit object, String group, RenderType layer)
+	public boolean shouldRenderGroup(Boolean paper, String group, RenderType layer)
 	{
 		if("glass".equals(group))
 			return layer==RenderType.translucent();
-		if("amethyst".equals(group)||"paper".equals(group))
+		if("amethyst".equals(group))
 			return layer==RenderType.cutout();
+		if("paper".equals(group))
+			return paper&&layer==RenderType.cutout();
 		return layer==RenderType.solid();
 	}
 }

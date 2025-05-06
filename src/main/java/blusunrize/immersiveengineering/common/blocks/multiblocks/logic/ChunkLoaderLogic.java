@@ -112,6 +112,12 @@ public class ChunkLoaderLogic
 			state.refreshTimer = 0;
 			forceChunks(context, false);
 		}
+
+		// update client rendering
+		final boolean wasActive = state.renderAsActive;
+		state.renderAsActive = state.refreshTimer > 0;
+		if(wasActive!=state.renderAsActive)
+			context.requestMasterBESync();
 	}
 
 	private void forceChunks(IMultiblockContext<State> ctx, boolean add)
@@ -176,6 +182,7 @@ public class ChunkLoaderLogic
 		public final AveragingEnergyStorage energy = new AveragingEnergyStorage(ENERGY_CAPACITY);
 		public final RSState rsState = RSState.enabledByDefault();
 		public int refreshTimer = 0;
+		public boolean renderAsActive;
 
 		private final IItemHandler input;
 
@@ -207,13 +214,13 @@ public class ChunkLoaderLogic
 		@Override
 		public void writeSyncNBT(CompoundTag nbt, Provider provider)
 		{
-			nbt.putInt("refreshTimer", refreshTimer);
+			nbt.putBoolean("renderAsActive", renderAsActive);
 		}
 
 		@Override
 		public void readSyncNBT(CompoundTag nbt, Provider provider)
 		{
-			refreshTimer = nbt.getInt("refreshTimer");
+			renderAsActive = nbt.getBoolean("renderAsActive");
 		}
 
 		public Stream<BlockEntity> getNearbyBlockEntities(IMultiblockContext<State> ctx)
