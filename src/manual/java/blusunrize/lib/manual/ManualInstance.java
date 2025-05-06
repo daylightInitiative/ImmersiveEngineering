@@ -228,7 +228,8 @@ public abstract class ManualInstance implements ResourceManagerReloadListener, C
 	public boolean showNodeInList(Tree.AbstractNode<ResourceLocation, ManualEntry> node)
 	{
 		if(!node.isLeaf())
-			return true;
+			// on categories, check if any children are visible
+			return node.getChildren().stream().anyMatch(this::showNodeInList);
 		Optional<ResourceLocation> advancement = node.getLeafData().getRequiredAdvancement();
 		return advancement.map(this.unlockedAdvancements::contains).orElse(true);
 	}
