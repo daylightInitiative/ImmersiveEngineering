@@ -129,8 +129,7 @@
       "chemical_thrower",
       "razor_wire",
       "tesla_coil",
-      "turrets",
-      "automaton_wolves"
+      "turrets"
     ]
   },
   "multiblock_constructions": {
@@ -160,8 +159,14 @@
       "assembler",
       "automated_engineers_workbench",
       "arc_furnace",
-      "excavator",
-      "resonant_observer"
+      "excavator"
+    ]
+  },
+  "weird_science": {
+    "category_weight": 100,
+    "entry_list": [
+      "resonant_observer",
+      "automaton_wolves"
     ]
   }
 }
