@@ -9,6 +9,7 @@
 package blusunrize.immersiveengineering.client.gui.elements;
 
 import blusunrize.immersiveengineering.api.IEApi;
+import blusunrize.immersiveengineering.api.Lib;
 import blusunrize.immersiveengineering.common.register.IEItems.Tools;
 import blusunrize.lib.manual.ManualEntry;
 import net.minecraft.client.gui.GuiGraphics;
@@ -25,12 +26,13 @@ public record ManualUnlockToast(Optional<AdvancementToast> originalToast, List<M
 {
 	private static final ResourceLocation BACKGROUND_SPRITE = IEApi.ieLoc("hud/toast_manual");
 
-	private static final Component HEADLINE = Component.literal("Manual Entry Unlocked!");
+	private static final Component EUREKA = Component.translatable(Lib.GUI+"toast.eureka");
+	private static final Component HEADLINE = Component.translatable(Lib.GUI+"toast.manual_unlocked");
 
 	@Override
 	public int height()
 	{
-		return 48 + originalToast.map(Toast::height).orElse(0);
+		return 48+originalToast.map(Toast::height).orElse(0);
 	}
 
 	@Override
@@ -42,12 +44,20 @@ public record ManualUnlockToast(Optional<AdvancementToast> originalToast, List<M
 			guiGraphics.pose().translate(0, toast.height(), 0);
 		});
 		guiGraphics.blitSprite(BACKGROUND_SPRITE, 0, 0, this.width(), 48);
-		guiGraphics.drawString(toastComponent.getMinecraft().font, HEADLINE, 32, 6, 0xf78034, false);
 		guiGraphics.renderFakeItem(Tools.MANUAL.asItem().getDefaultInstance(), 7, 8);
-		if(!this.entries.isEmpty())
+		if(timeSinceLastVisible < 1000)
 		{
-			int iEntry = (int)((timeSinceLastVisible/300)%this.entries.size());
-			guiGraphics.drawString(toastComponent.getMinecraft().font, entries.get(iEntry).getTitle(), 32, 18, 0x555555, false);
+			guiGraphics.pose().scale(2,2,2);
+			guiGraphics.drawString(toastComponent.getMinecraft().font, EUREKA, 16, 4, 0xf78034, false);
+		}
+		else
+		{
+			guiGraphics.drawString(toastComponent.getMinecraft().font, HEADLINE, 32, 6, 0xf78034, false);
+			if(!this.entries.isEmpty())
+			{
+				int iEntry = (int)((timeSinceLastVisible/1000)%this.entries.size());
+				guiGraphics.drawString(toastComponent.getMinecraft().font, entries.get(iEntry).getTitle(), 32, 18, 0x555555, false);
+			}
 		}
 		guiGraphics.pose().popPose();
 		if(timeSinceLastVisible >= AdvancementToast.DISPLAY_TIME*toastComponent.getNotificationDisplayTimeMultiplier())

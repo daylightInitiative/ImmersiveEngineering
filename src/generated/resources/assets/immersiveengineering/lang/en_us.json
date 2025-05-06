@@ -1519,6 +1519,8 @@
   "gui.immersiveengineering.empty": "Empty",
   "gui.immersiveengineering.left": "Left:",
   "gui.immersiveengineering.right": "Right:",
+  "gui.immersiveengineering.toast.eureka": "EUREKA!!",
+  "gui.immersiveengineering.toast.manual_unlocked": "Manual Entry Unlocked!",
   "ie.manual.currentVersion": " - Current",
   "ie.manual.entry.mineral_subtitle": "Oresome",
   "ie.manual.entry.mineral_title": "Mineral Deposits",
