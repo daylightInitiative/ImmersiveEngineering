@@ -45,7 +45,7 @@ public class ChunkLoaderScreen extends IEContainerScreen<ChunkLoaderMenu>
 	{
 		super.init();
 		GuiReactiveList<NearbyBlockEntity> widget = new GuiReactiveList<>(
-				leftPos+8, topPos+52, 96, 85,
+				leftPos+6, topPos+52, 100, 86,
 				e -> {
 					List<NearbyBlockEntity> list = menu.blockEntityList.get();
 					BlockPos cystal = menu.crystalPos.get();
@@ -58,7 +58,7 @@ public class ChunkLoaderScreen extends IEContainerScreen<ChunkLoaderMenu>
 				},
 				menu.blockEntityList,
 				NearbyBlockEntity::getDisplayString
-		).setPadding(0, 0, 4, 4).setTextStyling(0x918d85, 0xada9a1, false);
+		).setPadding(0, 0, 6, 6).setTextStyling(0x918d85, 0xada9a1, false);
 		this.addRenderableWidget(widget);
 	}
 
