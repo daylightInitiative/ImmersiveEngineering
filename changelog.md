@@ -28,6 +28,7 @@
 - Fix gunpowder barrels not having sound and particles (BluSunrize)
 - Fix gunpowder barrels not being triggered by other explosions (BluSunrize)
 - Fix multimeter overlay boxes being possibly too small on non-ascii languages (BluSunrize)
+- Fix zoom and ammo swapping on the railgun occurring at the same time (BluSunrize)
 - Translations Added/Updated: zh_cn (JustAlkaid)
 
 ##### Version 1.21.1-12.2.0-187

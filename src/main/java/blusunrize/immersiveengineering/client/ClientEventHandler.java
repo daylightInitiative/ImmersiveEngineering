@@ -510,20 +510,22 @@ public class ClientEventHandler implements ResourceManagerReloadListener
 					event.setCanceled(true);
 				}
 			}
-
-			ItemStack equipped = player.getItemInHand(InteractionHand.MAIN_HAND);
-			// Handle sneak + scrolling
-			if(player.isShiftKeyDown())
+			else
 			{
-				if(IEServerConfig.TOOLS.chemthrower_scroll.get()&&equipped.getItem() instanceof IScrollwheel)
+				ItemStack equipped = player.getItemInHand(InteractionHand.MAIN_HAND);
+				// Handle sneak + scrolling
+				if(player.isShiftKeyDown())
 				{
-					PacketDistributor.sendToServer(new MessageScrollwheelItem(event.getScrollDeltaY() < 0));
-					event.setCanceled(true);
-				}
-				if(equipped.getItem() instanceof RevolverItem)
-				{
-					PacketDistributor.sendToServer(new MessageRevolverRotate(event.getScrollDeltaY() < 0));
-					event.setCanceled(true);
+					if(IEServerConfig.TOOLS.chemthrower_scroll.get()&&equipped.getItem() instanceof IScrollwheel)
+					{
+						PacketDistributor.sendToServer(new MessageScrollwheelItem(event.getScrollDeltaY() < 0));
+						event.setCanceled(true);
+					}
+					if(equipped.getItem() instanceof RevolverItem)
+					{
+						PacketDistributor.sendToServer(new MessageRevolverRotate(event.getScrollDeltaY() < 0));
+						event.setCanceled(true);
+					}
 				}
 			}
 		}
