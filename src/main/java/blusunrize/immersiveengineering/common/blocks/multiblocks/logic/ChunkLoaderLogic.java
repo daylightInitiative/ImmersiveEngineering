@@ -59,7 +59,7 @@ public class ChunkLoaderLogic
 		implements IMultiblockLogic<State>, IServerTickableComponent<State>, IClientTickableComponent<State>
 {
 	public static final TicketController TICKET_CONTROLLER = new TicketController(
-			ResourceLocation.fromNamespaceAndPath(Lib.MODID, "resonant_observer"),
+			ResourceLocation.fromNamespaceAndPath(Lib.MODID, "resonanz_observer"),
 			(serverLevel, ticketHelper) -> {
 				for(Entry<BlockPos, TicketSet> check : ticketHelper.getBlockTickets().entrySet())
 				{
@@ -86,7 +86,7 @@ public class ChunkLoaderLogic
 		if(!(context.getLevel().getRawLevel() instanceof ServerLevel))
 			return;
 		final State state = context.getState();
-		int energy_required = IEServerConfig.MACHINES.resonant_observer_consumption.get();
+		int energy_required = IEServerConfig.MACHINES.resonanz_observer_consumption.get();
 		if(state.rsState.isEnabled(context)&&state.energy.extractEnergy(energy_required, true)==energy_required)
 		{
 			if(state.refreshTimer > 0)
@@ -100,7 +100,7 @@ public class ChunkLoaderLogic
 					// consume energy
 					state.energy.extractEnergy(energy_required, false);
 					// set timer to the seconds configured in the config
-					state.refreshTimer = 20 * IEServerConfig.MACHINES.resonant_observer_paper_duration.get();
+					state.refreshTimer = 20 * IEServerConfig.MACHINES.resonanz_observer_paper_duration.get();
 					// mark chunks for loading
 					forceChunks(context, true);
 				}

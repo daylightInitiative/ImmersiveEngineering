@@ -1,4 +1,8 @@
 ##### Version 1.21.1-12.2.1-pre
+- Add the Resonanz Observer multiblock (BluSunrize)
+    - It's a chunkloader! IE has chunkloading now! You can keep your excavator running far away!!
+    - Its construction require a trip to the ancient cities, to acquire an echo shard...
+    - Also, this machine eats paper by the minute!
 - Overhaul targeting for homing bullets (BluSunrize)
     - They won't shoot your wolves (or other animals tamed by the shooter anymore)
     - They won't target teammates or animals tamed by teammates
