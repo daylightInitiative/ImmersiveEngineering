@@ -48,11 +48,11 @@ import net.neoforged.neoforge.common.world.chunk.TicketController;
 import net.neoforged.neoforge.common.world.chunk.TicketSet;
 import net.neoforged.neoforge.items.IItemHandler;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class ChunkLoaderLogic
@@ -74,7 +74,6 @@ public class ChunkLoaderLogic
 	);
 
 	public static final int ENERGY_CAPACITY = 32000;
-	private static final int RADIUS = 1;
 
 	private static final CapabilityPosition ENERGY_INPUT = new CapabilityPosition(2, 1, 1, RelativeBlockFace.LEFT);
 	public static final BlockPos REDSTONE_POS = new BlockPos(0, 1, 2);
@@ -100,7 +99,7 @@ public class ChunkLoaderLogic
 					// consume energy
 					state.energy.extractEnergy(energy_required, false);
 					// set timer to the seconds configured in the config
-					state.refreshTimer = 20 * IEServerConfig.MACHINES.resonanz_observer_paper_duration.get();
+					state.refreshTimer = 20*IEServerConfig.MACHINES.resonanz_observer_paper_duration.get();
 					// mark chunks for loading
 					forceChunks(context, true);
 				}
@@ -124,20 +123,17 @@ public class ChunkLoaderLogic
 	{
 		BlockPos masterPos = ctx.getLevel().toAbsolute(ChunkLoaderMultiblock.MASTER_OFFSET);
 		if((ctx.getLevel().getRawLevel() instanceof ServerLevel serverLevel))
-			for(ChunkPos chunk : getChunks(masterPos))
-				TICKET_CONTROLLER.forceChunk(serverLevel, masterPos, chunk.x, chunk.z, add, true);
+			getChunks(masterPos).forEach(chunk -> TICKET_CONTROLLER.forceChunk(serverLevel, masterPos, chunk.x, chunk.z, add, true));
 	}
 
-	private static ChunkPos[] getChunks(BlockPos masterPos)
+	private static Stream<ChunkPos> getChunks(BlockPos masterPos)
 	{
-		int chunkX = SectionPos.blockToSectionCoord(masterPos.getX());
-		int chunkZ = SectionPos.blockToSectionCoord(masterPos.getZ());
-		ChunkPos[] array = new ChunkPos[(1+2*RADIUS)*(1+2*RADIUS)];
-		int idx = 0;
-		for(int xx = -RADIUS; xx <= RADIUS; xx++)
-			for(int zz = -RADIUS; zz <= RADIUS; zz++)
-				array[idx++] = new ChunkPos(chunkX+xx, chunkZ+zz);
-		return array;
+		int blockRadius = IEServerConfig.MACHINES.resonanz_observer_radius.get();
+		int minX = SectionPos.blockToSectionCoord(masterPos.getX()-blockRadius);
+		int maxX = SectionPos.blockToSectionCoord(masterPos.getX()+blockRadius);
+		int minZ = SectionPos.blockToSectionCoord(masterPos.getZ()-blockRadius);
+		int maxZ = SectionPos.blockToSectionCoord(masterPos.getZ()+blockRadius);
+		return IntStream.range(minX, maxX).boxed().flatMap(x -> IntStream.range(minZ, maxZ).mapToObj(z -> new ChunkPos(x, z)));
 	}
 
 	@Override
@@ -226,9 +222,9 @@ public class ChunkLoaderLogic
 		public Stream<BlockEntity> getNearbyBlockEntities(IMultiblockContext<State> ctx)
 		{
 			BlockPos masterPos = ctx.getLevel().toAbsolute(ChunkLoaderMultiblock.MASTER_OFFSET);
-			ChunkPos[] chunks = ChunkLoaderLogic.getChunks(masterPos);
 			Level level = ctx.getLevel().getRawLevel();
-			return Arrays.stream(chunks)
+			Stream<ChunkPos> chunks =ChunkLoaderLogic.getChunks(masterPos);
+			return chunks
 					// find all block entities in the area
 					.flatMap(pos -> level.getChunk(pos.x, pos.z).getBlockEntities().values().stream())
 					// filter to ticking ones
