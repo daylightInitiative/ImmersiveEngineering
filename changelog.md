@@ -30,6 +30,7 @@
 - Fix multimeter overlay boxes being possibly too small on non-ascii languages (BluSunrize)
 - Fix zoom and ammo swapping on the railgun occurring at the same time (BluSunrize)
 - Fix conveyor covers getting consumed in creative mode (BluSunrize)
+- Fix herbicide destroying Farmer's Delight farmland (BluSunrize)
 - Translations Added/Updated: zh_cn (JustAlkaid)
 
 ##### Version 1.21.1-12.2.0-187

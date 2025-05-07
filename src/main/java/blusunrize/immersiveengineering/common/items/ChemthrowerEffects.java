@@ -154,7 +154,7 @@ public class ChemthrowerEffects
 				if(hit.is(BlockTags.LEAVES))
 					world.removeBlock(brtr.getBlockPos(), false);
 					// turn grass & farmland to dirt
-				else if(hit.getBlock() instanceof SnowyDirtBlock||hit.getBlock() instanceof FarmBlock)
+				else if(hit.getBlock() instanceof SnowyDirtBlock||hit.getBlock()==Blocks.FARMLAND)
 				{
 					world.setBlockAndUpdate(brtr.getBlockPos(), Blocks.DIRT.defaultBlockState());
 					BlockPos above = brtr.getBlockPos().above();
@@ -184,7 +184,7 @@ public class ChemthrowerEffects
 			@Override
 			public void applyToBlock(Level world, HitResult mop, @Nullable Player shooter, @Nullable Entity projectile, ItemStack thrower, Fluid fluid)
 			{
-				if(!(mop instanceof BlockHitResult blockHit) || !(world instanceof ServerLevel serverLevel))
+				if(!(mop instanceof BlockHitResult blockHit)||!(world instanceof ServerLevel serverLevel))
 					return;
 				BlockState hit = world.getBlockState(blockHit.getBlockPos());
 				if(hit.getBlock() instanceof WeatheringCopper copperBlock)
