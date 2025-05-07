@@ -26,6 +26,8 @@
 - Fix shaders not being removed from tools properly (BluSunrize)
 - Fix gunpowder barrels not having sound and particles (BluSunrize)
 - Fix gunpowder barrels not being triggered by other explosions (BluSunrize)
+- Fix multimeter overlay boxes being possibly too small on non-ascii languages (BluSunrize)
+- Translations Added/Updated: zh_cn (JustAlkaid)
 
 ##### Version 1.21.1-12.2.0-187
 - Adjust the Automaton Wolves (BluSunrize)

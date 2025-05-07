@@ -161,7 +161,9 @@ public class BlockOverlayUtils
 			return;
 		MultiBufferSource.BufferSource buffer = Minecraft.getInstance().renderBuffers().bufferSource();
 		// determine starting position
-		int maxWidth = text.stream().reduce(0, (aggr, component) -> Integer.max(aggr, ClientUtils.font().width(component)), Integer::max);
+		int maxWidth = text.stream().reduce(0, (aggr, component) -> Integer.max(aggr,
+				(component instanceof SpacerComponent spacer?spacer.getSpaceWidth(ClientUtils.font()): 0)+ClientUtils.font().width(component)
+		), Integer::max);
 		int xPos = scaledWidth/2-(maxWidth/2);
 		int yPos = scaledHeight/2+16;
 		int tooltipHeight = (text.size()==1?-2: 0)+text.size()*10;
