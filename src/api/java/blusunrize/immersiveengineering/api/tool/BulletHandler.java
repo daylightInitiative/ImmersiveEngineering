@@ -26,6 +26,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Item.TooltipContext;
 import net.minecraft.world.item.ItemStack;
@@ -226,6 +227,8 @@ public class BulletHandler
 				Entity shooter = null;
 				if(shooterUUID!=null&&world instanceof ServerLevel serverLevel)
 					shooter = serverLevel.getEntity(shooterUUID);
+				if(shooter == null && projectile instanceof Projectile p)
+					shooter = p.getOwner();
 				if(hitEntity.hurt(damageSourceGetter.getSource(projectile, shooter, hitEntity), getDamage(hitEntity, headshot)))
 				{
 					if(resetHurt)

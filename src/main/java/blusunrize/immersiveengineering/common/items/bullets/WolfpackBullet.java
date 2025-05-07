@@ -25,6 +25,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
@@ -55,6 +56,8 @@ public class WolfpackBullet extends BulletHandler.DamagingBullet<Unit>
 		Entity shooter = null;
 		if(shooterUUID!=null&&world instanceof ServerLevel serverLevel)
 			shooter = serverLevel.getEntity(shooterUUID);
+		if(shooter == null && projectile instanceof Projectile p)
+			shooter = p.getOwner();
 		// find hit entity
 		LivingEntity livingHit = (hitResult instanceof EntityHitResult eHit&&eHit.getEntity() instanceof LivingEntity hit)?hit: null;
 		// create separate projectiles

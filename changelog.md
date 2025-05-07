@@ -14,6 +14,7 @@
     - This allows making them with whatever metal you have on hand
     - They memorize their structure and will return those blocks again
     - Their colour can not be adjusted with this, because that would require a massive rework of their models
+- Change turrets to use fake players, allowing them to drop blaze rods and other player-only items (BluSunrize)
 - Re-add offset for subtitles when rendering displays for held items (BluSunrize)
 - Update manual entry for gunpowder barrels, to better explain their intended use (voidsong-dragonfly)
 - Fix error for mods like JustEnoughResources querying IE's villager trades (BluSunrize)
