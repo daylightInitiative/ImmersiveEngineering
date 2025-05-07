@@ -1,4 +1,4 @@
-##### Version 1.21.1-12.3.0-pre
+##### Version 1.21.1-12.3.0-188
 - Add the Resonanz Observer multiblock (BluSunrize)
     - It's a chunkloader! IE has chunkloading now! You can keep your excavator running far away!!
     - Its construction require a trip to the ancient cities, to acquire an echo shard...
