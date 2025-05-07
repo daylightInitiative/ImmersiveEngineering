@@ -28,13 +28,10 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.Function;
@@ -42,7 +39,7 @@ import java.util.stream.Collector;
 
 public class ChunkLoaderMenu extends IEContainerMenu
 {
-	private static BlockPos CRYSTAL_POS = new BlockPos(1, 3, 1);
+	private static final BlockPos CRYSTAL_POS = new BlockPos(1, 3, 1);
 
 	public static ChunkLoaderMenu makeServer(
 			MenuType<?> type, int id, Inventory invPlayer, MultiblockMenuContext<State> ctx
@@ -55,7 +52,6 @@ public class ChunkLoaderMenu extends IEContainerMenu
 				state.inventory,
 				state.energy,
 				GetterAndSetter.getterOnly(() -> state.getNearbyBlockEntities(ctx.mbContext())
-						.sorted(Comparator.comparing(blockEntity -> blockEntity.getBlockState().getBlock().getName().getString()))
 						.collect(Collector.of(
 								ArrayListMultimap::create,
 								(blockListMap, blockEntity) -> blockListMap.put(blockEntity.getBlockState().getBlock(), blockEntity.getBlockPos()),
@@ -63,12 +59,12 @@ public class ChunkLoaderMenu extends IEContainerMenu
 									for(Block key : m2.keySet())
 										m1.get(key).addAll(m2.get(key));
 									return m1;
-								}, (Function<Multimap<Block, BlockPos>, List<NearbyBlockEntity>>)blockBlockPosMultimap -> {
-									List<NearbyBlockEntity> list = new ArrayList<>(blockBlockPosMultimap.keySet().size());
-									blockBlockPosMultimap.asMap().forEach((block, blockPos) -> list.add(new NearbyBlockEntity(block.getName(), List.copyOf(blockPos))));
-									return list;
-								})
-						)
+								},
+								(Function<Multimap<Block, BlockPos>, List<NearbyBlockEntity>>)multimap -> multimap.keySet().stream()
+										.sorted(Comparator.comparing(block -> block.getName().getString()))
+										.map(block -> new NearbyBlockEntity(block.getName(), List.copyOf(multimap.get(block))))
+										.toList()
+						))
 				),
 				GetterAndSetter.getterOnly(() -> state.refreshTimer),
 				GetterAndSetter.constant(ctx.mbContext().getLevel().toAbsolute(CRYSTAL_POS))
@@ -128,7 +124,7 @@ public class ChunkLoaderMenu extends IEContainerMenu
 
 		public String getDisplayString()
 		{
-			return pos.size()+"x"+name.getString();
+			return pos.size()+"x "+name.getString();
 		}
 	}
 }
