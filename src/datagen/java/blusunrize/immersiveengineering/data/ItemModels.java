@@ -180,6 +180,9 @@ public class ItemModels extends TRSRItemModelProvider
 				.transforms(rl("item/multiblock"));
 		obj(IEMultiblockLogic.RADIO_TOWER.blockItem().get(), rl("block/metal_multiblock/radio_tower.obj"))
 				.transforms(rl("item/radio_tower"));
+		obj(IEMultiblockLogic.CHUNK_LOADER.blockItem().get(), rl("block/metal_multiblock/chunk_loader.obj.ie"))
+				.transforms(rl("item/chunk_loader"))
+				.renderType(ModelProviderUtils.getName(translucent()));
 
 		obj(MetalDecoration.ALU_WALLMOUNT, modLoc("block/wooden_device/wallmount.obj"))
 				.texture("texture", modLoc("block/metal_decoration/aluminum_wallmount"))

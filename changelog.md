@@ -1,4 +1,5 @@
 ##### Version 1.21.1-12.3.1-pre
+- Add an item model for the resonanz observer (BluSunrize)
 - Re-add Jade compatability (BluSunrize)
 
 ##### Version 1.21.1-12.3.0-188

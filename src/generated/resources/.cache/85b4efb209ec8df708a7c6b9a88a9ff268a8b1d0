@@ -1,4 +1,4 @@
-// 1.21.1	2025-05-05T14:05:10.5854551	Item models
+// 1.21.1	2025-05-12T22:33:39.5819846	Item models
 8e8e1578653ae2e701aee18c524176bc5c6bcd7f assets/immersiveengineering/models/item/acetaldehyde_bucket.json
 62d8a99359a8d59d68eaae60eca3ab0da03e358f assets/immersiveengineering/models/item/advanced_blast_furnace.json
 d03faa43ead928b27068b685663fe7fdd4465d1a assets/immersiveengineering/models/item/alloy_smelter.json
@@ -90,6 +90,7 @@ c2934598cfa26fd82d232bc0786ad980697e6cd4 assets/immersiveengineering/models/item
 7ee1e483f910f5d9f6ce81509f04b31e127e44b6 assets/immersiveengineering/models/item/buzzsaw.json
 3d414a3338d86d9c6aa9148de080064d9023b031 assets/immersiveengineering/models/item/cagelamp.json
 9ad4f625a2ed90d06ed9243e9b688bc2a4759708 assets/immersiveengineering/models/item/chemthrower.json
+0aa60232ad4af07f2a20a88fbc833b65e91b2b35 assets/immersiveengineering/models/item/chunk_loader.json
 f1da046b94dad866a263458b07da23ba095e5e5e assets/immersiveengineering/models/item/chute_aluminum.json
 6026b14aebddd45da4b3d99ee3710d04aff3e2c5 assets/immersiveengineering/models/item/chute_colored_black.json
 a54d8e27e51f11e93732be2dc530343e551b8f56 assets/immersiveengineering/models/item/chute_colored_blue.json
