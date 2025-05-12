@@ -18,43 +18,40 @@ import blusunrize.immersiveengineering.common.blocks.multiblocks.logic.Sheetmeta
 import blusunrize.immersiveengineering.common.blocks.multiblocks.process.ProcessContext;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraftforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.IFluidTank;
 import org.jetbrains.annotations.Nullable;
 import snownee.jade.api.Accessor;
+import snownee.jade.api.fluid.JadeFluidObject;
 import snownee.jade.api.view.*;
-import snownee.jade.util.JadeForgeUtils;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-public class MultiblockTankDataProvider<T extends IMultiblockState> implements IServerExtensionProvider<IMultiblockBE<T>, CompoundTag>, IClientExtensionProvider<CompoundTag, FluidView>
+public class MultiblockTankDataProvider<T extends IMultiblockState> implements IServerExtensionProvider<CompoundTag>, IClientExtensionProvider<CompoundTag, FluidView>
 {
 	@Override
-	public @Nullable List<ViewGroup<CompoundTag>> getGroups(ServerPlayer serverPlayer, ServerLevel serverLevel, IMultiblockBE<T> multiblockBE, boolean b)
+	public @Nullable List<ViewGroup<CompoundTag>> getGroups(Accessor<?> accessor)
 	{
-		final IMultiblockBEHelper<T> helper = multiblockBE.getHelper();
-		if(helper.getState() instanceof ProcessContext<?> state)
+		if(accessor.getTarget() instanceof IMultiblockBE<?> multiblockBE)
 		{
-			if(state.getInternalTanks().length > 0)
+			final IMultiblockBEHelper<?> helper = multiblockBE.getHelper();
+			if(helper.getState() instanceof ProcessContext<?> state)
 			{
-				List<CompoundTag> list = new ArrayList<>();
-				for(int i = 0; i < state.getInternalTanks().length; i++)
-				{
-					FluidStack fluid = state.getInternalTanks()[i].getFluid();
-					long capacity = state.getInternalTanks()[i].getCapacity();
-					list.add(JadeForgeUtils.fromFluidStack(fluid, capacity));
-				}
-				return List.of(new ViewGroup<>(list));
+				IFluidTank[] tanks = state.getInternalTanks();
+				if(tanks.length > 0)
+					return List.of(new ViewGroup<>(
+							Arrays.stream(tanks).map(this::getTagFromTank).toList()
+					));
 			}
+			else if(helper.getState() instanceof SheetmetalTankLogic.State state)
+				return getViewFromTank(state.tank);
+			else if(helper.getState() instanceof CokeOvenLogic.State state)
+				return getViewFromTank(state.getTank());
 		}
-		else if(helper.getState() instanceof SheetmetalTankLogic.State state)
-			return JadeForgeUtils.fromFluidHandler(state.tank);
-		else if(helper.getState() instanceof CokeOvenLogic.State state)
-			return JadeForgeUtils.fromFluidHandler(state.getTank());
 		return null;
 	}
+
 
 	@Override
 	public List<ClientViewGroup<FluidView>> getClientGroups(Accessor<?> accessor, List<ViewGroup<CompoundTag>> list)
@@ -66,5 +63,19 @@ public class MultiblockTankDataProvider<T extends IMultiblockState> implements I
 	public ResourceLocation getUid()
 	{
 		return ImmersiveEngineering.rl("multiblock_tank");
+	}
+
+	private CompoundTag getTagFromTank(IFluidTank tank)
+	{
+		FluidStack fs = tank.getFluid();
+		return FluidView.writeDefault(
+				JadeFluidObject.of(fs.getFluid(), fs.getAmount(), fs.getComponentsPatch()),
+				tank.getCapacity()
+		);
+	}
+
+	private List<ViewGroup<CompoundTag>> getViewFromTank(IFluidTank tank)
+	{
+		return List.of(new ViewGroup<>(List.of(getTagFromTank(tank))));
 	}
 }

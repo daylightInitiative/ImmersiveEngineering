@@ -17,7 +17,7 @@ import snownee.jade.api.IBlockComponentProvider;
 import snownee.jade.api.ITooltip;
 import snownee.jade.api.config.IPluginConfig;
 import snownee.jade.api.ui.IElement;
-import snownee.jade.impl.ui.ItemStackElement;
+import snownee.jade.api.ui.IElementHelper;
 
 import javax.annotation.Nullable;
 
@@ -34,7 +34,7 @@ public class MultiblockIconProvider implements IBlockComponentProvider
 	@Override
 	public IElement getIcon(BlockAccessor accessor, IPluginConfig config, IElement currentIcon)
 	{
-		return ItemStackElement.of(new ItemStack(accessor.getBlock()));
+		return IElementHelper.get().item(new ItemStack(accessor.getBlock()));
 	}
 
 	@Override

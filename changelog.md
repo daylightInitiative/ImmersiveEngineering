@@ -1,3 +1,6 @@
+##### Version 1.21.1-12.3.1-pre
+- Re-add Jade compatability (BluSunrize)
+
 ##### Version 1.21.1-12.3.0-188
 - Add the Resonanz Observer multiblock (BluSunrize)
     - It's a chunkloader! IE has chunkloading now! You can keep your excavator running far away!!
