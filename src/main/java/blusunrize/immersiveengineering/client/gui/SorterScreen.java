@@ -97,7 +97,7 @@ public class SorterScreen extends IEContainerScreen<SorterMenu>
 	{
 		if(!this.menu.getCarried().isEmpty())
 			return;
-		if(this.hoveredSlot instanceof IESlot.ItemHandlerGhost ghostSlot)
+		if(this.hoveredSlot instanceof IESlot.ItemHandlerGhost ghostSlot && ghostSlot.hasItem())
 		{
 			int side = ghostSlot.getSlotIndex()/SorterBlockEntity.FILTER_SLOTS_PER_SIDE;
 			if(menu.filterMasks.get(Direction.from3DDataValue(side)).get().allowTags())
@@ -113,10 +113,10 @@ public class SorterScreen extends IEContainerScreen<SorterMenu>
 				// Add tags
 				List<TagKey<Item>> tags = item.getTags().sorted(TAG_SORTER).toList();
 				if(tags.isEmpty())
-					tagTooltip.add(Component.literal("No tags available").withStyle(ChatFormatting.DARK_GRAY));
+					tagTooltip.add(Component.translatable(Lib.DESC_INFO+"filter.tag.none_available"));
 				else
 				{
-					tagTooltip.add(Component.literal("Selected tag: (scroll to change)").withStyle(ChatFormatting.GOLD));
+					tagTooltip.add(Component.translatable(Lib.DESC_INFO+"filter.tag.selected_scroll"));
 					Optional<ResourceLocation> selected = this.menu.selectedTags.get(ghostSlot.getSlotIndex()).get();
 					tags.forEach(tagKey -> {
 						boolean isSelected = selected.isPresent()&&selected.get().equals(tagKey.location());
