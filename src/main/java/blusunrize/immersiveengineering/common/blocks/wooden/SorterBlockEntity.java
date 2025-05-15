@@ -39,7 +39,6 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootContext;
@@ -89,11 +88,12 @@ public class SorterBlockEntity extends IEBaseBlockEntity implements IInteraction
 		if(!level.isClientSide&&canRoute())
 		{
 			boolean first = startRouting();
-			Direction[][] validOutputs = getValidOutputs(inputSide, stack);
-			stack = doInsert(stack, validOutputs[0], simulate);
-			// Only if no filtered outputs were found, use unfiltered
-			if(validOutputs[0].length==0||!stack.isEmpty())
-				stack = doInsert(stack, validOutputs[1], simulate);
+			TransferPaths paths = getValidOutputs(inputSide, stack);
+			if(!paths.filteredSides.isEmpty())
+				stack = doInsert(stack, paths.filteredSides.toArray(Direction[]::new), simulate);
+			else
+				// Only if no filtered outputs were found, use unfiltered
+				stack = doInsert(stack, paths.unfilteredSides.toArray(Direction[]::new), simulate);
 			if(first)
 				routed = null;
 		}
@@ -145,26 +145,22 @@ public class SorterBlockEntity extends IEBaseBlockEntity implements IInteraction
 		return IEMenuTypes.SORTER;
 	}
 
-	public Direction[][] getValidOutputs(Direction inputSide, ItemStack stack)
+	public TransferPaths getValidOutputs(Direction inputSide, ItemStack stack)
 	{
 		if(stack.isEmpty())
-			return new Direction[][]{{}, {}, {}, {}};
-		List<Direction> validFiltered = new ArrayList<>(6);
-		List<Direction> validUnfiltered = new ArrayList<>(6);
+			return TransferPaths.EMPTY;
+		TransferPaths paths = new TransferPaths();
 		for(Direction side : Direction.values())
 			if(side!=inputSide)
 			{
 				EnumFilterResult result = checkStackAgainstFilter(stack, side);
 				if(result==EnumFilterResult.VALID_FILTERED)
-					validFiltered.add(side);
+					paths.filteredSides.add(side);
 				else if(result==EnumFilterResult.VALID_UNFILTERED)
-					validUnfiltered.add(side);
+					paths.unfilteredSides.add(side);
 			}
 
-		return new Direction[][]{
-				validFiltered.toArray(new Direction[0]),
-				validUnfiltered.toArray(new Direction[0])
-		};
+		return paths;
 	}
 
 	public ItemStack pullItem(Direction outputSide, int amount, boolean simulate)
@@ -493,6 +489,16 @@ public class SorterBlockEntity extends IEBaseBlockEntity implements IInteraction
 					return false;
 			}
 			return true;
+		}
+	}
+
+	public record TransferPaths(List<Direction> filteredSides, List<Direction> unfilteredSides)
+	{
+		public static final TransferPaths EMPTY = new TransferPaths(List.of(), List.of());
+
+		public TransferPaths()
+		{
+			this(new ArrayList<>(6), new ArrayList<>(6));
 		}
 	}
 }
