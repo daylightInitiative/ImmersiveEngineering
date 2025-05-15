@@ -4,6 +4,7 @@
 - Overhaul item routers! (BluSunrize)
     - They no longer allow items out an unfiltered side *if* a filtered side for that item exists
     - Tag filtering now allows selecting a specific tag with the scroll-wheel.
+    - Replace text references to "NBT Data" with "Data Components" instead
 - Fix desync of item router buttons on multiplayer servers (BluSunrize)
 - Fix resonanz observer not rendering the completed structure in the manual (BluSunrize)
 

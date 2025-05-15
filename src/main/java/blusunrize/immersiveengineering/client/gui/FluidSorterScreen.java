@@ -125,7 +125,7 @@ public class FluidSorterScreen extends IEContainerScreen<FluidSorterMenu>
 			final int sideFinal = side;
 			final BooleanSupplier value = () -> menu.sortWithNBT.get()[sideFinal]!=0;
 			ButtonSorter b = new ButtonSorter(
-					x, y, FilterBit.NBT, () -> new FilterConfig(false, value.getAsBoolean(), false),
+					x, y, FilterBit.COMPONENTS, () -> new FilterConfig(false, value.getAsBoolean(), false),
 					btn -> {
 						CompoundTag tag = new CompoundTag();
 						tag.putInt("useNBT", value.getAsBoolean()?0: 1);

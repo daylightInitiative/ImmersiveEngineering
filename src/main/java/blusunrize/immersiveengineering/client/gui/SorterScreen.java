@@ -97,7 +97,7 @@ public class SorterScreen extends IEContainerScreen<SorterMenu>
 	{
 		if(!this.menu.getCarried().isEmpty())
 			return;
-		if(this.hoveredSlot instanceof IESlot.ItemHandlerGhost ghostSlot && ghostSlot.hasItem())
+		if(this.hoveredSlot instanceof IESlot.ItemHandlerGhost ghostSlot&&ghostSlot.hasItem())
 		{
 			int side = ghostSlot.getSlotIndex()/SorterBlockEntity.FILTER_SLOTS_PER_SIDE;
 			if(menu.filterMasks.get(Direction.from3DDataValue(side)).get().allowTags())
@@ -183,12 +183,12 @@ public class SorterScreen extends IEContainerScreen<SorterMenu>
 	{
 		private static final Map<FilterBit, ButtonTexture> TRUE_TEXTURES = Map.of(
 				FilterBit.DAMAGE, new ButtonTexture(ieLoc("sorter/damage")),
-				FilterBit.NBT, new ButtonTexture(ieLoc("sorter/components")),
+				FilterBit.COMPONENTS, new ButtonTexture(ieLoc("sorter/components")),
 				FilterBit.TAG, new ButtonTexture(ieLoc("sorter/tags"))
 		);
 		private static final Map<FilterBit, ButtonTexture> FALSE_TEXTURES = Map.of(
 				FilterBit.DAMAGE, new ButtonTexture(ieLoc("sorter/no_damage")),
-				FilterBit.NBT, new ButtonTexture(ieLoc("sorter/no_components")),
+				FilterBit.COMPONENTS, new ButtonTexture(ieLoc("sorter/no_components")),
 				FilterBit.TAG, new ButtonTexture(ieLoc("sorter/no_tags"))
 		);
 
@@ -219,7 +219,7 @@ public class SorterScreen extends IEContainerScreen<SorterMenu>
 
 	public enum FilterBit
 	{
-		TAG, NBT, DAMAGE;
+		TAG, DAMAGE, COMPONENTS;
 
 		public String getTranslationKey()
 		{
@@ -231,7 +231,7 @@ public class SorterScreen extends IEContainerScreen<SorterMenu>
 			return switch(this)
 			{
 				case TAG -> config.allowTags();
-				case NBT -> config.considerComponents();
+				case COMPONENTS -> config.considerComponents();
 				case DAMAGE -> config.ignoreDamage();
 			};
 		}
@@ -241,7 +241,8 @@ public class SorterScreen extends IEContainerScreen<SorterMenu>
 			return switch(this)
 			{
 				case TAG -> new FilterConfig(!config.allowTags(), config.considerComponents(), config.ignoreDamage());
-				case NBT -> new FilterConfig(config.allowTags(), !config.considerComponents(), config.ignoreDamage());
+				case COMPONENTS ->
+						new FilterConfig(config.allowTags(), !config.considerComponents(), config.ignoreDamage());
 				case DAMAGE ->
 						new FilterConfig(config.allowTags(), config.considerComponents(), !config.ignoreDamage());
 			};
