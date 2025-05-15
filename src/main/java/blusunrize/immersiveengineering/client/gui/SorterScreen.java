@@ -16,23 +16,30 @@ import blusunrize.immersiveengineering.client.gui.elements.GuiButtonIE.ButtonTex
 import blusunrize.immersiveengineering.client.gui.elements.GuiButtonIE.IIEPressable;
 import blusunrize.immersiveengineering.client.gui.elements.GuiButtonState;
 import blusunrize.immersiveengineering.client.gui.elements.ITooltipWidget;
+import blusunrize.immersiveengineering.common.blocks.wooden.SorterBlockEntity;
 import blusunrize.immersiveengineering.common.blocks.wooden.SorterBlockEntity.FilterConfig;
+import blusunrize.immersiveengineering.common.gui.IESlot;
 import blusunrize.immersiveengineering.common.gui.SorterMenu;
 import blusunrize.immersiveengineering.common.gui.sync.GetterAndSetter;
+import com.google.common.collect.Lists;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.common.Tags;
 
 import javax.annotation.Nonnull;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Supplier;
 
 import static blusunrize.immersiveengineering.api.IEApi.ieLoc;
@@ -74,7 +81,7 @@ public class SorterScreen extends IEContainerScreen<SorterMenu>
 				int y = topPos+3+(sideId%2)*76;
 				final int sideFinal = sideId;
 				final GetterAndSetter<FilterConfig> value = menu.filterMasks.get(side);
-				ButtonSorter b = new ButtonSorter(x, y, bit, value::get, btn -> {
+				ButtonSorter b = new ButtonSorter(x, y, bit, value, btn -> {
 					CompoundTag tag = new CompoundTag();
 					tag.put("sideConfigVal", FilterConfig.CODEC.toNBT(bit.toggle(value.get())));
 					tag.putInt("sideConfigId", sideFinal);
@@ -84,6 +91,92 @@ public class SorterScreen extends IEContainerScreen<SorterMenu>
 				this.addRenderableWidget(b);
 			}
 	}
+
+	@Override
+	protected void renderTooltip(GuiGraphics guiGraphics, int x, int y)
+	{
+		if(!this.menu.getCarried().isEmpty())
+			return;
+		if(this.hoveredSlot instanceof IESlot.ItemHandlerGhost ghostSlot)
+		{
+			int side = ghostSlot.getSlotIndex()/SorterBlockEntity.FILTER_SLOTS_PER_SIDE;
+			if(menu.filterMasks.get(Direction.from3DDataValue(side)).get().allowTags())
+			{
+				ItemStack item = ghostSlot.getItem();
+				List<Component> tagTooltip = Lists.newArrayList();
+				// Add name
+				MutableComponent name = Component.empty().append(item.getHoverName()).withStyle(item.getRarity().getStyleModifier());
+				if(item.has(DataComponents.CUSTOM_NAME))
+					name.withStyle(ChatFormatting.ITALIC);
+				tagTooltip.add(name);
+
+				// Add tags
+				List<TagKey<Item>> tags = item.getTags().sorted(TAG_SORTER).toList();
+				if(tags.isEmpty())
+					tagTooltip.add(Component.literal("No tags available").withStyle(ChatFormatting.DARK_GRAY));
+				else
+				{
+					tagTooltip.add(Component.literal("Selected tag: (scroll to change)").withStyle(ChatFormatting.GOLD));
+					Optional<ResourceLocation> selected = this.menu.selectedTags.get(ghostSlot.getSlotIndex()).get();
+					tags.forEach(tagKey -> {
+						boolean isSelected = selected.isPresent()&&selected.get().equals(tagKey.location());
+						String tagTranslationKey = Tags.getTagTranslationKey(tagKey);
+						tagTooltip.add(Component.literal(isSelected?" -> ": " > ")
+								.append(Component.translatableWithFallback(tagTranslationKey, "#"+tagKey.location()))
+								.withStyle(isSelected?ChatFormatting.GRAY: ChatFormatting.DARK_GRAY)
+						);
+					});
+				}
+				guiGraphics.renderTooltip(this.font, tagTooltip, item.getTooltipImage(), item, x, y);
+				return;
+			}
+		}
+		super.renderTooltip(guiGraphics, x, y);
+	}
+
+
+	@Override
+	public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY)
+	{
+		if(this.menu.getCarried().isEmpty()&&this.hoveredSlot instanceof IESlot.ItemHandlerGhost ghostSlot)
+		{
+			int side = ghostSlot.getSlotIndex()/SorterBlockEntity.FILTER_SLOTS_PER_SIDE;
+			if(menu.filterMasks.get(Direction.from3DDataValue(side)).get().allowTags())
+			{
+				ItemStack item = ghostSlot.getItem();
+				List<ResourceLocation> tags = item.getTags().sorted(TAG_SORTER).map(TagKey::location).toList();
+				if(tags.isEmpty())
+					return false;
+				// get current selected tag
+				GetterAndSetter<Optional<ResourceLocation>> selected = this.menu.selectedTags.get(ghostSlot.getSlotIndex());
+				int index = selected.get().map(tags::indexOf).orElse(scrollY < 0?-1: 0);
+				// scroll and wrap around with modulo, fetching the new tag
+				ResourceLocation newTag = tags.get(
+						Math.floorMod(index+(scrollY < 0?1: -1), tags.size())
+				);
+				// write newly selected tag & sync to server
+				selected.set(Optional.of(newTag));
+				CompoundTag tag = new CompoundTag();
+				tag.putInt("tagSlot", ghostSlot.getSlotIndex());
+				tag.putString("selectedTag", newTag.toString());
+				sendUpdateToServer(tag);
+				return true;
+			}
+		}
+		return super.mouseScrolled(mouseX, mouseY, scrollX, scrollY);
+	}
+
+	private static final String COMMON_NAMESPACE = "c";
+	Comparator<TagKey<Item>> TAG_SORTER = (o1, o2) -> {
+		ResourceLocation rl1 = o1.location();
+		ResourceLocation rl2 = o2.location();
+		// common namespace always comes first
+		if(COMMON_NAMESPACE.equals(rl1.getNamespace())&&!COMMON_NAMESPACE.equals(rl2.getNamespace()))
+			return -1;
+		if(!COMMON_NAMESPACE.equals(rl1.getNamespace())&&COMMON_NAMESPACE.equals(rl2.getNamespace()))
+			return 1;
+		return rl1.compareNamespaced(rl2);
+	};
 
 	// TODO replace by GuiButtonBoolean
 	public static class ButtonSorter extends GuiButtonBoolean implements ITooltipWidget

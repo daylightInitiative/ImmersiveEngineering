@@ -1,7 +1,9 @@
 ##### Version 1.21.1-12.3.1-pre
 - Add an item model for the resonanz observer (BluSunrize)
 - Re-add Jade compatability (BluSunrize)
-- Change item routers to no longer allow items out an unfiltered side *if* a filtered side for that item exists (BluSunrize)
+- Overhaul item routers! (BluSunrize)
+    - They no longer allow items out an unfiltered side *if* a filtered side for that item exists
+    - Tag filtering now allows selecting a specific tag with the scroll-wheel.
 - Fix desync of item router buttons on multiplayer servers (BluSunrize)
 - Fix resonanz observer not rendering the completed structure in the manual (BluSunrize)
 

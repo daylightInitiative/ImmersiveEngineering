@@ -22,6 +22,7 @@ import blusunrize.immersiveengineering.common.util.IEBlockCapabilityCaches;
 import blusunrize.immersiveengineering.common.util.IEBlockCapabilityCaches.IEBlockCapabilityCache;
 import blusunrize.immersiveengineering.common.util.Utils;
 import com.google.common.collect.Iterators;
+import com.mojang.datafixers.util.Pair;
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.ints.IntIterators;
 import malte0811.dualcodecs.DualCodec;
@@ -36,8 +37,11 @@ import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.state.BlockState;
@@ -48,6 +52,7 @@ import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import net.neoforged.neoforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -214,11 +219,11 @@ public class SorterBlockEntity extends IEBaseBlockEntity implements IInteraction
 	private EnumFilterResult checkStackAgainstFilter(ItemStack stack, Direction side)
 	{
 		boolean unmapped = true;
-		for(ItemStack filterStack : filter.getFilterStacksOnSide(side))
-			if(!filterStack.isEmpty())
+		for(Pair<ItemStack, TagKey<Item>> filterStack : filter.getFilterStacksOnSide(side))
+			if(!filterStack.getFirst().isEmpty())
 			{
 				unmapped = false;
-				if(sideFilter.get(side).compareStackToFilterstack(stack, filterStack))
+				if(sideFilter.get(side).compareStackToFilterstack(stack, filterStack.getFirst(), filterStack.getSecond()))
 					return EnumFilterResult.VALID_FILTERED;
 			}
 		if(unmapped)
@@ -232,41 +237,41 @@ public class SorterBlockEntity extends IEBaseBlockEntity implements IInteraction
 	 */
 	private Predicate<ItemStack> concatFilters(Direction side0, Direction side1)
 	{
-		final List<ItemStack> concat = new ArrayList<>();
-		for(ItemStack filterStack : filter.getFilterStacksOnSide(side0))
-			if(!filterStack.isEmpty())
+		final List<Pair<ItemStack, TagKey<Item>>> concat = new ArrayList<>();
+		for(Pair<ItemStack, TagKey<Item>> filterStack : filter.getFilterStacksOnSide(side0))
+			if(!filterStack.getFirst().isEmpty())
 				concat.add(filterStack);
 
 		Predicate<ItemStack> matchFilter = concat.isEmpty()?(stack) -> true: new Predicate<>()
 		{
-			final Set<ItemStack> filter = new HashSet<>(concat);
+			final Set<Pair<ItemStack, TagKey<Item>>> filter = new HashSet<>(concat);
 			final FilterConfig config = sideFilter.get(side0);
 
 			@Override
 			public boolean test(ItemStack stack)
 			{
-				for(ItemStack filterStack : filter)
-					if(config.compareStackToFilterstack(stack, filterStack))
+				for(Pair<ItemStack, TagKey<Item>> filterStack : filter)
+					if(config.compareStackToFilterstack(stack, filterStack.getFirst(), filterStack.getSecond()))
 						return true;
 				return false;
 			}
 		};
 
-		for(ItemStack filterStack : filter.getFilterStacksOnSide(side1))
-			if(!filterStack.isEmpty()&&matchFilter.test(filterStack))
+		for(Pair<ItemStack, TagKey<Item>> filterStack : filter.getFilterStacksOnSide(side1))
+			if(!filterStack.getFirst().isEmpty()&&matchFilter.test(filterStack.getFirst()))
 				concat.add(filterStack);
 
 		// TODO this looks dodgy
 		final var filterFrom = sideFilter.get(side0);
 		final var filterTo = sideFilter.get(side1);
 		final boolean concatFuzzy = filterFrom.ignoreDamage||filterTo.ignoreDamage;
-		final boolean concatOredict = filterFrom.allowTags||filterTo.allowTags;
+		final boolean concatTags = filterFrom.allowTags||filterTo.allowTags;
 		final boolean concatNBT = filterFrom.considerComponents||filterTo.considerComponents;
-		final var combinedFilter = new FilterConfig(concatOredict, concatNBT, concatFuzzy);
+		final var combinedFilter = new FilterConfig(concatTags, concatNBT, concatFuzzy);
 
 		return concat.isEmpty()?stack -> true: stack -> {
-			for(ItemStack filterStack : concat)
-				if(combinedFilter.compareStackToFilterstack(stack, filterStack))
+			for(Pair<ItemStack, TagKey<Item>> filterStack : concat)
+				if(combinedFilter.compareStackToFilterstack(stack, filterStack.getFirst(), filterStack.getSecond()))
 					return true;
 			return false;
 		};
@@ -392,9 +397,11 @@ public class SorterBlockEntity extends IEBaseBlockEntity implements IInteraction
 
 	public static class SorterInventory extends ItemStackHandler
 	{
+		private final TagKey<Item>[] selectedTags = new TagKey[TOTAL_SLOTS];
+
 		public SorterInventory()
 		{
-			super(NonNullList.withSize(6*FILTER_SLOTS_PER_SIDE, ItemStack.EMPTY));
+			super(NonNullList.withSize(TOTAL_SLOTS, ItemStack.EMPTY));
 		}
 
 		public ItemStack getStackBySideAndSlot(Direction side, int slotOnSide)
@@ -413,23 +420,54 @@ public class SorterBlockEntity extends IEBaseBlockEntity implements IInteraction
 			return 1;
 		}
 
-		public Iterable<ItemStack> getFilterStacksOnSide(Direction side)
+		public Iterable<Pair<ItemStack, TagKey<Item>>> getFilterStacksOnSide(Direction side)
 		{
 			return () -> Iterators.transform(
-					IntIterators.fromTo(0, FILTER_SLOTS_PER_SIDE), i -> getStackBySideAndSlot(side, i)
+					IntIterators.fromTo(0, FILTER_SLOTS_PER_SIDE), i -> Pair.of(
+							getStackBySideAndSlot(side, i),
+							this.selectedTags[getSlotId(side, i)]
+					)
 			);
+		}
+
+		@Override
+		public void setStackInSlot(int slot, ItemStack stack)
+		{
+			ItemStack prev = getStackInSlot(slot);
+			super.setStackInSlot(slot, stack);
+			// reset selected tag
+			if(!ItemStack.isSameItem(prev, stack))
+				selectedTags[slot] = null;
+		}
+
+		public void setSelectedTag(int slot, @Nullable final ResourceLocation location)
+		{
+			if(location==null)
+				this.selectedTags[slot] = null;
+			this.selectedTags[slot] = this.getStackInSlot(slot).getTags()
+					.filter(t -> t.location().equals(location))
+					.findFirst().orElse(null);
+		}
+
+		@Nullable
+		public ResourceLocation getSelectedTag(int slot)
+		{
+			TagKey<Item> tag = this.selectedTags[slot];
+			return tag==null?null: tag.location();
 		}
 
 		public void writeToNBT(Provider provider, ListTag list)
 		{
 			for(int i = 0; i < getSlots(); ++i)
 			{
-				ItemStack slot = getStackInSlot(i);
-				if(!slot.isEmpty())
+				ItemStack stackInSlot = getStackInSlot(i);
+				if(!stackInSlot.isEmpty())
 				{
-					CompoundTag itemTag = new CompoundTag();
-					itemTag.putByte("Slot", (byte)i);
-					list.add(slot.save(provider, itemTag));
+					CompoundTag slotTag = new CompoundTag();
+					slotTag.putByte("Slot", (byte)i);
+					if(this.selectedTags[i]!=null)
+						slotTag.putString("selectedTag", this.selectedTags[i].location().toString());
+					list.add(stackInSlot.save(provider, slotTag));
 				}
 			}
 		}
@@ -438,10 +476,18 @@ public class SorterBlockEntity extends IEBaseBlockEntity implements IInteraction
 		{
 			for(int i = 0; i < list.size(); i++)
 			{
-				CompoundTag itemTag = list.getCompound(i);
-				int slot = itemTag.getByte("Slot")&255;
+				CompoundTag slotTag = list.getCompound(i);
+				int slot = slotTag.getByte("Slot")&255;
 				if(slot < getSlots())
-					setStackInSlot(slot, ItemStack.parseOptional(provider, itemTag));
+				{
+					ItemStack stack = ItemStack.parseOptional(provider, slotTag);
+					setStackInSlot(slot, stack);
+					if(slotTag.contains("selectedTag"))
+					{
+						ResourceLocation rl = ResourceLocation.parse(slotTag.getString("selectedTag"));
+						stack.getTags().filter(t -> t.location().equals(rl)).forEach(t -> this.selectedTags[slot] = t);
+					}
+				}
 			}
 		}
 	}
@@ -463,12 +509,12 @@ public class SorterBlockEntity extends IEBaseBlockEntity implements IInteraction
 				FilterConfig::new
 		);
 
-		public boolean compareStackToFilterstack(ItemStack stack, ItemStack filterStack)
+		public boolean compareStackToFilterstack(ItemStack stack, ItemStack filterStack, @Nullable TagKey<Item> tag)
 		{
 			// "Item level" tests
-			if(allowTags)
+			if(allowTags&&tag!=null)
 			{
-				if(stack.getItem().builtInRegistryHolder().tags().noneMatch(filterStack::is))
+				if(!stack.is(tag))
 					return false;
 			}
 			else if(!ItemStack.isSameItem(filterStack, stack))
