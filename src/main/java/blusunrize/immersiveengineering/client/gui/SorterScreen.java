@@ -13,9 +13,6 @@ import blusunrize.immersiveengineering.api.client.TextUtils;
 import blusunrize.immersiveengineering.client.ClientUtils;
 import blusunrize.immersiveengineering.client.gui.elements.GuiButtonBoolean;
 import blusunrize.immersiveengineering.client.gui.elements.GuiButtonIE.ButtonTexture;
-import blusunrize.immersiveengineering.client.gui.elements.GuiButtonIE.IIEPressable;
-import blusunrize.immersiveengineering.client.gui.elements.GuiButtonState;
-import blusunrize.immersiveengineering.client.gui.elements.ITooltipWidget;
 import blusunrize.immersiveengineering.common.blocks.wooden.SorterBlockEntity;
 import blusunrize.immersiveengineering.common.blocks.wooden.SorterBlockEntity.FilterConfig;
 import blusunrize.immersiveengineering.common.gui.IESlot;
@@ -40,13 +37,23 @@ import net.neoforged.neoforge.common.Tags;
 
 import javax.annotation.Nonnull;
 import java.util.*;
-import java.util.function.Supplier;
 
 import static blusunrize.immersiveengineering.api.IEApi.ieLoc;
 
 public class SorterScreen extends IEContainerScreen<SorterMenu>
 {
 	private static final ResourceLocation TEXTURE = makeTextureLocation("sorter");
+
+	public static final Map<FilterBit, ButtonTexture> BUTTON_TEXTURE_TRUE = Map.of(
+			FilterBit.DAMAGE, new ButtonTexture(ieLoc("sorter/damage")),
+			FilterBit.COMPONENTS, new ButtonTexture(ieLoc("sorter/components")),
+			FilterBit.TAG, new ButtonTexture(ieLoc("sorter/tags"))
+	);
+	public static final Map<FilterBit, ButtonTexture> BUTTON_TEXTURE_FALSE = Map.of(
+			FilterBit.DAMAGE, new ButtonTexture(ieLoc("sorter/no_damage")),
+			FilterBit.COMPONENTS, new ButtonTexture(ieLoc("sorter/no_components")),
+			FilterBit.TAG, new ButtonTexture(ieLoc("sorter/no_tags"))
+	);
 
 	public SorterScreen(SorterMenu container, Inventory inventoryPlayer, Component title)
 	{
@@ -62,7 +69,7 @@ public class SorterScreen extends IEContainerScreen<SorterMenu>
 		{
 			int x = leftPos+30+(side/2)*58;
 			int y = topPos+44+(side%2)*76;
-			String s = I18n.get("desc.immersiveengineering.info.blockSide."+Direction.from3DDataValue(side)).substring(0, 1);
+			String s = I18n.get(Lib.DESC_INFO+"blockSide."+Direction.from3DDataValue(side)).substring(0, 1);
 			RenderSystem.enableBlend();
 			graphics.drawString(ClientUtils.font(), s, x-(ClientUtils.font().width(s)/2), y, 0xaacccccc, true);
 		}
@@ -81,13 +88,25 @@ public class SorterScreen extends IEContainerScreen<SorterMenu>
 				int y = topPos+3+(sideId%2)*76;
 				final int sideFinal = sideId;
 				final GetterAndSetter<FilterConfig> value = menu.filterMasks.get(side);
-				ButtonSorter b = new ButtonSorter(x, y, bit, value, btn -> {
-					CompoundTag tag = new CompoundTag();
-					tag.put("sideConfigVal", FilterConfig.CODEC.toNBT(bit.toggle(value.get())));
-					tag.putInt("sideConfigId", sideFinal);
-					sendUpdateToServer(tag);
-					fullInit();
-				});
+				GuiButtonBoolean b = new GuiButtonBoolean(
+						x, y, 18, 18, Component.empty(), () -> bit.get(value.get()),
+						BUTTON_TEXTURE_FALSE.get(bit), BUTTON_TEXTURE_TRUE.get(bit),
+						btn -> {
+							CompoundTag tag = new CompoundTag();
+							tag.put("sideConfigVal", FilterConfig.CODEC.toNBT(bit.toggle(value.get())));
+							tag.putInt("sideConfigId", sideFinal);
+							sendUpdateToServer(tag);
+							fullInit();
+						},
+						(components, aBoolean) -> {
+							String[] split = I18n.get(bit.getTranslationKey()).split("<br>");
+							for(int i = 0; i < split.length; i++)
+								if(i==0)
+									components.add(Component.literal(split[i]));
+								else
+									components.add(TextUtils.applyFormat(Component.literal(split[i]), ChatFormatting.GRAY));
+						}
+				);
 				this.addRenderableWidget(b);
 			}
 	}
@@ -177,45 +196,6 @@ public class SorterScreen extends IEContainerScreen<SorterMenu>
 			return 1;
 		return rl1.compareNamespaced(rl2);
 	};
-
-	// TODO replace by GuiButtonBoolean
-	public static class ButtonSorter extends GuiButtonBoolean implements ITooltipWidget
-	{
-		private static final Map<FilterBit, ButtonTexture> TRUE_TEXTURES = Map.of(
-				FilterBit.DAMAGE, new ButtonTexture(ieLoc("sorter/damage")),
-				FilterBit.COMPONENTS, new ButtonTexture(ieLoc("sorter/components")),
-				FilterBit.TAG, new ButtonTexture(ieLoc("sorter/tags"))
-		);
-		private static final Map<FilterBit, ButtonTexture> FALSE_TEXTURES = Map.of(
-				FilterBit.DAMAGE, new ButtonTexture(ieLoc("sorter/no_damage")),
-				FilterBit.COMPONENTS, new ButtonTexture(ieLoc("sorter/no_components")),
-				FilterBit.TAG, new ButtonTexture(ieLoc("sorter/no_tags"))
-		);
-
-		private final FilterBit type;
-		private final Supplier<FilterConfig> state;
-
-		public ButtonSorter(int x, int y, FilterBit type, Supplier<FilterConfig> state, IIEPressable<GuiButtonState<Boolean>> handler)
-		{
-			super(
-					x, y, 18, 18, Component.empty(), () -> type.get(state.get()),
-					FALSE_TEXTURES.get(type), TRUE_TEXTURES.get(type), handler
-			);
-			this.type = type;
-			this.state = state;
-		}
-
-		@Override
-		public void gatherTooltip(int mouseX, int mouseY, List<Component> tooltip)
-		{
-			String[] split = I18n.get(type.getTranslationKey()).split("<br>");
-			for(int i = 0; i < split.length; i++)
-				if(i==0)
-					tooltip.add(Component.literal(split[i]));
-				else
-					tooltip.add(TextUtils.applyFormat(Component.literal(split[i]), ChatFormatting.GRAY));
-		}
-	}
 
 	public enum FilterBit
 	{

@@ -102,7 +102,7 @@
   "desc.immersiveengineering.info.blockSide.connectFluid.output": "Fluid Output",
   "desc.immersiveengineering.info.filter.tag": "Filter: Tag<br>Filters items based on<br>their tags.",
   "desc.immersiveengineering.info.filter.components": "Filter: Components<br>Filters items with respect<br>to their additional data components.",
-  "desc.immersiveengineering.info.filter.components": "Filter: Components<br>Filters items with respect<br>to their additional data components.",
+  "desc.immersiveengineering.info.filter.fluid_components": "Filter: Components<br>Filters fluids with respect<br>to their additional data components.",
   "desc.immersiveengineering.info.filter.damage": "Filter: Damage<br>Filters items while<br>ignoring the damage<br>of tools or weapons.",
   "desc.immersiveengineering.info.filter.tag.none_available": "§o§8No tags available, will filter by item instead.§r",
   "desc.immersiveengineering.info.filter.tag.selected_scroll": "§6Selected tag: §o§8(scroll to change)§r",
