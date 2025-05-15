@@ -48,6 +48,8 @@ public class ChunkLoaderCallbacks implements BlockCallback<Boolean>
 	@Override
 	public boolean shouldRenderGroup(Boolean paper, String group, RenderType layer)
 	{
+		if(layer==null)
+			return !"glass".equals(group);
 		if("glass".equals(group))
 			return layer==RenderType.translucent();
 		if("amethyst".equals(group))
