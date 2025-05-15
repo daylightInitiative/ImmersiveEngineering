@@ -74,8 +74,8 @@ public class SorterMenu extends IEContainerMenu
 				addSlot(new Slot(inventoryPlayer, j+i*9+9, 8+j*18, 163+i*18));
 		for(int i = 0; i < 9; i++)
 			addSlot(new Slot(inventoryPlayer, i, 8+i*18, 221));
-		for(final GetterAndSetter<FilterConfig> mask : filterMasks.values())
-			addGenericData(new GenericContainerData<>(GenericDataSerializers.FILTER_CONFIG, mask));
+		for(Direction d : Direction.values())
+			addGenericData(new GenericContainerData<>(GenericDataSerializers.FILTER_CONFIG, filterMasks.get(d)));
 	}
 
 	@Nonnull

@@ -1,6 +1,7 @@
 ##### Version 1.21.1-12.3.1-pre
 - Add an item model for the resonanz observer (BluSunrize)
 - Re-add Jade compatability (BluSunrize)
+- Fix desync of item router buttons on multiplayer servers (BluSunrize)
 
 ##### Version 1.21.1-12.3.0-188
 - Add the Resonanz Observer multiblock (BluSunrize)
