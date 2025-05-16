@@ -3,7 +3,7 @@
     - It's crafted from treated wood and iron
     - Used in various recipes that previously used treated wood - these recipes got cheaper!
 - Add an item model for the resonanz observer (BluSunrize)
-- Re-add Jade compatability (BluSunrize)
+- Re-add Jade compatibility (BluSunrize)
 - Overhaul item routers! (BluSunrize)
     - They no longer allow items out an unfiltered side *if* a filtered side for that item exists
     - Tag filtering now allows selecting a specific tag with the scroll-wheel.
