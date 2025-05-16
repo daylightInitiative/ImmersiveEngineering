@@ -260,12 +260,6 @@ public class MiscRecipes extends IERecipeProvider
 				.build(out, toRL("blueprint/bullet_wolfpack"));
 
 		BlueprintCraftingRecipeBuilder.builder()
-				.category("electrode")
-				.output(Misc.GRAPHITE_ELECTRODE)
-				.input(IETags.hopGraphiteIngot, 4)
-				.build(out, toRL("blueprint/graphite_electrode"));
-
-		BlueprintCraftingRecipeBuilder.builder()
 				.category("bannerpatterns")
 				.output(IEBannerPatterns.HAMMER.item())
 				.input(IETags.paper)

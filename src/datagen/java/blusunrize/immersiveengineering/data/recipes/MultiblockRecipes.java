@@ -103,12 +103,6 @@ public class MultiblockRecipes extends IERecipeProvider
 
 		ItemStack electrode = new ItemStack(Misc.GRAPHITE_ELECTRODE);
 		electrode.setDamageValue(IEServerConfig.MACHINES.arcfurnace_electrodeDamage.getDefault()/2);
-		MetalPressRecipeBuilder.builder()
-				.input(IETags.hopGraphiteIngot, 4)
-				.mold(Molds.MOLD_ROD)
-				.output(electrode)
-				.setEnergy(4800)
-				.build(out, toRL("metalpress/electrode"));
 
 		MetalPressRecipeBuilder.builder()
 				.input(Tags.Items.INGOTS_NETHERITE)
