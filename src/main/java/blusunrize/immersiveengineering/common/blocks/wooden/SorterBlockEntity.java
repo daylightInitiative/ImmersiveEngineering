@@ -56,8 +56,9 @@ import javax.annotation.Nullable;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
+import java.util.stream.Stream.Builder;
 
-//TODO Metadata and oredict are gone. Update manual entry as well.
 public class SorterBlockEntity extends IEBaseBlockEntity implements IInteractionObjectIE<SorterBlockEntity>, IBlockEntityDrop
 {
 	public static final int FILTER_SLOTS_PER_SIDE = 8;
@@ -187,7 +188,7 @@ public class SorterBlockEntity extends IEBaseBlockEntity implements IInteraction
 							if(!extractItem.isEmpty())
 							{
 								if(concatFilter==null)//Init the filter here, to save on resources
-									concatFilter = this.concatFilters(outputSide, side);
+									concatFilter = this.concatFilters(side, outputSide);
 								if(concatFilter.test(extractItem))
 								{
 									if(first)
@@ -235,43 +236,47 @@ public class SorterBlockEntity extends IEBaseBlockEntity implements IInteraction
 	 * @return A Predicate representing the concatinated filters of two sides.<br>
 	 * If one filter is empty, uses the full filter of the other side, else the matching items make up the filter
 	 */
-	private Predicate<ItemStack> concatFilters(Direction side0, Direction side1)
+	private Predicate<ItemStack> concatFilters(Direction sideFrom, Direction sideTo)
 	{
-		final List<Pair<ItemStack, TagKey<Item>>> concat = new ArrayList<>();
-		for(Pair<ItemStack, TagKey<Item>> filterStack : filter.getFilterStacksOnSide(side0))
+		final var filterFrom = sideFilter.get(sideFrom);
+		final var filterTo = sideFilter.get(sideTo);
+
+		// Build lists without emtpies
+		final List<Pair<ItemStack, TagKey<Item>>> stacksFrom = new ArrayList<>();
+		for(Pair<ItemStack, TagKey<Item>> filterStack : filter.getFilterStacksOnSide(sideFrom))
 			if(!filterStack.getFirst().isEmpty())
-				concat.add(filterStack);
+				stacksFrom.add(filterStack);
+		final List<Pair<ItemStack, TagKey<Item>>> stacksTo = new ArrayList<>();
+		for(Pair<ItemStack, TagKey<Item>> filterStack : filter.getFilterStacksOnSide(sideTo))
+			if(!filterStack.getFirst().isEmpty())
+				stacksTo.add(filterStack);
 
-		Predicate<ItemStack> matchFilter = concat.isEmpty()?(stack) -> true: new Predicate<>()
-		{
-			final Set<Pair<ItemStack, TagKey<Item>>> filter = new HashSet<>(concat);
-			final FilterConfig config = sideFilter.get(side0);
+		// If there is nothing configured, simply return true
+		if(stacksFrom.isEmpty()&&stacksTo.isEmpty())
+			return stack -> true;
+		// If only sideFrom is filtered
+		if(stacksTo.isEmpty())
+			return stack -> stacksFrom.stream().anyMatch(pair -> filterFrom.compareStackToFilterstack(stack, pair.getFirst(), pair.getSecond()));
+		// If only sideTo is filtered
+		if(stacksFrom.isEmpty())
+			return stack -> stacksTo.stream().anyMatch(pair -> filterTo.compareStackToFilterstack(stack, pair.getFirst(), pair.getSecond()));
 
-			@Override
-			public boolean test(ItemStack stack)
-			{
-				for(Pair<ItemStack, TagKey<Item>> filterStack : filter)
-					if(config.compareStackToFilterstack(stack, filterStack.getFirst(), filterStack.getSecond()))
-						return true;
-				return false;
-			}
-		};
+		// If both are filled, then we build combined predicates
+		List<Predicate<ItemStack>> combinedPredicates = stacksFrom.stream().flatMap(pairFrom -> {
+			Builder<Predicate<ItemStack>> builder = Stream.builder();
+			stacksTo.forEach(pairTo -> {
+				if(filterFrom.compareStackToFilterstack(pairTo.getFirst(), pairFrom.getFirst(), pairFrom.getSecond()))
+					builder.accept(itemStack ->
+							filterFrom.compareStackToFilterstack(itemStack, pairFrom.getFirst(), pairFrom.getSecond())
+									&&filterTo.compareStackToFilterstack(itemStack, pairTo.getFirst(), pairTo.getSecond())
+					);
+			});
+			return builder.build();
+		}).toList();
 
-		for(Pair<ItemStack, TagKey<Item>> filterStack : filter.getFilterStacksOnSide(side1))
-			if(!filterStack.getFirst().isEmpty()&&matchFilter.test(filterStack.getFirst()))
-				concat.add(filterStack);
-
-		// TODO this looks dodgy
-		final var filterFrom = sideFilter.get(side0);
-		final var filterTo = sideFilter.get(side1);
-		final boolean concatFuzzy = filterFrom.ignoreDamage||filterTo.ignoreDamage;
-		final boolean concatTags = filterFrom.allowTags||filterTo.allowTags;
-		final boolean concatNBT = filterFrom.considerComponents||filterTo.considerComponents;
-		final var combinedFilter = new FilterConfig(concatTags, concatNBT, concatFuzzy);
-
-		return concat.isEmpty()?stack -> true: stack -> {
-			for(Pair<ItemStack, TagKey<Item>> filterStack : concat)
-				if(combinedFilter.compareStackToFilterstack(stack, filterStack.getFirst(), filterStack.getSecond()))
+		return combinedPredicates.isEmpty()?stack -> false: stack -> {
+			for(Predicate<ItemStack> p : combinedPredicates)
+				if(p.test(stack))
 					return true;
 			return false;
 		};
