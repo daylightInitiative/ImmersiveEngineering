@@ -90,6 +90,7 @@ public final class IEItems
 		public static final ItemRegObject<IEBaseItem> GUNPART_HAMMER = register("gunpart_hammer", RevolverpartItem::new);
 		public static final ItemRegObject<IEBaseItem> DUST_COKE = simple("dust_coke");
 		public static final ItemRegObject<IEBaseItem> DUST_HOP_GRAPHITE = simple("dust_hop_graphite");
+		@Deprecated(since = "12.3.1")
 		public static final ItemRegObject<IEBaseItem> INGOT_HOP_GRAPHITE = simple("ingot_hop_graphite");
 		public static final ItemRegObject<IEBaseItem> PLATE_HOP_GRAPHITE = simple("plate_hop_graphite");
 		public static final ItemRegObject<IEBaseItem> WIRE_COPPER = simple("wire_copper");
