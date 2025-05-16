@@ -471,8 +471,7 @@ public class DeviceRecipes extends IERecipeProvider
 				.pattern("c")
 				.pattern("t")
 				.define('c', basic)
-				.define('t', Blocks.IRON_TRAPDOOR)
-				.unlockedBy("has_trapdoor", has(Blocks.IRON_TRAPDOOR))
+				.define('t', makeIngredient(IETags.getTagsFor(EnumMetals.IRON).plate, IETags.getTagsFor(EnumMetals.STEEL).plate))
 				.unlockedBy("has_conveyor", has(basic))
 				.save(out, toRL(toPath(dropper)));
 		shapedMisc(extract)
@@ -496,7 +495,7 @@ public class DeviceRecipes extends IERecipeProvider
 				.pattern("c ")
 				.pattern("ci")
 				.define('c', basic)
-				.define('i', Tags.Items.INGOTS_IRON)
+				.define('i', makeIngredient(IETags.ironRod, IETags.steelRod))
 				.unlockedBy("has_conveyor", has(basic))
 				.save(out, toRL(toPath(vertical)));
 	}
