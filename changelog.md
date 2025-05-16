@@ -1,4 +1,6 @@
 ##### Version 1.21.1-12.3.1-pre
+- Add the Basic Engineering Block (BluSunrize)
+    - It's crafted from treated wood and iron 
 - Add an item model for the resonanz observer (BluSunrize)
 - Re-add Jade compatability (BluSunrize)
 - Overhaul item routers! (BluSunrize)

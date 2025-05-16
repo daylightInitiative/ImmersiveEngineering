@@ -1,4 +1,4 @@
-// 1.21.1	2025-05-05T08:47:13.2564491	Loot Tables
+// 1.21.1	2025-05-16T16:21:57.3761925	Loot Tables
 9c060ea0f446ec61e9c85308e84656f4d6d7cfdb data/immersiveengineering/loot_table/advancements/shader_epic.json
 f489826de5f3b715a6cd3fc912efe614b774ad09 data/immersiveengineering/loot_table/advancements/shader_masterwork.json
 8d86832db0fabe3f83b53243e237e1045490e1ff data/immersiveengineering/loot_table/advancements/shader_rare.json
@@ -25,6 +25,7 @@ bdc020c3f9d248204d2ccb61f5f36dc3fb2b2e3b data/immersiveengineering/loot_table/bl
 353ea8122d9c1bf76af5626b4112848c8252858f data/immersiveengineering/loot_table/blocks/assembler.json
 9f1f465e8370185d273c835dd69abeea795af44e data/immersiveengineering/loot_table/blocks/auto_workbench.json
 74a7bb1b60a0e4d4d8b7c2c988098fb5efd69ffd data/immersiveengineering/loot_table/blocks/balloon.json
+6de41dcbca33c9d43a31814f41430a6ff0d64089 data/immersiveengineering/loot_table/blocks/basic_engineering.json
 a6bf20a0d7e07e8c97e6269d5cebb58cb8327f4f data/immersiveengineering/loot_table/blocks/biodiesel_fluid_block.json
 c30d60bf940fb7abcd398e3c89036693140d43a4 data/immersiveengineering/loot_table/blocks/blastbrick.json
 129a09d27a498d629382050d7bed1d7050f8c56f data/immersiveengineering/loot_table/blocks/blastbrick_reinforced.json

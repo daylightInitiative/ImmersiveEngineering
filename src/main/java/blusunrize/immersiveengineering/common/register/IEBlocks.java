@@ -394,6 +394,10 @@ public final class IEBlocks
 
 		public static final SignHolder SIGN = SignHolder.of(WoodTypes.TREATED_WOOD, 1f, MapColor.WOOD, NoteBlockInstrument.BASS, true);
 
+		public static final BlockEntry<IEBaseBlock> BASIC_ENGINEERING = BlockEntry.simple(
+				"basic_engineering", STANDARD_WOOD_PROPERTIES
+		);
+
 		private static void init()
 		{
 			for(TreatedWoodStyles style : TreatedWoodStyles.values())

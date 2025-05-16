@@ -208,6 +208,15 @@ public class DecorationRecipes extends IERecipeProvider
 				.save(new WrappingRecipeOutput<>(out, BasicShapedRecipe::new), toRL(toPath(WoodenDecoration.TRAPDOOR)));
 		addVariationChain(out, WoodenDecoration.TRAPDOOR, WoodenDecoration.TRAPDOOR_FRAMED);
 		addSigns(WoodenDecoration.SIGN, IETags.getItemTag(IETags.treatedWood), Tags.Items.RODS_WOODEN, out);
+
+		shapedMisc(WoodenDecoration.BASIC_ENGINEERING, 4)
+				.pattern("iwi")
+				.pattern("w w")
+				.pattern("iwi")
+				.define('i', Tags.Items.INGOTS_IRON)
+				.define('w', IETags.getItemTag(IETags.treatedWood))
+				.unlockedBy("has_treated_planks", has(IETags.getItemTag(IETags.treatedWood)))
+				.save(out, toRL(toPath(WoodenDecoration.BASIC_ENGINEERING)));
 	}
 
 	private void stoneDecoration(RecipeOutput out)
