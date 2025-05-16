@@ -535,7 +535,7 @@ public class DeviceRecipes extends IERecipeProvider
 				.define('w', IETags.getItemTag(IETags.treatedWood))
 				.define('f', IETags.getTagsFor(EnumMetals.STEEL).ingot)
 				.define('a', IETags.getTagsFor(EnumMetals.ALUMINUM).plate)
-				.define('c', IETags.hopGraphiteIngot)
+				.define('c', IETags.hopGraphitePlate)
 				.define('e', new Ingredient(new IngredientFluidStack(IETags.fluidRedstoneAcid, FluidType.BUCKET_VOLUME)))
 				.unlockedBy("has_nickel_ingot", has(IETags.getTagsFor(EnumMetals.NICKEL).ingot))
 				.unlockedBy("has_steel_ingot", has(IETags.getTagsFor(EnumMetals.STEEL).ingot))

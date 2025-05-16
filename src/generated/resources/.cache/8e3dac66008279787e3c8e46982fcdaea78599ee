@@ -1,4 +1,4 @@
-// 1.21.1	2025-04-23T14:23:24.8671532	Tags for minecraft:item mod id immersiveengineering
+// 1.21.1	2025-05-16T17:55:11.8627016	Tags for minecraft:item mod id immersiveengineering
 0ec28c858b1b91c5bff32d09a6c333dd450fa2da data/curios/tags/item/back.json
 929bbfcc2e578a06d498a3ac24c23dfc1e69677c data/curios/tags/item/head.json
 d0562e49ea1662a8e02805b805f76658ebd3ea7c data/c/tags/item/armors.json
@@ -59,12 +59,13 @@ ad7cc89e6b8ad6b0c7c3544c0abd3446c612060c data/c/tags/item/ores_in_ground/deepsla
 81467f7c9399b301ac496bf424b8c8b807db752a data/c/tags/item/ores_in_ground/stone.json
 03803ad3e358573f495ef5a2b28fff69483d9903 data/c/tags/item/ore_rates/singular.json
 886e5e1db1abef8583882d996f8600275f839c37 data/c/tags/item/paper.json
-97ed3ab56c5a5d7b6d9d155ffdd3152462f96812 data/c/tags/item/plates.json
+6c90224504c035fa3ba51c685e8d3697beaf0e3c data/c/tags/item/plates.json
 acf6b113ec54a56762cde07b98764c3b8ae28754 data/c/tags/item/plates/aluminum.json
 4070924cacbdf8cd04656525b43f3dbe1b43e009 data/c/tags/item/plates/constantan.json
 11e0c19988f5ccec4ec8cf52044a04c360b51dc3 data/c/tags/item/plates/copper.json
 79c535b08456989a2a7b7e6d5d62c7d79507a493 data/c/tags/item/plates/electrum.json
 df8ea86a655468711176758b0da692669cbad6d7 data/c/tags/item/plates/gold.json
+c6958f2d9bc695193ad8349d93ad7154f6611630 data/c/tags/item/plates/hop_graphite.json
 f0bf8e31da24a50ada81dcda7c227237f30a9ee0 data/c/tags/item/plates/iron.json
 745dd26881ad000cf96075a5e1cfc604e53de1b6 data/c/tags/item/plates/lead.json
 516ca22658dd90a2be2af9b3f0a25bb25984674a data/c/tags/item/plates/nickel.json

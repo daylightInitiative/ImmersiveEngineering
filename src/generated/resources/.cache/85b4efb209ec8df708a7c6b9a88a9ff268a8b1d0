@@ -1,4 +1,4 @@
-// 1.21.1	2025-05-12T22:33:39.5819846	Item models
+// 1.21.1	2025-05-16T17:55:11.8667017	Item models
 8e8e1578653ae2e701aee18c524176bc5c6bcd7f assets/immersiveengineering/models/item/acetaldehyde_bucket.json
 62d8a99359a8d59d68eaae60eca3ab0da03e358f assets/immersiveengineering/models/item/advanced_blast_furnace.json
 d03faa43ead928b27068b685663fe7fdd4465d1a assets/immersiveengineering/models/item/alloy_smelter.json
@@ -259,6 +259,7 @@ bb95a70d7cb24308fc802a4e142de14afe990719 assets/immersiveengineering/models/item
 f75f7bacce849cd7685a70f07b8097e62fe0e2b5 assets/immersiveengineering/models/item/plate_duroplast.json
 dd897b8461eecc326e14529fe1c6c36bd5ceddf1 assets/immersiveengineering/models/item/plate_electrum.json
 9754a72350c771891ee77010647a27b955708e2c assets/immersiveengineering/models/item/plate_gold.json
+dd15424368a287cc3c629ad12859f1aaab669cc0 assets/immersiveengineering/models/item/plate_hop_graphite.json
 f8d995c66d1cd9307553711343422808b558d298 assets/immersiveengineering/models/item/plate_iron.json
 cb755a5537818983a3317de57d3cb1f61c8e4369 assets/immersiveengineering/models/item/plate_lead.json
 c4249ceac6b65155e6fee34f5e0364a19d0f1c21 assets/immersiveengineering/models/item/plate_nickel.json

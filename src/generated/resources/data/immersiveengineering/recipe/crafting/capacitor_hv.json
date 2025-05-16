@@ -6,7 +6,7 @@
       "tag": "c:plates/aluminum"
     },
     "c": {
-      "tag": "c:ingots/hop_graphite"
+      "tag": "c:plates/hop_graphite"
     },
     "e": {
       "type": "immersiveengineering:fluid_stack",

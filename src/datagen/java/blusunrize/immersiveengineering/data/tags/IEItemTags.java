@@ -104,6 +104,8 @@ public class IEItemTags extends ItemTagsProvider
 		tag(IETags.hopGraphiteDust).add(Ingredients.DUST_HOP_GRAPHITE.get());
 		tag(IETags.hopGraphiteIngot).add(Ingredients.INGOT_HOP_GRAPHITE.get());
 		tag(Tags.Items.INGOTS).addTag(IETags.hopGraphiteIngot);
+		tag(IETags.hopGraphitePlate).add(Ingredients.PLATE_HOP_GRAPHITE.get());
+		tag(IETags.plates).addTag(IETags.hopGraphitePlate);
 		tag(IETags.copperWire).add(Ingredients.WIRE_COPPER.get());
 		tag(IETags.electrumWire).add(Ingredients.WIRE_ELECTRUM.get());
 		tag(IETags.aluminumWire).add(Ingredients.WIRE_ALUMINUM.get());

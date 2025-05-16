@@ -91,6 +91,7 @@ public final class IEItems
 		public static final ItemRegObject<IEBaseItem> DUST_COKE = simple("dust_coke");
 		public static final ItemRegObject<IEBaseItem> DUST_HOP_GRAPHITE = simple("dust_hop_graphite");
 		public static final ItemRegObject<IEBaseItem> INGOT_HOP_GRAPHITE = simple("ingot_hop_graphite");
+		public static final ItemRegObject<IEBaseItem> PLATE_HOP_GRAPHITE = simple("plate_hop_graphite");
 		public static final ItemRegObject<IEBaseItem> WIRE_COPPER = simple("wire_copper");
 		public static final ItemRegObject<IEBaseItem> WIRE_ELECTRUM = simple("wire_electrum");
 		public static final ItemRegObject<IEBaseItem> WIRE_ALUMINUM = simple("wire_aluminum");

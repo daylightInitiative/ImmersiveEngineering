@@ -100,6 +100,7 @@ public class IETags
 	public static final TagKey<Item> coalCokeDust = createItemWrapper(getDust("coal_coke"));
 	public static final TagKey<Item> hopGraphiteDust = createItemWrapper(getDust("hop_graphite"));
 	public static final TagKey<Item> hopGraphiteIngot = createItemWrapper(getIngot("hop_graphite"));
+	public static final TagKey<Item> hopGraphitePlate = createItemWrapper(getPlate("hop_graphite"));
 	public static final TagKey<Item> copperWire = createItemWrapper(getWire("copper"));
 	public static final TagKey<Item> electrumWire = createItemWrapper(getWire("electrum"));
 	public static final TagKey<Item> aluminumWire = createItemWrapper(getWire("aluminum"));
