@@ -51,8 +51,8 @@ public class ManualElementBottling extends ManualElementIECrafting
 				PositionedItemStack[] pIngredients = new PositionedItemStack[inputSize+outputSize+1];
 				int idx = 0;
 				for(int i = 0; i < inputSize; i++)
-					pIngredients[idx++] = new PositionedItemStack(recipe.inputs.get(i).getMatchingStacks(), 20-i%2*18, 8+i/2*18);
-				pIngredients[idx++] = new PositionedItemStack(buckets, 46, middle-8, bucketFraction);
+					pIngredients[idx++] = new PositionedItemStack(recipe.inputs.get(i).getMatchingStacks(), 26-i%2*18, 8+i/2*18);
+				pIngredients[idx++] = new PositionedItemStack(buckets, 48, middle-8, bucketFraction);
 
 				List<ItemStack> outputs = recipe.output.get();
 				for(int i = 0; i < outputs.size(); i++)
@@ -62,7 +62,7 @@ public class ManualElementBottling extends ManualElementIECrafting
 				}
 
 				this.recipes.add(pIngredients);
-				this.arrowPositions.add(new ArrowPosition(46, h*18+1));
+				this.arrowPositions.add(new ArrowPosition(48, h*18+1));
 
 				if(h*18 > yOff)
 					yOff = h*18+14;
