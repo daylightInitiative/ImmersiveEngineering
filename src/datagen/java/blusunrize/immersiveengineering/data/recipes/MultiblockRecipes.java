@@ -215,7 +215,20 @@ public class MultiblockRecipes extends IERecipeProvider
 				.input(IETags.fiberHemp, 8)
 				.fluidInput(IETags.fluidResin, half_bucket)
 				.build(out, toRL("bottling/"+toPath(Tools.GRINDINGDISK)));
-
+		BottlingMachineRecipeBuilder.builder()
+				.output(Ingredients.PLATE_HOP_GRAPHITE)
+				.output(Molds.MOLD_PLATE)
+				.input(Molds.MOLD_PLATE)
+				.input(IETags.hopGraphiteDust)
+				.fluidInput(IETags.fluidCreosote, quarter_bucket)
+				.build(out, toRL("bottling/"+toPath(Ingredients.PLATE_HOP_GRAPHITE)));
+		BottlingMachineRecipeBuilder.builder()
+				.output(Misc.GRAPHITE_ELECTRODE)
+				.output(Molds.MOLD_ROD)
+				.input(Molds.MOLD_ROD)
+				.input(IETags.hopGraphiteDust, 4)
+				.fluidInput(IETags.fluidCreosote, FluidType.BUCKET_VOLUME)
+				.build(out, toRL("bottling/"+toPath(Misc.GRAPHITE_ELECTRODE)));
 
 		// I can't believe this map didn't exist already...
 		Map<Block, Block> vanillaConcrete = new HashMap<>();
@@ -354,6 +367,16 @@ public class MultiblockRecipes extends IERecipeProvider
 				.input(IETags.getItemTag(IETags.coalCokeBlock))
 				.setEnergy(4800)
 				.build(out, toRL("crusher/coke_block"));
+		CrusherRecipeBuilder.builder()
+				.output(IETags.hopGraphiteDust, 1)
+				.input(IETags.hopGraphiteIngot)
+				.setEnergy(2400)
+				.build(out, toRL("crusher/graphite_ingot"));
+		CrusherRecipeBuilder.builder()
+				.output(IETags.hopGraphiteDust, 1)
+				.input(IETags.hopGraphitePlate)
+				.setEnergy(2400)
+				.build(out, toRL("crusher/graphite_plate"));
 
 		TagKey<Item> coal_dust = createItemWrapper(IETags.getDust("coal"));
 		CrusherRecipeBuilder.builder()
