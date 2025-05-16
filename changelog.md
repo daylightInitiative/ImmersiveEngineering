@@ -8,6 +8,11 @@
     - They no longer allow items out an unfiltered side *if* a filtered side for that item exists
     - Tag filtering now allows selecting a specific tag with the scroll-wheel.
     - Replace text references to "NBT Data" with "Data Components" instead
+- Overhaul graphite! (BluSunrize)
+    - HV Accumulators now use graphite plates instead of ingots
+    - Those ingots are fully deprecated, they can be crushed to dust but have no other uses
+    - Graphite electrodes for the Arc Furnace no longer require a blueprint!
+    - Instead, both electrodes and plates are now made in the bottling machine, using dust + creosote oil!
 - Change recipes for dropping and vertical conveyors to be a bit cheaper (BluSunrize)
 - Fix desync of item router buttons on multiplayer servers (BluSunrize)
 - Fix resonanz observer not rendering the completed structure in the manual (BluSunrize)
