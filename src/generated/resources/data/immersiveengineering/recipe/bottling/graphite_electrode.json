@@ -17,10 +17,10 @@
   ],
   "results": [
     {
-      "item": "immersiveengineering:graphite_electrode"
+      "id": "immersiveengineering:graphite_electrode"
     },
     {
-      "item": "immersiveengineering:mold_rod"
+      "id": "immersiveengineering:mold_rod"
     }
   ]
 }

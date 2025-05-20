@@ -14,10 +14,10 @@
   ],
   "results": [
     {
-      "item": "immersiveengineering:plate_hop_graphite"
+      "id": "immersiveengineering:plate_hop_graphite"
     },
     {
-      "item": "immersiveengineering:mold_plate"
+      "id": "immersiveengineering:mold_plate"
     }
   ]
 }

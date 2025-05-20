@@ -5,6 +5,6 @@
     "item": "minecraft:coarse_dirt"
   },
   "result": {
-    "item": "minecraft:dirt"
+    "id": "minecraft:dirt"
   }
 }

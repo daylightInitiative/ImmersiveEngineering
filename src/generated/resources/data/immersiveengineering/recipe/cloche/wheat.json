@@ -9,13 +9,11 @@
   },
   "results": [
     {
-      "basePredicate": {
-        "item": "minecraft:wheat"
-      },
-      "count": 2
+      "count": 2,
+      "id": "minecraft:wheat"
     },
     {
-      "item": "minecraft:wheat_seeds"
+      "id": "minecraft:wheat_seeds"
     }
   ],
   "soil": {

@@ -5,7 +5,7 @@
     "tag": "minecraft:logs_that_burn"
   },
   "result": {
-    "item": "minecraft:charcoal"
+    "id": "minecraft:charcoal"
   },
   "time": 900
 }
