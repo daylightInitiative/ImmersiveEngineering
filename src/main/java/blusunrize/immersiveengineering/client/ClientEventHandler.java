@@ -58,6 +58,7 @@ import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HeadedModel;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -275,9 +276,9 @@ public class ClientEventHandler implements ResourceManagerReloadListener
 						MultiBufferSource buffer = event.getMultiBufferSource();
 						transform.mulPose(new Quaternionf().rotateXYZ(0, 0, -i*Mth.PI/4));
 						transform.translate(-.5, .5, -.001);
-						VertexConsumer builder = buffer.getBuffer(IERenderTypes.getGui(rl("textures/models/blueprint_frame.png")));
+						VertexConsumer builder = buffer.getBuffer(RenderType.entityCutout(rl("textures/models/blueprint_frame.png")));
 						GuiHelper.drawTexturedColoredRect(builder, transform, .125f, -.875f, .75f, .75f, 1, 1, 1, 1, 1, 0, 1, 0);
-						transform.translate(.75, -.25, -.002);
+						transform.translate(.796875, -.25, -.002);
 						float scale = .0375f/(blueprint.getTextureScale()/16f);
 						transform.scale(-scale, -scale, scale);
 
