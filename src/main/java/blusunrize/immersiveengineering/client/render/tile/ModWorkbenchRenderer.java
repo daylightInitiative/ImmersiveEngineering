@@ -62,8 +62,13 @@ public class ModWorkbenchRenderer extends IEBlockEntityRenderer<ModWorkbenchBloc
 					final String category = IEApiDataComponents.getBlueprintType(stack);
 					if(!category.isEmpty() && !IEApiDataComponents.INVALID_BLUEPRINT.equals(category))
 					{
-						IVertexBufferHolder vbo = VBO_BY_BLUEPRINT.computeIfAbsent(category, this::buildVBO);
-						vbo.render(BlueprintRenderer.RENDER_TYPE, combinedLightIn, combinedOverlayIn, bufferIn, transform);
+						final ClientLevel level = ClientUtils.mc().level;
+						List<RecipeHolder<BlueprintCraftingRecipe>> recipes = BlueprintCraftingRecipe.findRecipes(level, category);
+						if(!recipes.isEmpty())
+						{
+							IVertexBufferHolder vbo = VBO_BY_BLUEPRINT.computeIfAbsent(category, this::buildVBO);
+							vbo.render(BlueprintRenderer.RENDER_TYPE, combinedLightIn, combinedOverlayIn, bufferIn, transform);
+						}
 					}
 				}
 			}

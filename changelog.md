@@ -2,6 +2,7 @@
 - Add support for chance-based output to the cloche (BluSunrize) 
 - Simplify a lot of recipe JSONs (BluSunrize)
     - The wrapping in "basePredicate" is now not needed for normal items anymore, and "count" on item stacks is optional too
+- Fix old electrode blueprints crashing in the workbench (BluSunrize)
 
 ##### Version 1.21.1-12.3.1-189
 - Add the Basic Engineering Block (BluSunrize)
