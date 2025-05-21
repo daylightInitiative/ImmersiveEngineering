@@ -13,7 +13,6 @@ import blusunrize.immersiveengineering.api.IEProperties;
 import blusunrize.immersiveengineering.api.client.IModelOffsetProvider;
 import blusunrize.immersiveengineering.api.crafting.ClocheFertilizer;
 import blusunrize.immersiveengineering.api.crafting.ClocheRecipe;
-import blusunrize.immersiveengineering.api.crafting.TagOutputList;
 import blusunrize.immersiveengineering.api.energy.MutableEnergyStorage;
 import blusunrize.immersiveengineering.common.blocks.BlockCapabilityRegistration.BECapabilityRegistrar;
 import blusunrize.immersiveengineering.common.blocks.IEBaseBlockEntity;
@@ -55,7 +54,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.phys.AABB;
-import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.neoforge.capabilities.Capabilities.EnergyStorage;
 import net.neoforged.neoforge.capabilities.Capabilities.FluidHandler;
 import net.neoforged.neoforge.capabilities.Capabilities.ItemHandler;
@@ -68,8 +66,6 @@ import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 import net.neoforged.neoforge.network.PacketDistributor;
-import org.apache.commons.lang3.mutable.Mutable;
-import org.apache.commons.lang3.mutable.MutableObject;
 import org.joml.Vector3f;
 
 import javax.annotation.Nullable;
@@ -170,10 +166,10 @@ public class ClocheBlockEntity extends IEBaseBlockEntity implements IEServerTick
 			{
 				if(growth >= recipe.getTime(seed, soil))
 				{
-					TagOutputList outputs = recipe.getOutputs(seed, soil);
+					NonNullList<ItemStack> outputs = recipe.getOutputs(seed, soil);
 					int canFit = 0;
 					boolean[] emptySlotsUsed = new boolean[4];
-					for(ItemStack output : outputs.get())
+					for(ItemStack output : outputs)
 						if(!output.isEmpty())
 							for(int j = 3; j < 7; j++)
 							{
@@ -186,9 +182,9 @@ public class ClocheBlockEntity extends IEBaseBlockEntity implements IEServerTick
 									break;
 								}
 							}
-					if(canFit >= outputs.get().size())
+					if(canFit >= outputs.size())
 					{
-						for(ItemStack output : outputs.get())
+						for(ItemStack output : outputs)
 							for(int j = 3; j < 7; j++)
 							{
 								ItemStack existing = inventory.get(j);

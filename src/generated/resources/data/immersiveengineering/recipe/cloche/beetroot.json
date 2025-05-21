@@ -13,7 +13,10 @@
       "id": "minecraft:beetroot"
     },
     {
-      "id": "minecraft:beetroot_seeds"
+      "chance": 0.25,
+      "output": {
+        "id": "minecraft:beetroot_seeds"
+      }
     }
   ],
   "soil": {

@@ -13,7 +13,10 @@
       "id": "minecraft:wheat"
     },
     {
-      "id": "minecraft:wheat_seeds"
+      "chance": 0.25,
+      "output": {
+        "id": "minecraft:wheat_seeds"
+      }
     }
   ],
   "soil": {
