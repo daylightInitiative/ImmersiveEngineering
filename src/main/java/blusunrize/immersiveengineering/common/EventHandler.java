@@ -366,7 +366,7 @@ public class EventHandler
 	@SubscribeEvent
 	public void onNoteBlockPlay(NoteBlockEvent.Play event)
 	{
-		if(event.getInstrument().worksAboveNoteBlock()||!(event.getLevel() instanceof Level level))
+		if(event.getInstrument().worksAboveNoteBlock()||!(event.getLevel() instanceof ServerLevel level))
 			// don't handle mob heads
 			return;
 		BlockPos pos = event.getPos();
@@ -378,10 +378,10 @@ public class EventHandler
 		event.setCanceled(true);
 		int note = event.getVanillaNoteId();
 		float pitch = NoteBlock.getPitchFromNote(note);
-		level.addParticle(
+		level.sendParticles(
 				ParticleTypes.NOTE,
 				pos.getX()+0.5, pos.getY()+1.2, pos.getZ()+0.5,
-				note/24.0, 0.0, 0.0
+				0, note/24.0, 0.0, 0.0, 1
 		);
 		level.playSeededSound(
 				null, pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5,
@@ -390,23 +390,22 @@ public class EventHandler
 		);
 
 		// check all players in 48 block range
-		if(level instanceof ServerLevel)
-			level.getEntitiesOfClass(ServerPlayer.class, new AABB(pos).inflate(48), p -> !Utils.hasIEAdvancement(p, "main/secret_achtung")).forEach(player -> {
-				int[] lastHeard = RESONANZ_NOTES_HEARD.getUnchecked(player.getUUID());
-				boolean written = false;
-				for(int i = 0; i < lastHeard.length; i++)
-					if(lastHeard[i] < 0)
-					{
-						lastHeard[i] = note;
-						written = true;
-						break;
-					}
-				if(!written)
-					lastHeard = new int[]{note, -1, -1};
-				if(Arrays.equals(lastHeard, RESONANZ_TARGET))
-					Utils.unlockIEAdvancement(player, "main/secret_achtung");
-				RESONANZ_NOTES_HEARD.put(player.getUUID(), lastHeard);
-			});
+		level.getEntitiesOfClass(ServerPlayer.class, new AABB(pos).inflate(48), p -> !Utils.hasIEAdvancement(p, "main/secret_achtung")).forEach(player -> {
+			int[] lastHeard = RESONANZ_NOTES_HEARD.getUnchecked(player.getUUID());
+			boolean written = false;
+			for(int i = 0; i < lastHeard.length; i++)
+				if(lastHeard[i] < 0)
+				{
+					lastHeard[i] = note;
+					written = true;
+					break;
+				}
+			if(!written)
+				lastHeard = new int[]{note, -1, -1};
+			if(Arrays.equals(lastHeard, RESONANZ_TARGET))
+				Utils.unlockIEAdvancement(player, "main/secret_achtung");
+			RESONANZ_NOTES_HEARD.put(player.getUUID(), lastHeard);
+		});
 	}
 
 	@SubscribeEvent
