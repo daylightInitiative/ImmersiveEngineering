@@ -6,6 +6,7 @@
 - Fix rendering of blueprints in item frames (BluSunrize)
 - Fix missing particles on noteblocks over resonanz engineering blocks (BluSunrize)
 - Fix resonanz observer not forming when the sculk sensor is active (BluSunrize)
+- Fix tanks and silos always dropping iron sheetmetal for the first block broken (BluSunrize)
 
 ##### Version 1.21.1-12.3.1-189
 - Add the Basic Engineering Block (BluSunrize)

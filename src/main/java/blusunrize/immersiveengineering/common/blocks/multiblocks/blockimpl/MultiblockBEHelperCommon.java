@@ -187,9 +187,12 @@ public abstract class MultiblockBEHelperCommon<State extends IMultiblockState> i
 	public BlockState getOriginalBlock(Level level)
 	{
 		IMultiblockLogic<State> logic = getMultiblock().logic();
-		if(logic instanceof MBMemorizeStructure<State> memo && getState()!=null)
+		State state = getState();
+		if(state==null && this.masterHelperDuringDisassembly!=null)
+			state = this.masterHelperDuringDisassembly.getState();
+		if(logic instanceof MBMemorizeStructure<State> memo && state!=null)
 		{
-			BlockState memorized = memo.getMemorizedBlockState(getState(), getPositionInMB());
+			BlockState memorized = memo.getMemorizedBlockState(state, getPositionInMB());
 			if(memorized!=null)
 				return memorized;
 		}
