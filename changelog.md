@@ -5,6 +5,7 @@
 - Fix old electrode blueprints crashing in the workbench (BluSunrize)
 - Fix rendering of blueprints in item frames (BluSunrize)
 - Fix missing particles on noteblocks over resonanz engineering blocks (BluSunrize)
+- Fix resonanz observer not forming when the sculk sensor is active (BluSunrize)
 
 ##### Version 1.21.1-12.3.1-189
 - Add the Basic Engineering Block (BluSunrize)
