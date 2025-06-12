@@ -12,6 +12,7 @@
 - Fix missing particles on noteblocks over resonanz engineering blocks (BluSunrize)
 - Fix resonanz observer not forming when the sculk sensor is active (BluSunrize)
 - Fix tanks and silos always dropping iron sheetmetal for the first block broken (BluSunrize)
+- Fix crusher, silo and refinery not dropping their contents when broken (BluSunrize)
 - Translations Added/Updated: zh_cn (JustAlkaid)
 
 ##### Version 1.21.1-12.3.1-189

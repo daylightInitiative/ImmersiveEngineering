@@ -59,6 +59,7 @@ import net.neoforged.neoforge.items.IItemHandler;
 
 import java.util.List;
 import java.util.function.BooleanSupplier;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 public class CrusherLogic implements
@@ -136,6 +137,15 @@ public class CrusherLogic implements
 				return null;
 		});
 		register.registerAtBlockPos(IMachineInterfaceConnection.CAPABILITY, REDSTONE_POS, state -> state.mifHandler);
+	}
+
+	@Override
+	public void dropExtraItems(State state, Consumer<ItemStack> drop)
+	{
+		state.processor.getQueue().forEach(process -> {
+			if(process instanceof MultiblockProcessInWorld<CrusherRecipe> inWorld)
+				inWorld.inputItems.forEach(s -> drop.accept(s.copy()));
+		});
 	}
 
 	@Override

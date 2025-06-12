@@ -36,6 +36,7 @@ import org.jetbrains.annotations.Nullable;
 import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -88,6 +89,20 @@ public class SiloLogic implements IMultiblockLogic<State>, IServerTickableCompon
 			else
 				return null;
 		});
+	}
+
+	@Override
+	public void dropExtraItems(State state, Consumer<ItemStack> drop)
+	{
+		// calculate amounts
+		final int stackSize = state.identStack.getMaxStackSize();
+		final int wholeStacks = state.storageAmount/stackSize;
+		final int remainder = state.storageAmount%stackSize;
+
+		// drop items
+		for(int i = 0; i < wholeStacks; i++)
+			drop.accept(state.identStack.copyWithCount(stackSize));
+		drop.accept(state.identStack.copyWithCount(remainder));
 	}
 
 	@Override
