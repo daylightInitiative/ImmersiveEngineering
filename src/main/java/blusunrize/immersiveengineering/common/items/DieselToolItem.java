@@ -15,15 +15,18 @@ import blusunrize.immersiveengineering.api.shader.CapabilityShader.ShaderWrapper
 import blusunrize.immersiveengineering.api.shader.ShaderRegistry;
 import blusunrize.immersiveengineering.api.shader.ShaderRegistry.ShaderAndCase;
 import blusunrize.immersiveengineering.api.tool.upgrade.UpgradeEffect;
+import blusunrize.immersiveengineering.api.tool.INoisyTool;
 import blusunrize.immersiveengineering.common.fluids.IEItemFluidHandler;
 import blusunrize.immersiveengineering.common.items.IEItemInterfaces.IAdvancedFluidItem;
 import blusunrize.immersiveengineering.common.register.IEDataComponents;
 import com.google.common.base.Preconditions;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EquipmentSlotGroup;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation;
@@ -50,7 +53,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.*;
 
-public abstract class DieselToolItem extends UpgradeableToolItem implements IAdvancedFluidItem
+public abstract class DieselToolItem extends UpgradeableToolItem implements IAdvancedFluidItem, INoisyTool
 {
 	protected static final int CAPACITY = 2*FluidType.BUCKET_VOLUME;
 
@@ -239,4 +242,22 @@ public abstract class DieselToolItem extends UpgradeableToolItem implements IAdv
 	public abstract int getMaxHeadDamage(ItemStack stack);
 
 	public abstract int getHeadDamage(ItemStack stack);
+
+	@Override
+	public abstract Holder<SoundEvent> getIdleSound(ItemStack stack);
+
+	@Override
+	public abstract Holder<SoundEvent> getBusySound(ItemStack stack);
+
+	@Override
+	public abstract Holder<SoundEvent> getFadingSound(ItemStack stack);
+
+	@Override
+	public abstract Holder<SoundEvent> getAttackSound(ItemStack stack);
+
+	@Override
+	public abstract Holder<SoundEvent> getHarvestSound(ItemStack stack);
+
+	@Override
+	public abstract boolean ableToMakeNoise(ItemStack stack);
 }
