@@ -1,5 +1,6 @@
 ##### Version 1.21.1-12.3.2-pre
 - Add support for chance-based output to the cloche (BluSunrize) 
+- Add sounds to the drill and the buzzsaw (MalkContent)
 - Simplify a lot of recipe JSONs (BluSunrize)
     - The wrapping in "basePredicate" is now not needed for normal items anymore, and "count" on item stacks is optional too
 - Fix old electrode blueprints crashing in the workbench (BluSunrize)
@@ -7,6 +8,7 @@
 - Fix missing particles on noteblocks over resonanz engineering blocks (BluSunrize)
 - Fix resonanz observer not forming when the sculk sensor is active (BluSunrize)
 - Fix tanks and silos always dropping iron sheetmetal for the first block broken (BluSunrize)
+- Translations Added/Updated: zh_cn (JustAlkaid)
 
 ##### Version 1.21.1-12.3.1-189
 - Add the Basic Engineering Block (BluSunrize)
