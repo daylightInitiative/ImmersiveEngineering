@@ -155,6 +155,7 @@
   "chat.immersiveengineering.info.coresample.mapFail": "The sample is not within the borders of this map",
   "desc.immersiveengineering.info.reqMaterial": "Required Materials:",
   "desc.immersiveengineering.info.chance": "Chance:",
+  "desc.immersiveengineering.info.batched": "Up to %1$s at a time",
   "desc.immersiveengineering.info.blueprint.creates0": "Created Items: §6Hold Shift§r",
   "desc.immersiveengineering.info.blueprint.creates1": "Created Items:",
   "desc.immersiveengineering.info.blueprint.components": "Crafting Components",
