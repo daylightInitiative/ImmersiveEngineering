@@ -105,14 +105,35 @@ public class CokeOvenLogic implements IMultiblockLogic<State>, IServerTickableCo
 				CokeOvenRecipe recipe = getRecipe(context);
 				if(recipe!=null)
 				{
-					state.inventory.getStackInSlot(INPUT_SLOT).grow(-recipe.input.getCount());
-					final ItemStack outputStack = state.inventory.getStackInSlot(OUTPUT_SLOT);
-					if(!outputStack.isEmpty())
-						outputStack.grow(recipe.output.get().copy().getCount());
-					else if(outputStack.isEmpty())
-						state.inventory.setStackInSlot(OUTPUT_SLOT, recipe.output.get().copy());
+					ItemStack recipeOutput = recipe.output.get();
+					// get available space
+					final ItemStack currentOutputStack = state.inventory.getStackInSlot(OUTPUT_SLOT);
+					int itemSpace = currentOutputStack.isEmpty()?64: currentOutputStack.getCount();
+					int fluidSpace = state.tank.getSpace();
+					int spaceLimit = Math.min(
+							itemSpace/recipeOutput.getCount(),
+							fluidSpace/recipe.creosoteOutput
+					);
+
+					// determined amount processed in batch
+					final ItemStack inputStack = state.inventory.getStackInSlot(INPUT_SLOT);
+					int processedCount = Math.min(
+							spaceLimit,
+							Math.min(inputStack.getCount(), recipe.input.getCount())
+					);
+					// copy & resize the output stack
+					recipeOutput = recipeOutput.copyWithCount(processedCount*recipeOutput.getCount());
+
+					// reduce input and put item in output slot
+					inputStack.grow(-processedCount);
+					if(!currentOutputStack.isEmpty())
+						currentOutputStack.grow(recipeOutput.getCount());
+					else
+						state.inventory.setStackInSlot(OUTPUT_SLOT, recipeOutput);
+
+					// fill tank
 					state.tank.fill(
-							new FluidStack(IEFluids.CREOSOTE.getStill(), recipe.creosoteOutput), FluidAction.EXECUTE
+							new FluidStack(IEFluids.CREOSOTE.getStill(), recipe.creosoteOutput*processedCount), FluidAction.EXECUTE
 					);
 				}
 				state.processMax = 0;
@@ -243,11 +264,11 @@ public class CokeOvenLogic implements IMultiblockLogic<State>, IServerTickableCo
 		public int get(int index)
 		{
 			return switch(index)
-					{
-						case MAX_BURN_TIME -> processMax;
-						case BURN_TIME -> process;
-						default -> throw new IllegalArgumentException("Unknown index "+index);
-					};
+			{
+				case MAX_BURN_TIME -> processMax;
+				case BURN_TIME -> process;
+				default -> throw new IllegalArgumentException("Unknown index "+index);
+			};
 		}
 
 		@Override

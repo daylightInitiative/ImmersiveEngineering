@@ -1,6 +1,9 @@
 ##### Version 1.21.1-12.3.2-pre
 - Add support for chance-based output to the cloche (BluSunrize) 
 - Add sounds to the drill and the buzzsaw (MalkContent)
+- Change the Coke Oven to process recipes in batches (BluSunrize)
+    - Up to 16 coal or 2 blocks get processed at the same time - 5 minutes
+    - That means it's more efficient to process larger quantities of coal at a time
 - Simplify a lot of recipe JSONs (BluSunrize)
     - The wrapping in "basePredicate" is now not needed for normal items anymore, and "count" on item stacks is optional too
 - Fix old electrode blueprints crashing in the workbench (BluSunrize)

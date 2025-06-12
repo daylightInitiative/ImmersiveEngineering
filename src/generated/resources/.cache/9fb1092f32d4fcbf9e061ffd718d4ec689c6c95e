@@ -1,4 +1,4 @@
-// 1.21.1	2025-05-21T17:21:24.7126346	Recipes
+// 1.21.1	2025-06-12T20:15:06.8693999	Recipes
 e46a17053b96b7062a3dbf804ed3e25c134fc397 data/immersiveengineering/advancement/recipes/misc/crafting/alloybrick.json
 6a92fb93f1478200a7237b19770f94285cc3d955 data/immersiveengineering/advancement/recipes/misc/crafting/alloybrick_from_slab.json
 bba88ea9b8e42c09c4e5df2344ccef6ad7ed4b8d data/immersiveengineering/advancement/recipes/misc/crafting/alloybrick_to_slab.json
@@ -886,9 +886,9 @@ cc9ee71cb1e39ff233df4f7b210f3be1b2c0af51 data/immersiveengineering/recipe/cloche
 25789183b42071ff20b163366aaac22bd746f27e data/immersiveengineering/recipe/cloche/wheat.json
 563d77f104039b931fdb9d8b826eeeb6d4870cec data/immersiveengineering/recipe/cloche/white_tulip.json
 9420146c4ffffad559cfdc6977192f6c6c1de06f data/immersiveengineering/recipe/cloche/wither_rose.json
-cf841e6e790a3efffd34929dd06e0756ee16bb82 data/immersiveengineering/recipe/cokeoven/charcoal.json
-a2ac967b62419e87af48500ca70cadcfc5b194ea data/immersiveengineering/recipe/cokeoven/coke.json
-800d754d8f4f4feb0d7267fd16b1bb5f512c6b14 data/immersiveengineering/recipe/cokeoven/coke_block.json
+0416281b7cbe1657f06b0b7c1692aaf1b56ee386 data/immersiveengineering/recipe/cokeoven/charcoal.json
+288e7e687f35d9cabc14a8c02b122169c34e39c2 data/immersiveengineering/recipe/cokeoven/coke.json
+07653b8d5dc2cb57a54b96d79e2051ce9292e6d0 data/immersiveengineering/recipe/cokeoven/coke_block.json
 f10174e9f8d49fc04a55e94e3b37a81e2208e0af data/immersiveengineering/recipe/crafting/alloybrick.json
 21def472ab784ab39169b28d3d3ce91f2ce22563 data/immersiveengineering/recipe/crafting/alloybrick_from_slab.json
 4f69efe4568948a2b443468713d68fcb4b020658 data/immersiveengineering/recipe/crafting/alloybrick_to_slab.json

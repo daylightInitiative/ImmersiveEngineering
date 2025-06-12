@@ -717,21 +717,21 @@ public class MultiblockRecipes extends IERecipeProvider
 	{
 		CokeOvenRecipeBuilder.builder()
 				.output(IETags.coalCoke, 1)
-				.input(Items.COAL)
+				.input(Items.COAL, 16)
 				.creosoteAmount(FluidType.BUCKET_VOLUME/2)
-				.setTime(1800)
+				.setTime(6000)
 				.build(out, toRL("cokeoven/coke"));
 		CokeOvenRecipeBuilder.builder()
 				.output(IETags.getItemTag(IETags.coalCokeBlock), 1)
-				.input(Blocks.COAL_BLOCK)
+				.input(Blocks.COAL_BLOCK, 2)
 				.creosoteAmount(FluidType.BUCKET_VOLUME*5)
-				.setTime(9*1800)
+				.setTime(6000)
 				.build(out, toRL("cokeoven/coke_block"));
 		CokeOvenRecipeBuilder.builder()
 				.output(Items.CHARCOAL)
-				.input(ItemTags.LOGS_THAT_BURN)
+				.input(ItemTags.LOGS_THAT_BURN, 8)
 				.creosoteAmount(FluidType.BUCKET_VOLUME/4)
-				.setTime(900)
+				.setTime(3000)
 				.build(out, toRL("cokeoven/charcoal"));
 	}
 }

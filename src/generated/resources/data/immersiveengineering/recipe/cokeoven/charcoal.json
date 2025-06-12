@@ -2,10 +2,13 @@
   "type": "immersiveengineering:coke_oven",
   "creosote": 250,
   "input": {
-    "tag": "minecraft:logs_that_burn"
+    "basePredicate": {
+      "tag": "minecraft:logs_that_burn"
+    },
+    "count": 8
   },
   "result": {
     "id": "minecraft:charcoal"
   },
-  "time": 900
+  "time": 3000
 }

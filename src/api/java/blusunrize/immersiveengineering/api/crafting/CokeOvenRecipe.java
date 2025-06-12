@@ -10,7 +10,6 @@ package blusunrize.immersiveengineering.api.crafting;
 
 import blusunrize.immersiveengineering.api.crafting.cache.CachedRecipeList;
 import net.minecraft.core.HolderLookup.Provider;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -44,7 +43,7 @@ public class CokeOvenRecipe extends IESerializableRecipe
 	}
 
 	public boolean matches(ItemStack stack) {
-		return input.test(stack);
+		return input.testIgnoringSize(stack);
 	}
 
 	@Override
