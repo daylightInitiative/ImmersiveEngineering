@@ -271,30 +271,27 @@ public class Villages
 			else if(ELECTRICIAN.equals(typeName))
 			{
 				/* Electrician
-				 * Sells wires, tools and the faraday suit
+				 * Sells wires, components and the faraday suit
 				 */
-				trades.get(1).add(new TradeListing(SELL_FOR_ONE_EMERALD, IETags.copperWire, Ingredients.WIRE_COPPER, 6, 16, 2));
+				trades.get(1).add(new TradeListing(SELL_FOR_ONE_EMERALD, IETags.copperWire, Ingredients.WIRE_COPPER, 4, 16, 2));
 				trades.get(1).add(new TradeListing(BUY_FOR_ONE_EMERALD, WIRE_COILS.get(WireType.COPPER), 2, 16, 1));
-				trades.get(1).add(new TradeListing(SELL_FOR_MANY_EMERALDS, Tools.WIRECUTTER, 1, 12, 1).setMultiplier(0.2f));
-				trades.get(1).add(new TradeListing(SELL_FOR_MANY_EMERALDS, Tools.SCREWDRIVER, 1, 12, 1).setMultiplier(0.2f));
+				trades.get(1).add(new TradeListing(SELL_FOR_MANY_EMERALDS, Tools.WIRECUTTER, 2, 12, 1).setMultiplier(0.2f));
 
-				trades.get(2).add(new TradeListing(SELL_FOR_ONE_EMERALD, IETags.electrumWire, Ingredients.WIRE_ELECTRUM, 6, 16, 5));
-				trades.get(2).add(new TradeListing(BUY_FOR_ONE_EMERALD, WIRE_COILS.get(WireType.ELECTRUM), 4, 16, 5));
-				trades.get(2).add(new TradeListing(SELL_FOR_MANY_EMERALDS, Tools.VOLTMETER, 2, 12, 5).setMultiplier(0.2f));
-				trades.get(2).add(new TradeListing(SELL_FOR_MANY_EMERALDS, IEItems.Misc.FARADAY_SUIT.get(ArmorItem.Type.BOOTS), 4, 3, 15).setMultiplier(0.2f));
-				trades.get(2).add(new TradeListing(SELL_FOR_MANY_EMERALDS, IEItems.Misc.FARADAY_SUIT.get(ArmorItem.Type.HELMET), 5, 3, 15).setMultiplier(0.2f));
+				trades.get(2).add(new TradeListing(BUY_FOR_ONE_EMERALD, IETags.electrumWire, Ingredients.WIRE_ELECTRUM, 6, 12, 10));
+				trades.get(2).add(new TradeListing(BUY_FOR_ONE_EMERALD, IETags.aluminumWire, Ingredients.WIRE_ALUMINUM, 6, 12, 10));
+				trades.get(2).add(new TradeListing(SELL_FOR_MANY_EMERALDS, MetalDevices.ELECTRIC_LANTERN, 4, 12, 5));
 
-				trades.get(3).add(new TradeListing(SELL_FOR_ONE_EMERALD, IETags.aluminumWire, Ingredients.WIRE_ALUMINUM, 6, 16, 10));
-				trades.get(3).add(new TradeListing(BUY_FOR_ONE_EMERALD, WIRE_COILS.get(WireType.STEEL), 2, 16, 10));
-				trades.get(3).add(new TradeListing(SELL_FOR_MANY_EMERALDS, IEItems.Misc.FARADAY_SUIT.get(ArmorItem.Type.CHESTPLATE), 9, 3, 20).setMultiplier(0.2f));
-				trades.get(3).add(new TradeListing(SELL_FOR_MANY_EMERALDS, IEItems.Misc.FARADAY_SUIT.get(ArmorItem.Type.LEGGINGS), 7, 3, 20).setMultiplier(0.2f));
+				trades.get(3).add(new TradeListing(SELL_FOR_MANY_EMERALDS, IEItems.Misc.FARADAY_SUIT.get(ArmorItem.Type.BOOTS), 4, 3, 15).setMultiplier(0.2f));
+				trades.get(3).add(new TradeListing(SELL_FOR_MANY_EMERALDS, IEItems.Misc.FARADAY_SUIT.get(ArmorItem.Type.HELMET), 5, 3, 15).setMultiplier(0.2f));
+				trades.get(3).add(new TradeListing(SELL_FOR_MANY_EMERALDS, IEItems.Misc.FARADAY_SUIT.get(ArmorItem.Type.CHESTPLATE), 9, 3, 15).setMultiplier(0.2f));
+				trades.get(3).add(new TradeListing(SELL_FOR_MANY_EMERALDS, IEItems.Misc.FARADAY_SUIT.get(ArmorItem.Type.LEGGINGS), 7, 3, 15).setMultiplier(0.2f));
 
-				trades.get(4).add(new TradeListing(SELL_FOR_ONE_EMERALD, Ingredients.ELECTRON_TUBE, 3, 16, 10));
-				trades.get(4).add(new TradeListing(SELL_FOR_MANY_EMERALDS, Ingredients.COMPONENT_ELECTRONIC, 2, 16, 15));
-				trades.get(4).add(new TradeListing(SELL_FOR_MANY_EMERALDS, IEItems.Misc.FLUORESCENT_TUBE, 4, 3, 20).setMultiplier(0.2f));
+				trades.get(4).add(new TradeListing(SELL_FOR_ONE_EMERALD, Ingredients.LIGHT_BULB, 3, 12, 30));
+				trades.get(4).add(new TradeListing(SELL_FOR_MANY_EMERALDS, Ingredients.COMPONENT_ELECTRONIC, 4, 16, 15));
+				trades.get(4).add(new TradeListing(BUY_FOR_MANY_EMERALDS, IEItems.Misc.FLUORESCENT_TUBE, 16, 8, 30));
 
+				trades.get(5).add(new TradeListing(SELL_FOR_MANY_EMERALDS, Ingredients.ELECTRON_TUBE, 8, 12, 30));
 				trades.get(5).add(new TradeListing(SELL_FOR_MANY_EMERALDS, MetalDevices.TESLA_COIL, 24, 12, 30));
-				trades.get(5).add(new TradeListing(SELL_FOR_MANY_EMERALDS, Ingredients.CIRCUIT_BOARD, 2, 16, 5));
 			}
 			else if(OUTFITTER.equals(typeName))
 			{
