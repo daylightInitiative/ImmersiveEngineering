@@ -47,7 +47,7 @@ public class TeslaCoilRenderer extends IEBlockEntityRenderer<TeslaCoilBlockEntit
 	{
 		RenderType type = IERenderTypes.getLines(lineWidth);
 		TransformingVertexBuilder builder = new TransformingVertexBuilder(buffers, type, transform);
-		builder.defaultColor((int)(255*rgba[0]), (int)(255*rgba[1]), (int)(255*rgba[2]), (int)(255*rgba[3]));
+		builder.defaultColor(rgba[0], rgba[1], rgba[2], rgba[3]);
 
 		drawLine(animation.startPos, animation.subPoints.get(0), tileX, tileY, tileZ, builder);
 		for(int i = 0; i < animation.subPoints.size()-1; i++)

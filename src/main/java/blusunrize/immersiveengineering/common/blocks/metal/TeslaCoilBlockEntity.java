@@ -558,7 +558,7 @@ public class TeslaCoilBlockEntity extends IEBaseBlockEntity implements IEServerT
 				}
 				else
 				{
-					offY = Math.min(end.y+1*(1-fixPointDist)*-Math.signum(dist.y), offY);//final points should be higher/lower than end, depending on if lightning goes up or down
+					offY = Math.min((end.y-sub.y)+1*(1-fixPointDist)*-Math.signum(dist.y), offY);//final points should be higher/lower than end, depending on if lightning goes up or down
 					offX = Math.abs(offX)*(end.x-sub.x);
 					offZ = Math.abs(offZ)*(end.z-sub.z);
 				}

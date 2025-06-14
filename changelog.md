@@ -14,6 +14,7 @@
 - Fix tanks and silos always dropping iron sheetmetal for the first block broken (BluSunrize)
 - Fix crusher, silo and refinery not dropping their contents when broken (BluSunrize)
 - Fix missing colouration on fluorescent tubes (BluSunrize)
+- Fix render issues with tesla coil lightning (BluSunrize)
 - Translations Added/Updated: zh_cn (JustAlkaid)
 
 ##### Version 1.21.1-12.3.1-189
