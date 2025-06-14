@@ -314,7 +314,7 @@ public class Villages
 				trades.get(3).add(new TradeListing(ONE_ITEM_FOR_EMERALDS, bag_uncommon, new PriceInterval(4, 12), 8, 5));
 
 				trades.get(4).add(new TradeListing(ONE_ITEM_FOR_EMERALDS, bag_epic, new PriceInterval(12, 20), 3, 20));
-				trades.get(4).add(new TradeListing(EMERALD_FOR_ITEM, IETags.getTagsFor(EnumMetals.GOLD).dust, IEItems.Metals.DUSTS.get(EnumMetals.SILVER), new PriceInterval(4, 12), 16, 15));
+				trades.get(4).add(new TradeListing(EMERALD_FOR_ITEM, IETags.getTagsFor(EnumMetals.GOLD).dust, IEItems.Metals.DUSTS.get(EnumMetals.GOLD), new PriceInterval(4, 12), 16, 15));
 				trades.get(4).add(new TradeListing(ONE_ITEM_FOR_EMERALDS, bag_rare, new PriceInterval(8, 16), 8, 15));
 
 				trades.get(5).add(new TradeListing(ONE_ITEM_FOR_EMERALDS, bag_epic, new PriceInterval(16, 28), 3, 30).setMultiplier(0.2f));
@@ -326,6 +326,7 @@ public class Villages
 				 */
 				trades.get(1).add(new TradeListing(EMERALD_FOR_ITEM, Ingredients.EMPTY_CASING, new PriceInterval(6, 12), 16, 2));
 				trades.get(1).add(new TradeListing(EMERALD_FOR_ITEM, Ingredients.EMPTY_SHELL, new PriceInterval(6, 12), 16, 2));
+				trades.get(1).add(new TradeListing(EMERALD_FOR_ITEM, WoodenDevices.GUNPOWDER_BARREL, new PriceInterval(2, 4), 16, 2));
 				trades.get(1).add(new TradeListing(ONE_ITEM_FOR_EMERALDS, Ingredients.WOODEN_GRIP, new PriceInterval(2, 4), 1, 12).setMultiplier(0.2f));
 
 				trades.get(2).add(new TradeListing(ONE_ITEM_FOR_EMERALDS, BlueprintCraftingRecipe.getTypedBlueprint("bullet"), new PriceInterval(3, 6), 1, 25));
@@ -341,7 +342,6 @@ public class Villages
 				trades.get(4).add(new TradeListing(ITEMS_FOR_ONE_EMERALD, BulletHandler.getBulletStack(IEBullets.SILVER), new PriceInterval(1, 4), 8, 15));
 				trades.get(4).add(new TradeListing(ONE_ITEM_FOR_EMERALDS, BulletHandler.getBulletStack(IEBullets.HIGH_EXPLOSIVE), new PriceInterval(2, 4), 8, 15));
 
-				trades.get(5).add(RevolverPieceForEmeralds.INSTANCE);
 				trades.get(5).add(RevolverPieceForEmeralds.INSTANCE);
 				trades.get(5).add(RevolverPieceForEmeralds.INSTANCE);
 			}
