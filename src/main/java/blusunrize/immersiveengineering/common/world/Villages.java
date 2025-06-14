@@ -71,6 +71,7 @@ import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.EventBusSubscriber.Bus;
+import net.neoforged.neoforge.common.BasicItemListing;
 import net.neoforged.neoforge.event.TagsUpdatedEvent;
 import net.neoforged.neoforge.event.TagsUpdatedEvent.UpdateCause;
 import net.neoforged.neoforge.event.entity.player.TradeWithVillagerEvent;
@@ -222,20 +223,20 @@ public class Villages
 				trades.get(1).add(new TradeListing(BUY_FOR_ONE_EMERALD, WoodenDecoration.TREATED_SCAFFOLDING, 6, 16, 1));
 				trades.get(1).add(new TradeListing(BUY_FOR_ONE_EMERALD, Cloth.BALLOON, 2, 12, 2));
 
-				trades.get(2).add(new TradeListing(SELL_FOR_ONE_EMERALD, IETags.ironRod, Ingredients.STICK_IRON, 8, 16, 10));
 				trades.get(2).add(new TradeListing(BUY_FOR_ONE_EMERALD, MetalDecoration.STEEL_SCAFFOLDING.get(MetalScaffoldingType.STANDARD), 4, 12, 5));
+				trades.get(2).add(new TradeListing(BUY_FOR_ONE_EMERALD, MetalDecoration.STEEL_CATWALK, 4, 12, 5));
 				trades.get(2).add(new TradeListing(BUY_FOR_ONE_EMERALD, MetalDecoration.ALU_SCAFFOLDING.get(MetalScaffoldingType.STANDARD), 4, 12, 5));
+				trades.get(2).add(new TradeListing(BUY_FOR_ONE_EMERALD, MetalDecoration.ALU_CATWALK, 4, 12, 5));
 
-				trades.get(3).add(new TradeListing(BUY_FOR_ONE_EMERALD, WIRE_COILS.get(WireType.STRUCTURE_ROPE), 4, 16, 10));
-				trades.get(3).add(new TradeListing(SELL_FOR_ONE_EMERALD, Connectors.CONNECTOR_STRUCTURAL, 4, 16, 10));
-				trades.get(3).add(new TradeListing(SELL_FOR_ONE_EMERALD, StoneDecoration.CONCRETE, 6, 8, 15));
+				trades.get(3).add(new BasicItemListing(new ItemStack(Connectors.CONNECTOR_STRUCTURAL), new ItemStack(WIRE_COILS.get(WireType.STRUCTURE_ROPE)), new ItemStack(Items.EMERALD), 16, 20, 0.05f));
+				trades.get(3).add(new TradeListing(SELL_FOR_ONE_EMERALD, StoneDecoration.CONCRETE, 6, 12, 15));
 				trades.get(3).add(new TradeListing(BUY_FOR_ONE_EMERALD, StoneDecoration.CONCRETE_LEADED, 4, 16, 10));
 
-				trades.get(4).add(new TradeListing(BUY_FOR_ONE_EMERALD, WoodenDecoration.TREATED_POST, 2, 8, 20));
-				trades.get(4).add(new TradeListing(SELL_FOR_ONE_EMERALD, StoneDecoration.INSULATING_GLASS, 4, 16, 10));
-				trades.get(4).add(new TradeListing(SELL_FOR_ONE_EMERALD, StoneDecoration.DUROPLAST, 4, 16, 10));
+				trades.get(4).add(new TradeListing(SELL_FOR_ONE_EMERALD, StoneDecoration.INSULATING_GLASS, 4, 16, 30));
+				trades.get(4).add(new TradeListing(SELL_FOR_ONE_EMERALD, StoneDecoration.CLINKER_BRICK, 8, 16, 10));
 				trades.get(4).add(OreveinMapForEmeralds.INSTANCE);
 
+				trades.get(5).add(new TradeListing(SELL_FOR_ONE_EMERALD, StoneDecoration.DUROPLAST, 4, 16, 30));
 				trades.get(5).add(OreveinMapForEmeralds.INSTANCE);
 			}
 			else if(MACHINIST.equals(typeName))
