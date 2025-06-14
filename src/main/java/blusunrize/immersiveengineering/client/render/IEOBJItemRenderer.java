@@ -124,8 +124,9 @@ public class IEOBJItemRenderer extends BlockEntityWithoutLevelRenderer
 				baseType = RenderType.entityCutoutNoCull(atlas);
 			RenderType actualType = quadsForLayer.layer().getRenderType(baseType);
 			VertexConsumer builder = buffer.getBuffer(actualType);
+			boolean hasColor = color.r()!=1 || color.b()!=1 || color.g()!=1 || color.a()!=1;
 			for(BakedQuad quad : quadsForLayer.quadsInLayer())
-				builder.putBulkData(matrix.last(), quad, color.r(), color.g(), color.b(), color.a(), light, overlay, false);
+				builder.putBulkData(matrix.last(), quad, color.r(), color.g(), color.b(), color.a(), light, overlay, !hasColor);
 			matrix.scale(1.0005F, 1.0005F, 1.0005F);
 		}
 		matrix.popPose();
