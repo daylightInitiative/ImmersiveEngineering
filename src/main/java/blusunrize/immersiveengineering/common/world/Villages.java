@@ -14,7 +14,6 @@ import blusunrize.immersiveengineering.api.crafting.BlueprintCraftingRecipe;
 import blusunrize.immersiveengineering.api.excavator.ExcavatorHandler;
 import blusunrize.immersiveengineering.api.excavator.MineralVein;
 import blusunrize.immersiveengineering.api.tool.BulletHandler;
-import blusunrize.immersiveengineering.api.tool.conveyor.BasicConveyorType;
 import blusunrize.immersiveengineering.api.tool.conveyor.ConveyorHandler;
 import blusunrize.immersiveengineering.api.wires.WireType;
 import blusunrize.immersiveengineering.common.blocks.metal.MetalScaffoldingType;
@@ -22,7 +21,6 @@ import blusunrize.immersiveengineering.common.blocks.metal.conveyors.BasicConvey
 import blusunrize.immersiveengineering.common.blocks.wooden.TreatedWoodStyles;
 import blusunrize.immersiveengineering.common.items.RevolverItem;
 import blusunrize.immersiveengineering.common.items.bullets.IEBullets;
-import blusunrize.immersiveengineering.common.items.upgrades.ToolUpgrade;
 import blusunrize.immersiveengineering.common.register.IEBannerPatterns;
 import blusunrize.immersiveengineering.common.register.IEBlocks.*;
 import blusunrize.immersiveengineering.common.register.IEDataComponents;
@@ -75,6 +73,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.EventBusSubscriber.Bus;
 import net.neoforged.neoforge.common.BasicItemListing;
+import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.event.TagsUpdatedEvent;
 import net.neoforged.neoforge.event.TagsUpdatedEvent.UpdateCause;
 import net.neoforged.neoforge.event.entity.player.TradeWithVillagerEvent;
@@ -89,7 +88,6 @@ import java.util.stream.Collectors;
 
 import static blusunrize.immersiveengineering.ImmersiveEngineering.MODID;
 import static blusunrize.immersiveengineering.ImmersiveEngineering.rl;
-import static blusunrize.immersiveengineering.common.register.IEItems.Misc.TOOL_UPGRADES;
 import static blusunrize.immersiveengineering.common.register.IEItems.Misc.WIRE_COILS;
 
 @EventBusSubscriber(modid = Lib.MODID, bus = Bus.GAME)
@@ -296,30 +294,49 @@ public class Villages
 			else if(OUTFITTER.equals(typeName))
 			{
 				/* Outfitter
-				 * Sells Shaderbags
+				 * Sells Shaderbags and purchases cosmetic material
 				 */
 				ItemLike bag_common = IEItems.Misc.SHADER_BAG.get(Rarity.COMMON);
 				ItemLike bag_uncommon = IEItems.Misc.SHADER_BAG.get(Rarity.UNCOMMON);
 				ItemLike bag_rare = IEItems.Misc.SHADER_BAG.get(Rarity.RARE);
 				ItemLike bag_epic = IEItems.Misc.SHADER_BAG.get(Rarity.EPIC);
 
-				trades.get(1).add(new TradeListing(SELL_FOR_MANY_EMERALDS, bag_common, 4, 16, 2));
-				trades.get(1).add(new TradeListing(SELL_FOR_ONE_EMERALD, Ingredients.HEMP_FABRIC, 8, 16, 1));
+				// why is there no array for this in vanilla :'D
+				ItemLike[] dyes = {
+						Items.WHITE_DYE, Items.ORANGE_DYE, Items.MAGENTA_DYE, Items.LIGHT_BLUE_DYE,
+						Items.YELLOW_DYE, Items.LIME_DYE, Items.PINK_DYE, Items.GRAY_DYE,
+						Items.LIGHT_GRAY_DYE, Items.CYAN_DYE, Items.PURPLE_DYE, Items.BLUE_DYE,
+						Items.BROWN_DYE, Items.GREEN_DYE, Items.RED_DYE, Items.BLACK_DYE
+				};
 
-				trades.get(2).add(new TradeListing(SELL_FOR_MANY_EMERALDS, bag_uncommon, 8, 16, 5));
-				trades.get(2).add(new TradeListing(SELL_FOR_MANY_EMERALDS, IEBannerPatterns.HAMMER.item(), 12, 3, 20));
-				trades.get(2).add(new TradeListing(SELL_FOR_MANY_EMERALDS, IEBannerPatterns.WINDMILL.item(), 12, 3, 20));
-				trades.get(2).add(new TradeListing(SELL_FOR_MANY_EMERALDS, IEBannerPatterns.ORNATE.item(), 12, 3, 20));
+				ItemLike[] purchasedPatterns = {
+						IEBannerPatterns.BEVELS.item(),
+						IEBannerPatterns.TREATED_WOOD.item(),
+						IEBannerPatterns.ORNATE.item(),
+				};
 
-				trades.get(3).add(new TradeListing(SELL_FOR_MANY_EMERALDS, bag_rare, 12, 16, 15));
-				trades.get(3).add(new TradeListing(SELL_FOR_ONE_EMERALD, IETags.getTagsFor(EnumMetals.SILVER).dust, IEItems.Metals.DUSTS.get(EnumMetals.SILVER), 8, 16, 10));
-				trades.get(3).add(new TradeListing(SELL_FOR_MANY_EMERALDS, bag_uncommon, 6, 8, 5));
+				trades.get(1).add(new TradeListing(BUY_FOR_ONE_EMERALD, Ingredients.HEMP_FABRIC, 8, 16, 2));
+				trades.get(1).add((entity, randomSource) -> new MerchantOffer(
+						new ItemCost(Items.EMERALD),
+						new ItemStack(dyes[randomSource.nextInt(dyes.length)], 4),
+						16, 1, 0.05f
+				));
 
-				trades.get(4).add(new TradeListing(SELL_FOR_MANY_EMERALDS, bag_epic, 16, 3, 20));
-				trades.get(4).add(new TradeListing(SELL_FOR_ONE_EMERALD, IETags.getTagsFor(EnumMetals.GOLD).dust, IEItems.Metals.DUSTS.get(EnumMetals.GOLD), 8, 16, 15));
-				trades.get(4).add(new TradeListing(SELL_FOR_MANY_EMERALDS, bag_rare, 8, 8, 15));
+				trades.get(2).add((entity, randomSource) -> new MerchantOffer(
+						new ItemCost(purchasedPatterns[randomSource.nextInt(purchasedPatterns.length)]),
+						new ItemStack(Items.EMERALD, 2),
+						12, 10, 0.05f
+				));
+				trades.get(2).add(new TradeListing(SELL_FOR_MANY_EMERALDS, bag_common, 4, 12, 5));
 
-				trades.get(5).add(new TradeListing(SELL_FOR_MANY_EMERALDS, bag_epic, 12, 3, 30).setMultiplier(0.2f));
+				trades.get(3).add(new TradeListing(BUY_FOR_ONE_EMERALD, IETags.getTagsFor(EnumMetals.SILVER).dust, IEItems.Metals.DUSTS.get(EnumMetals.SILVER), 3, 12, 20));
+				trades.get(3).add(new TradeListing(SELL_FOR_MANY_EMERALDS, bag_uncommon, 8, 12, 10));
+
+				trades.get(4).add(new TradeListing(BUY_FOR_ONE_EMERALD, IETags.getTagsFor(EnumMetals.GOLD).dust, IEItems.Metals.DUSTS.get(EnumMetals.GOLD), 3, 12, 30));
+				trades.get(4).add(new TradeListing(SELL_FOR_MANY_EMERALDS, bag_rare, 12, 8, 15));
+
+				trades.get(5).add(new TradeListing(BUY_FOR_ONE_EMERALD, Tags.Items.GEMS_LAPIS, Items.LAPIS_LAZULI, 3, 12, 30));
+				trades.get(5).add(new TradeListing(SELL_FOR_MANY_EMERALDS, bag_epic, 16, 3, 30).setMultiplier(0.2f));
 			}
 			else if(GUNSMITH.equals(typeName))
 			{
