@@ -14,8 +14,11 @@ import blusunrize.immersiveengineering.api.crafting.BlueprintCraftingRecipe;
 import blusunrize.immersiveengineering.api.excavator.ExcavatorHandler;
 import blusunrize.immersiveengineering.api.excavator.MineralVein;
 import blusunrize.immersiveengineering.api.tool.BulletHandler;
+import blusunrize.immersiveengineering.api.tool.conveyor.BasicConveyorType;
+import blusunrize.immersiveengineering.api.tool.conveyor.ConveyorHandler;
 import blusunrize.immersiveengineering.api.wires.WireType;
 import blusunrize.immersiveengineering.common.blocks.metal.MetalScaffoldingType;
+import blusunrize.immersiveengineering.common.blocks.metal.conveyors.BasicConveyor;
 import blusunrize.immersiveengineering.common.blocks.wooden.TreatedWoodStyles;
 import blusunrize.immersiveengineering.common.items.RevolverItem;
 import blusunrize.immersiveengineering.common.items.bullets.IEBullets;
@@ -242,27 +245,28 @@ public class Villages
 			else if(MACHINIST.equals(typeName))
 			{
 				/* Machinist
-				 * Sells tools, metals, blueprints and drillheads
+				 * Sells components, engineering blocks, and tool-heads
 				 */
-				trades.get(1).add(new TradeListing(SELL_FOR_ONE_EMERALD, IETags.coalCoke, Ingredients.COAL_COKE, 8, 16, 2));
-				trades.get(1).add(new TradeListing(SELL_FOR_MANY_EMERALDS, Tools.HAMMER, 1, 4, 5).setMultiplier(0.2f));
+				trades.get(1).add(new TradeListing(BUY_FOR_ONE_EMERALD, IETags.coalCoke, Ingredients.COAL_COKE, 8, 16, 2));
+				trades.get(1).add(new TradeListing(SELL_FOR_MANY_EMERALDS, Tools.HAMMER, 1, 4, 5));
 				trades.get(1).add(new TradeListing(SELL_FOR_MANY_EMERALDS, BlueprintCraftingRecipe.getTypedBlueprint("components"), 4, 3, 5).setMultiplier(0.2f));
 
-				trades.get(2).add(new TradeListing(SELL_FOR_ONE_EMERALD, IETags.getTagsFor(EnumMetals.STEEL).ingot, IEItems.Metals.INGOTS.get(EnumMetals.STEEL), 2, 12, 10));
-				trades.get(2).add(new TradeListing(SELL_FOR_MANY_EMERALDS, Ingredients.COMPONENT_STEEL, 1, 12, 5));
-				trades.get(2).add(new TradeListing(SELL_FOR_MANY_EMERALDS, Ingredients.WATERWHEEL_SEGMENT, 3, 8, 10));
+				trades.get(2).add(new TradeListing(BUY_FOR_ONE_EMERALD, IETags.getTagsFor(EnumMetals.COPPER).ingot, Items.COPPER_INGOT, 4, 12, 10));
+				trades.get(2).add(new TradeListing(SELL_FOR_MANY_EMERALDS, Ingredients.COMPONENT_IRON, 2, 12, 5));
+				trades.get(2).add(new TradeListing(SELL_FOR_MANY_EMERALDS, WoodenDecoration.BASIC_ENGINEERING, 4, 12, 5));
 
-				trades.get(3).add(new TradeListing(SELL_FOR_MANY_EMERALDS, Tools.TOOLBOX, 8, 3, 20).setMultiplier(0.2f));
-				trades.get(3).add(new TradeListing(SELL_FOR_MANY_EMERALDS, Tools.DRILLHEAD_IRON, 20, 3, 15).setMultiplier(0.2f));
-				trades.get(3).add(new TradeListing(SELL_FOR_MANY_EMERALDS, Tools.SAWBLADE, 20, 3, 15).setMultiplier(0.2f));
-				trades.get(3).add(new TradeListing(SELL_FOR_MANY_EMERALDS, IEItems.Misc.EARMUFFS, 4, 3, 20).setMultiplier(0.2f));
+				trades.get(3).add(new TradeListing(BUY_FOR_ONE_EMERALD, IETags.getTagsFor(EnumMetals.STEEL).ingot, IEItems.Metals.INGOTS.get(EnumMetals.STEEL), 3, 12, 20));
+				trades.get(3).add(new TradeListing(SELL_FOR_MANY_EMERALDS, Ingredients.COMPONENT_STEEL, 3, 12, 10));
+				trades.get(3).add(new TradeListing(SELL_FOR_MANY_EMERALDS, MetalDecoration.ENGINEERING_LIGHT, 4, 12, 10));
+				trades.get(3).add(new TradeListing(SELL_FOR_MANY_EMERALDS, MetalDevices.FLUID_PIPE, 2, 12, 10));
 
-				trades.get(4).add(new TradeListing(SELL_FOR_MANY_EMERALDS, Tools.DRILLHEAD_STEEL, 32, 3, 30).setMultiplier(0.2f));
-				trades.get(4).add(new TradeListing(SELL_FOR_MANY_EMERALDS, TOOL_UPGRADES.get(ToolUpgrade.DRILL_LUBE), 5, 8, 10));
-				trades.get(4).add(new TradeListing(SELL_FOR_MANY_EMERALDS, TOOL_UPGRADES.get(ToolUpgrade.DRILL_CAPACITY), 5, 8, 10));
-				trades.get(4).add(new TradeListing(SELL_FOR_ONE_EMERALD, MetalDecoration.ENGINEERING_LIGHT, 1, 16, 10));
+				trades.get(4).add(new TradeListing(SELL_FOR_MANY_EMERALDS, MetalDecoration.ENGINEERING_HEAVY, 5, 12, 15));
+				trades.get(4).add(new TradeListing(SELL_FOR_MANY_EMERALDS, ConveyorHandler.getBlock(BasicConveyor.TYPE), 2, 12, 15));
+				trades.get(4).add(new TradeListing(BUY_FOR_MANY_EMERALDS, MetalDecoration.GENERATOR, 4, 12, 30));
+				trades.get(4).add(new TradeListing(BUY_FOR_MANY_EMERALDS, MetalDecoration.RADIATOR, 4, 12, 30));
 
-				trades.get(5).add(new TradeListing(SELL_FOR_MANY_EMERALDS, TOOL_UPGRADES.get(ToolUpgrade.DRILL_FORTUNE), 5, 8, 10));
+				trades.get(5).add(new TradeListing(SELL_FOR_MANY_EMERALDS, Tools.DRILLHEAD_STEEL, 24, 3, 30).setMultiplier(0.2f));
+				trades.get(5).add(new TradeListing(SELL_FOR_MANY_EMERALDS, Tools.GRINDINGDISK, 24, 3, 30).setMultiplier(0.2f));
 			}
 			else if(ELECTRICIAN.equals(typeName))
 			{
@@ -388,6 +392,11 @@ public class Villages
 	private static final TradeOutline BUY_FOR_ONE_EMERALD = (selling, price, random, maxUses, xp, priceMultiplier) -> new MerchantOffer(
 			new ItemCost(Items.EMERALD),
 			selling.copyWithCount(price),
+			maxUses, xp, priceMultiplier
+	);
+	private static final TradeOutline BUY_FOR_MANY_EMERALDS = (selling, price, random, maxUses, xp, priceMultiplier) -> new MerchantOffer(
+			new ItemCost(Items.EMERALD, price),
+			selling,
 			maxUses, xp, priceMultiplier
 	);
 
