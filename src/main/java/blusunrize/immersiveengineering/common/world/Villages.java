@@ -63,6 +63,7 @@ import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.pools.SinglePoolElement;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
@@ -343,23 +344,27 @@ public class Villages
 				/* Gunsmith
 				 * Sells ammunition, blueprints and revolver parts
 				 */
-				trades.get(1).add(new TradeListing(SELL_FOR_ONE_EMERALD, Ingredients.EMPTY_CASING, 8, 16, 2));
-				trades.get(1).add(new TradeListing(SELL_FOR_ONE_EMERALD, Ingredients.EMPTY_SHELL, 8, 16, 2));
-				trades.get(1).add(new TradeListing(BUY_FOR_MANY_EMERALDS, WoodenDevices.GUNPOWDER_BARREL, 4, 16, 2));
-				trades.get(1).add(new TradeListing(BUY_FOR_MANY_EMERALDS, Ingredients.WOODEN_GRIP, 3, 1, 12).setMultiplier(0.2f));
+				trades.get(1).add(new TradeListing(SELL_FOR_ONE_EMERALD, Items.GUNPOWDER, 4, 12, 2));
+				trades.get(1).add(new TradeListing(BUY_FOR_MANY_EMERALDS, WoodenDevices.GUNPOWDER_BARREL, 3, 16, 1));
+				trades.get(1).add(new TradeListing(BUY_FOR_MANY_EMERALDS, BlueprintCraftingRecipe.getTypedBlueprint("bullet"), 4, 3, 5).setMultiplier(0.2f));
 
-				trades.get(2).add(new TradeListing(BUY_FOR_MANY_EMERALDS, BlueprintCraftingRecipe.getTypedBlueprint("bullet"), 6, 1, 25));
-				trades.get(2).add(new TradeListing(BUY_FOR_ONE_EMERALD, BulletHandler.getBulletStack(IEBullets.CASULL), 4, 12, 5));
-				trades.get(2).add(new TradeListing(BUY_FOR_ONE_EMERALD, BulletHandler.getBulletStack(IEBullets.BUCKSHOT), 4, 12, 5));
-				trades.get(2).add(RevolverPieceForEmeralds.INSTANCE);
+				trades.get(2).add(new TradeListing(SELL_FOR_MANY_EMERALDS, Blocks.TARGET, 2, 12, 10));
+				trades.get(2).add(GroupedListing.of(
+						new BasicItemListing(new ItemStack(Items.EMERALD, 2), new ItemStack(Ingredients.EMPTY_CASING, 4), BulletHandler.getBulletStack(IEBullets.CASULL).copyWithCount(4), 12, 5, 0.05f),
+						new BasicItemListing(new ItemStack(Items.EMERALD, 2), new ItemStack(Ingredients.EMPTY_CASING, 4), BulletHandler.getBulletStack(IEBullets.SILVER).copyWithCount(4), 12, 5, 0.05f),
+						new BasicItemListing(new ItemStack(Items.EMERALD, 2), new ItemStack(Ingredients.EMPTY_SHELL, 4), BulletHandler.getBulletStack(IEBullets.BUCKSHOT).copyWithCount(4), 12, 5, 0.05f)
+				));
 
-				trades.get(3).add(RevolverPieceForEmeralds.INSTANCE);
-				trades.get(3).add(new TradeListing(BUY_FOR_ONE_EMERALD, BulletHandler.getBulletStack(IEBullets.FLARE), 2, 12, 10));
-				trades.get(3).add(new TradeListing(BUY_FOR_MANY_EMERALDS, BlueprintCraftingRecipe.getTypedBlueprint("specialBullet"), 12, 1, 30).setMultiplier(0.2f));
+				trades.get(3).add(new TradeListing(BUY_FOR_MANY_EMERALDS, BlueprintCraftingRecipe.getTypedBlueprint("specialBullet"), 12, 3, 20).setMultiplier(0.2f));
+				trades.get(3).add(GroupedListing.of(
+						new TradeListing(SELL_FOR_ONE_EMERALD, Ingredients.EMPTY_CASING, 8, 16, 20),
+						new TradeListing(SELL_FOR_ONE_EMERALD, Ingredients.EMPTY_SHELL, 8, 16, 20),
+						RevolverPieceForEmeralds.INSTANCE
+				));
 
+				trades.get(4).add(new BasicItemListing(new ItemStack(Items.EMERALD, 2), new ItemStack(Ingredients.EMPTY_CASING, 2), BulletHandler.getBulletStack(IEBullets.HIGH_EXPLOSIVE).copyWithCount(2), 12, 15, 0.05f));
+				trades.get(4).add(new BasicItemListing(new ItemStack(Items.EMERALD, 2), new ItemStack(Ingredients.EMPTY_SHELL, 2), BulletHandler.getBulletStack(IEBullets.FLARE).copyWithCount(2), 12, 15, 0.05f));
 				trades.get(4).add(RevolverPieceForEmeralds.INSTANCE);
-				trades.get(4).add(new TradeListing(BUY_FOR_ONE_EMERALD, BulletHandler.getBulletStack(IEBullets.SILVER), 4, 8, 15));
-				trades.get(4).add(new TradeListing(BUY_FOR_MANY_EMERALDS, BulletHandler.getBulletStack(IEBullets.HIGH_EXPLOSIVE), 2, 8, 15));
 
 				trades.get(5).add(RevolverPieceForEmeralds.INSTANCE);
 				trades.get(5).add(RevolverPieceForEmeralds.INSTANCE);
@@ -567,6 +572,21 @@ public class Villages
 
 			return new MerchantOffer(new ItemCost(Items.EMERALD, 5*tier+random.nextInt(5)), stack, 1, 45, 0.25F);
 		});
+	}
+
+	private record GroupedListing(ItemListing[] listings) implements ItemListing
+	{
+		static GroupedListing of(ItemListing... listings)
+		{
+			return new GroupedListing(listings);
+		}
+
+		@Override
+		public @Nullable MerchantOffer getOffer(Entity entity, RandomSource randomSource)
+		{
+			int idx = randomSource.nextInt(listings.length);
+			return listings[idx].getOffer(entity, randomSource);
+		}
 	}
 
 	/**
