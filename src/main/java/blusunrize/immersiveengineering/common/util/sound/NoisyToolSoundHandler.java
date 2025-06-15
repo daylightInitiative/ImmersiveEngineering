@@ -20,8 +20,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.LogicalSide;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.EventBusSubscriber.Bus;
 import net.neoforged.neoforge.event.entity.EntityLeaveLevelEvent;
@@ -41,7 +41,7 @@ import static blusunrize.immersiveengineering.ImmersiveEngineering.MODID;
 @EventBusSubscriber(modid = MODID, bus = Bus.GAME)
 public class NoisyToolSoundHandler
 {
-	private static Map<LivingEntity, Map<EquipmentSlot, NoisyToolSoundGroup>> noisyToolSoundGroups = new HashMap<>();
+	private static final Map<LivingEntity, Map<EquipmentSlot, NoisyToolSoundGroup>> noisyToolSoundGroups = new HashMap<>();
 
 	private static Map<EquipmentSlot, NoisyToolSoundGroup> getSafeNTSGs(LivingEntity entity)
 	{
@@ -59,10 +59,10 @@ public class NoisyToolSoundHandler
 	/**
 	 * For the given entity and slot: creates or returns an existing sound group, or null, if there should be none.
 	 * Turns off sound groups that are obsolete and removes them from the mapping.
-	 * This should generally be the only point where NoisyToolSoundGroups are accessed through.
+	 * This should generally be the only point through which NoisyToolSoundGroups are accessed.
 	 *
-	 * @param entity
-	 * @param slot
+	 * @param entity the entity that's supposed to receive a NTSG
+	 * @param slot the entities EquipmentSlot. <b>Must</b> be a Type.HAND type
 	 * @return a NoisyToolSoundGroup for the given slot or null, if the provided slot does not hold a suitable item
 	 */
 	@Nullable
@@ -126,10 +126,10 @@ public class NoisyToolSoundHandler
 			ntsg.triggerAttack();
 	}
 
-	@SubscribeEvent
+	@SubscribeEvent // event not cancelable, so no issues
 	public static void toolHeldCheck(Post ev)
 	{
-		if(ev.getEntity() instanceof LivingEntity noisyToolHolder) //todo
+		if(ev.getEntity() instanceof LivingEntity noisyToolHolder)
 		{
 			if(!noisyToolHolder.level().isClientSide()) // client side only
 				return;
@@ -144,13 +144,13 @@ public class NoisyToolSoundHandler
 		}
 	}
 
-	@SubscribeEvent
+	@SubscribeEvent(priority = EventPriority.LOWEST) //lowest priority, because if the event got cancelled, we don't wanna play the sound
 	public static void harvestCheck(LeftClickBlock ev)
 	{
 		if(INoisyTool.isAbleNoisyTool(ev.getItemStack()))
 		{
 			LivingEntity noisyToolHolder = ev.getEntity();
-			if(noisyToolHolder instanceof Player player&&player.isCreative()) // skip for creative players, remote creative players don't send stop/abort on block break
+			if(noisyToolHolder instanceof Player player&&player.isCreative()) // skip for creative players, because remote creative players don't send stop/abort on block break
 			{
 				return;
 			}
@@ -166,20 +166,24 @@ public class NoisyToolSoundHandler
 		}
 	}
 
-	@SubscribeEvent
+	@OnlyIn(Dist.CLIENT)
+	@SubscribeEvent(priority = EventPriority.LOWEST) //lowest priority, because if the event got cancelled, we don't wanna play the sound
 	public static void clientSideAttackCheck(AttackEntityEvent ev)
 	{
-		Player player = ev.getEntity();
-		if (INoisyTool.isAbleNoisyTool(player.getItemBySlot(EquipmentSlot.MAINHAND)))
+		if(ev.getTarget() instanceof LivingEntity) // a) for parity with LivingIncomingDamageEvent, b) MCs extra attack sounds also only happen on LivingEntities
 		{
-			handleAttack(player);
+			Player player = ev.getEntity();
+			if(player.level().isClientSide()&&INoisyTool.isAbleNoisyTool(player.getItemBySlot(EquipmentSlot.MAINHAND)))
+			{
+				handleAttack(player);
+			}
 		}
 	}
 
-	@SubscribeEvent
+	@SubscribeEvent(priority = EventPriority.HIGHEST) //highest priority, because if the damage get's cancelled, it still was an attack
 	public static void serverSideAttackCheck(LivingIncomingDamageEvent ev)
 	{
-		// ev.getSource() is never null according to intelliJ: "Method 'getSource' inherits container annotation, thus 'non-null'"
+		// no null check for ev.getSource, because ev.getSource() is never null according to intelliJ: "Method 'getSource' inherits container annotation, thus 'non-null'"
 		// All I see are final fields and no annotations, but should be the same thing.
 		// if stuff burns some day down the line because that changes, here's a place to check, I guess
 		if(ev.getSource().getEntity() instanceof LivingEntity noisyToolHolder&&INoisyTool.isAbleNoisyTool(noisyToolHolder.getItemBySlot(EquipmentSlot.MAINHAND)))
@@ -193,7 +197,9 @@ public class NoisyToolSoundHandler
 	 * handles stopping the sound instances and unlisting the sound group when the entity is removed
 	 * consider checking entity.isRemoved() in the ticking sound instances (see MinecartSoundInstance.tick())
 	 *
-	 * @param ev
+	 * only handled clientside because the server shouldn't have any NTSGS to begin with.
+	 *
+	 * @param ev the EntityLeaveLevelEvent event
 	 */
 	@OnlyIn(Dist.CLIENT)
 	@SubscribeEvent
@@ -209,7 +215,15 @@ public class NoisyToolSoundHandler
 		}
 	}
 
-	@OnlyIn(Dist.CLIENT)
+	/**
+	 * Clear the list when exiting a level so it doesn't get carried over into other levels.
+	 * Currently it is not checked if entities in the list still are tracked in game, they are only removed when they stop being tracked.
+	 * This means better cleaning up when the player leaves the level, just to be sure no trash accumulates.
+	 * <p>
+	 * Also, left in server side, too, for safety, even though the server shouldn't build up any NTSGs anyways.
+	 *
+	 * @param ev the Unload event
+	 */
 	@SubscribeEvent
 	public static void leaveLevel(Unload ev)
 	{
