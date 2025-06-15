@@ -222,7 +222,7 @@ public class Villages
 				 */
 				trades.get(1).add(new TradeListing(SELL_FOR_ONE_EMERALD, IETags.getItemTag(IETags.treatedWood), WoodenDecoration.TREATED_WOOD.get(TreatedWoodStyles.HORIZONTAL), 6, 16, 2));
 				trades.get(1).add(new TradeListing(BUY_FOR_ONE_EMERALD, WoodenDecoration.TREATED_SCAFFOLDING, 6, 16, 1));
-				trades.get(1).add(new TradeListing(BUY_FOR_ONE_EMERALD, Cloth.BALLOON, 2, 12, 2));
+				trades.get(1).add(new TradeListing(SELL_FOR_ONE_EMERALD, Cloth.BALLOON, 2, 12, 2));
 
 				trades.get(2).add(new TradeListing(BUY_FOR_ONE_EMERALD, MetalDecoration.STEEL_SCAFFOLDING.get(MetalScaffoldingType.STANDARD), 4, 12, 5));
 				trades.get(2).add(new TradeListing(BUY_FOR_ONE_EMERALD, MetalDecoration.STEEL_CATWALK, 4, 12, 5));
@@ -245,51 +245,51 @@ public class Villages
 				/* Machinist
 				 * Sells components, engineering blocks, and tool-heads
 				 */
-				trades.get(1).add(new TradeListing(BUY_FOR_ONE_EMERALD, IETags.coalCoke, Ingredients.COAL_COKE, 8, 16, 2));
-				trades.get(1).add(new TradeListing(SELL_FOR_MANY_EMERALDS, Tools.HAMMER, 1, 4, 5));
-				trades.get(1).add(new TradeListing(SELL_FOR_MANY_EMERALDS, BlueprintCraftingRecipe.getTypedBlueprint("components"), 4, 3, 5).setMultiplier(0.2f));
+				trades.get(1).add(new TradeListing(SELL_FOR_ONE_EMERALD, IETags.coalCoke, Ingredients.COAL_COKE, 8, 16, 2));
+				trades.get(1).add(new TradeListing(BUY_FOR_MANY_EMERALDS, Tools.HAMMER, 1, 4, 5));
+				trades.get(1).add(new TradeListing(BUY_FOR_MANY_EMERALDS, BlueprintCraftingRecipe.getTypedBlueprint("components"), 4, 3, 5).setMultiplier(0.2f));
 
-				trades.get(2).add(new TradeListing(BUY_FOR_ONE_EMERALD, IETags.getTagsFor(EnumMetals.COPPER).ingot, Items.COPPER_INGOT, 4, 12, 10));
-				trades.get(2).add(new TradeListing(SELL_FOR_MANY_EMERALDS, Ingredients.COMPONENT_IRON, 2, 12, 5));
-				trades.get(2).add(new TradeListing(SELL_FOR_MANY_EMERALDS, WoodenDecoration.BASIC_ENGINEERING, 4, 12, 5));
+				trades.get(2).add(new TradeListing(SELL_FOR_ONE_EMERALD, IETags.getTagsFor(EnumMetals.COPPER).ingot, Items.COPPER_INGOT, 4, 12, 10));
+				trades.get(2).add(new TradeListing(BUY_FOR_MANY_EMERALDS, Ingredients.COMPONENT_IRON, 2, 12, 5));
+				trades.get(2).add(new TradeListing(BUY_FOR_MANY_EMERALDS, WoodenDecoration.BASIC_ENGINEERING, 4, 12, 5));
 
-				trades.get(3).add(new TradeListing(BUY_FOR_ONE_EMERALD, IETags.getTagsFor(EnumMetals.STEEL).ingot, IEItems.Metals.INGOTS.get(EnumMetals.STEEL), 3, 12, 20));
-				trades.get(3).add(new TradeListing(SELL_FOR_MANY_EMERALDS, Ingredients.COMPONENT_STEEL, 3, 12, 10));
-				trades.get(3).add(new TradeListing(SELL_FOR_MANY_EMERALDS, MetalDecoration.ENGINEERING_LIGHT, 4, 12, 10));
-				trades.get(3).add(new TradeListing(SELL_FOR_MANY_EMERALDS, MetalDevices.FLUID_PIPE, 2, 12, 10));
+				trades.get(3).add(new TradeListing(SELL_FOR_ONE_EMERALD, IETags.getTagsFor(EnumMetals.STEEL).ingot, IEItems.Metals.INGOTS.get(EnumMetals.STEEL), 3, 12, 20));
+				trades.get(3).add(new TradeListing(BUY_FOR_MANY_EMERALDS, Ingredients.COMPONENT_STEEL, 3, 12, 10));
+				trades.get(3).add(new TradeListing(BUY_FOR_MANY_EMERALDS, MetalDecoration.ENGINEERING_LIGHT, 4, 12, 10));
+				trades.get(3).add(new TradeListing(BUY_FOR_MANY_EMERALDS, MetalDevices.FLUID_PIPE, 2, 12, 10));
 
-				trades.get(4).add(new TradeListing(SELL_FOR_MANY_EMERALDS, MetalDecoration.ENGINEERING_HEAVY, 5, 12, 15));
-				trades.get(4).add(new TradeListing(SELL_FOR_MANY_EMERALDS, ConveyorHandler.getBlock(BasicConveyor.TYPE), 2, 12, 15));
-				trades.get(4).add(new TradeListing(BUY_FOR_MANY_EMERALDS, MetalDecoration.GENERATOR, 4, 12, 30));
-				trades.get(4).add(new TradeListing(BUY_FOR_MANY_EMERALDS, MetalDecoration.RADIATOR, 4, 12, 30));
+				trades.get(4).add(new TradeListing(BUY_FOR_MANY_EMERALDS, MetalDecoration.ENGINEERING_HEAVY, 5, 12, 15));
+				trades.get(4).add(new TradeListing(BUY_FOR_MANY_EMERALDS, ConveyorHandler.getBlock(BasicConveyor.TYPE), 2, 12, 15));
+				trades.get(4).add(new TradeListing(SELL_FOR_MANY_EMERALDS, MetalDecoration.GENERATOR, 4, 12, 30));
+				trades.get(4).add(new TradeListing(SELL_FOR_MANY_EMERALDS, MetalDecoration.RADIATOR, 4, 12, 30));
 
-				trades.get(5).add(new TradeListing(SELL_FOR_MANY_EMERALDS, Tools.DRILLHEAD_STEEL, 24, 3, 30).setMultiplier(0.2f));
-				trades.get(5).add(new TradeListing(SELL_FOR_MANY_EMERALDS, Tools.GRINDINGDISK, 24, 3, 30).setMultiplier(0.2f));
+				trades.get(5).add(new TradeListing(BUY_FOR_MANY_EMERALDS, Tools.DRILLHEAD_STEEL, 24, 3, 30).setMultiplier(0.2f));
+				trades.get(5).add(new TradeListing(BUY_FOR_MANY_EMERALDS, Tools.GRINDINGDISK, 24, 3, 30).setMultiplier(0.2f));
 			}
 			else if(ELECTRICIAN.equals(typeName))
 			{
 				/* Electrician
 				 * Sells wires, components and the faraday suit
 				 */
-				trades.get(1).add(new TradeListing(SELL_FOR_ONE_EMERALD, IETags.copperWire, Ingredients.WIRE_COPPER, 4, 16, 2));
-				trades.get(1).add(new TradeListing(BUY_FOR_ONE_EMERALD, WIRE_COILS.get(WireType.COPPER), 2, 16, 1));
-				trades.get(1).add(new TradeListing(SELL_FOR_MANY_EMERALDS, Tools.WIRECUTTER, 2, 12, 1).setMultiplier(0.2f));
+				trades.get(1).add(new TradeListing(BUY_FOR_ONE_EMERALD, IETags.copperWire, Ingredients.WIRE_COPPER, 4, 16, 2));
+				trades.get(1).add(new TradeListing(SELL_FOR_ONE_EMERALD, WIRE_COILS.get(WireType.COPPER), 2, 16, 1));
+				trades.get(1).add(new TradeListing(BUY_FOR_MANY_EMERALDS, Tools.WIRECUTTER, 2, 12, 1).setMultiplier(0.2f));
 
-				trades.get(2).add(new TradeListing(BUY_FOR_ONE_EMERALD, IETags.electrumWire, Ingredients.WIRE_ELECTRUM, 6, 12, 10));
-				trades.get(2).add(new TradeListing(BUY_FOR_ONE_EMERALD, IETags.aluminumWire, Ingredients.WIRE_ALUMINUM, 6, 12, 10));
-				trades.get(2).add(new TradeListing(SELL_FOR_MANY_EMERALDS, MetalDevices.ELECTRIC_LANTERN, 4, 12, 5));
+				trades.get(2).add(new TradeListing(SELL_FOR_ONE_EMERALD, IETags.electrumWire, Ingredients.WIRE_ELECTRUM, 6, 12, 10));
+				trades.get(2).add(new TradeListing(SELL_FOR_ONE_EMERALD, IETags.aluminumWire, Ingredients.WIRE_ALUMINUM, 6, 12, 10));
+				trades.get(2).add(new TradeListing(BUY_FOR_MANY_EMERALDS, MetalDevices.ELECTRIC_LANTERN, 4, 12, 5));
 
-				trades.get(3).add(new TradeListing(SELL_FOR_MANY_EMERALDS, IEItems.Misc.FARADAY_SUIT.get(ArmorItem.Type.BOOTS), 4, 3, 15).setMultiplier(0.2f));
-				trades.get(3).add(new TradeListing(SELL_FOR_MANY_EMERALDS, IEItems.Misc.FARADAY_SUIT.get(ArmorItem.Type.HELMET), 5, 3, 15).setMultiplier(0.2f));
-				trades.get(3).add(new TradeListing(SELL_FOR_MANY_EMERALDS, IEItems.Misc.FARADAY_SUIT.get(ArmorItem.Type.CHESTPLATE), 9, 3, 15).setMultiplier(0.2f));
-				trades.get(3).add(new TradeListing(SELL_FOR_MANY_EMERALDS, IEItems.Misc.FARADAY_SUIT.get(ArmorItem.Type.LEGGINGS), 7, 3, 15).setMultiplier(0.2f));
+				trades.get(3).add(new TradeListing(BUY_FOR_MANY_EMERALDS, IEItems.Misc.FARADAY_SUIT.get(ArmorItem.Type.BOOTS), 4, 3, 15).setMultiplier(0.2f));
+				trades.get(3).add(new TradeListing(BUY_FOR_MANY_EMERALDS, IEItems.Misc.FARADAY_SUIT.get(ArmorItem.Type.HELMET), 5, 3, 15).setMultiplier(0.2f));
+				trades.get(3).add(new TradeListing(BUY_FOR_MANY_EMERALDS, IEItems.Misc.FARADAY_SUIT.get(ArmorItem.Type.CHESTPLATE), 9, 3, 15).setMultiplier(0.2f));
+				trades.get(3).add(new TradeListing(BUY_FOR_MANY_EMERALDS, IEItems.Misc.FARADAY_SUIT.get(ArmorItem.Type.LEGGINGS), 7, 3, 15).setMultiplier(0.2f));
 
 				trades.get(4).add(new TradeListing(SELL_FOR_ONE_EMERALD, Ingredients.LIGHT_BULB, 3, 12, 30));
-				trades.get(4).add(new TradeListing(SELL_FOR_MANY_EMERALDS, Ingredients.COMPONENT_ELECTRONIC, 4, 16, 15));
-				trades.get(4).add(new TradeListing(BUY_FOR_MANY_EMERALDS, IEItems.Misc.FLUORESCENT_TUBE, 16, 8, 30));
+				trades.get(4).add(new TradeListing(BUY_FOR_MANY_EMERALDS, Ingredients.COMPONENT_ELECTRONIC, 4, 16, 15));
+				trades.get(4).add(new TradeListing(SELL_FOR_MANY_EMERALDS, IEItems.Misc.FLUORESCENT_TUBE, 16, 8, 30));
 
-				trades.get(5).add(new TradeListing(SELL_FOR_MANY_EMERALDS, Ingredients.ELECTRON_TUBE, 8, 12, 30));
-				trades.get(5).add(new TradeListing(SELL_FOR_MANY_EMERALDS, MetalDevices.TESLA_COIL, 24, 12, 30));
+				trades.get(5).add(new TradeListing(BUY_FOR_MANY_EMERALDS, Ingredients.ELECTRON_TUBE, 8, 12, 30));
+				trades.get(5).add(new TradeListing(BUY_FOR_MANY_EMERALDS, MetalDevices.TESLA_COIL, 24, 12, 30));
 			}
 			else if(OUTFITTER.equals(typeName))
 			{
@@ -315,7 +315,7 @@ public class Villages
 						IEBannerPatterns.ORNATE.item(),
 				};
 
-				trades.get(1).add(new TradeListing(BUY_FOR_ONE_EMERALD, Ingredients.HEMP_FABRIC, 8, 16, 2));
+				trades.get(1).add(new TradeListing(SELL_FOR_ONE_EMERALD, Ingredients.HEMP_FABRIC, 8, 16, 2));
 				trades.get(1).add((entity, randomSource) -> new MerchantOffer(
 						new ItemCost(Items.EMERALD),
 						new ItemStack(dyes[randomSource.nextInt(dyes.length)], 4),
@@ -327,16 +327,16 @@ public class Villages
 						new ItemStack(Items.EMERALD, 2),
 						12, 10, 0.05f
 				));
-				trades.get(2).add(new TradeListing(SELL_FOR_MANY_EMERALDS, bag_common, 4, 12, 5));
+				trades.get(2).add(new TradeListing(BUY_FOR_MANY_EMERALDS, bag_common, 4, 12, 5));
 
-				trades.get(3).add(new TradeListing(BUY_FOR_ONE_EMERALD, IETags.getTagsFor(EnumMetals.SILVER).dust, IEItems.Metals.DUSTS.get(EnumMetals.SILVER), 3, 12, 20));
-				trades.get(3).add(new TradeListing(SELL_FOR_MANY_EMERALDS, bag_uncommon, 8, 12, 10));
+				trades.get(3).add(new TradeListing(SELL_FOR_ONE_EMERALD, IETags.getTagsFor(EnumMetals.SILVER).dust, IEItems.Metals.DUSTS.get(EnumMetals.SILVER), 3, 12, 20));
+				trades.get(3).add(new TradeListing(BUY_FOR_MANY_EMERALDS, bag_uncommon, 8, 12, 10));
 
-				trades.get(4).add(new TradeListing(BUY_FOR_ONE_EMERALD, IETags.getTagsFor(EnumMetals.GOLD).dust, IEItems.Metals.DUSTS.get(EnumMetals.GOLD), 3, 12, 30));
-				trades.get(4).add(new TradeListing(SELL_FOR_MANY_EMERALDS, bag_rare, 12, 8, 15));
+				trades.get(4).add(new TradeListing(SELL_FOR_ONE_EMERALD, IETags.getTagsFor(EnumMetals.GOLD).dust, IEItems.Metals.DUSTS.get(EnumMetals.GOLD), 3, 12, 30));
+				trades.get(4).add(new TradeListing(BUY_FOR_MANY_EMERALDS, bag_rare, 12, 8, 15));
 
-				trades.get(5).add(new TradeListing(BUY_FOR_ONE_EMERALD, Tags.Items.GEMS_LAPIS, Items.LAPIS_LAZULI, 3, 12, 30));
-				trades.get(5).add(new TradeListing(SELL_FOR_MANY_EMERALDS, bag_epic, 16, 3, 30).setMultiplier(0.2f));
+				trades.get(5).add(new TradeListing(SELL_FOR_ONE_EMERALD, Tags.Items.GEMS_LAPIS, Items.LAPIS_LAZULI, 3, 12, 30));
+				trades.get(5).add(new TradeListing(BUY_FOR_MANY_EMERALDS, bag_epic, 16, 3, 30).setMultiplier(0.2f));
 			}
 			else if(GUNSMITH.equals(typeName))
 			{
@@ -345,21 +345,21 @@ public class Villages
 				 */
 				trades.get(1).add(new TradeListing(SELL_FOR_ONE_EMERALD, Ingredients.EMPTY_CASING, 8, 16, 2));
 				trades.get(1).add(new TradeListing(SELL_FOR_ONE_EMERALD, Ingredients.EMPTY_SHELL, 8, 16, 2));
-				trades.get(1).add(new TradeListing(SELL_FOR_MANY_EMERALDS, WoodenDevices.GUNPOWDER_BARREL, 4, 16, 2));
-				trades.get(1).add(new TradeListing(SELL_FOR_MANY_EMERALDS, Ingredients.WOODEN_GRIP, 3, 1, 12).setMultiplier(0.2f));
+				trades.get(1).add(new TradeListing(BUY_FOR_MANY_EMERALDS, WoodenDevices.GUNPOWDER_BARREL, 4, 16, 2));
+				trades.get(1).add(new TradeListing(BUY_FOR_MANY_EMERALDS, Ingredients.WOODEN_GRIP, 3, 1, 12).setMultiplier(0.2f));
 
-				trades.get(2).add(new TradeListing(SELL_FOR_MANY_EMERALDS, BlueprintCraftingRecipe.getTypedBlueprint("bullet"), 6, 1, 25));
+				trades.get(2).add(new TradeListing(BUY_FOR_MANY_EMERALDS, BlueprintCraftingRecipe.getTypedBlueprint("bullet"), 6, 1, 25));
 				trades.get(2).add(new TradeListing(BUY_FOR_ONE_EMERALD, BulletHandler.getBulletStack(IEBullets.CASULL), 4, 12, 5));
 				trades.get(2).add(new TradeListing(BUY_FOR_ONE_EMERALD, BulletHandler.getBulletStack(IEBullets.BUCKSHOT), 4, 12, 5));
 				trades.get(2).add(RevolverPieceForEmeralds.INSTANCE);
 
 				trades.get(3).add(RevolverPieceForEmeralds.INSTANCE);
 				trades.get(3).add(new TradeListing(BUY_FOR_ONE_EMERALD, BulletHandler.getBulletStack(IEBullets.FLARE), 2, 12, 10));
-				trades.get(3).add(new TradeListing(SELL_FOR_MANY_EMERALDS, BlueprintCraftingRecipe.getTypedBlueprint("specialBullet"), 12, 1, 30).setMultiplier(0.2f));
+				trades.get(3).add(new TradeListing(BUY_FOR_MANY_EMERALDS, BlueprintCraftingRecipe.getTypedBlueprint("specialBullet"), 12, 1, 30).setMultiplier(0.2f));
 
 				trades.get(4).add(RevolverPieceForEmeralds.INSTANCE);
 				trades.get(4).add(new TradeListing(BUY_FOR_ONE_EMERALD, BulletHandler.getBulletStack(IEBullets.SILVER), 4, 8, 15));
-				trades.get(4).add(new TradeListing(SELL_FOR_MANY_EMERALDS, BulletHandler.getBulletStack(IEBullets.HIGH_EXPLOSIVE), 2, 8, 15));
+				trades.get(4).add(new TradeListing(BUY_FOR_MANY_EMERALDS, BulletHandler.getBulletStack(IEBullets.HIGH_EXPLOSIVE), 2, 8, 15));
 
 				trades.get(5).add(RevolverPieceForEmeralds.INSTANCE);
 				trades.get(5).add(RevolverPieceForEmeralds.INSTANCE);
@@ -398,9 +398,9 @@ public class Villages
 			new ItemStack(Items.EMERALD),
 			maxUses, xp, priceMultiplier
 	);
-	private static final TradeOutline SELL_FOR_MANY_EMERALDS = (selling, price, random, maxUses, xp, priceMultiplier) -> new MerchantOffer(
-			new ItemCost(Items.EMERALD, price),
-			selling,
+	private static final TradeOutline SELL_FOR_MANY_EMERALDS = (buying, price, random, maxUses, xp, priceMultiplier) -> new MerchantOffer(
+			new ItemCost(buying.getItem()),
+			new ItemStack(Items.EMERALD, price),
 			maxUses, xp, priceMultiplier
 	);
 	private static final TradeOutline BUY_FOR_ONE_EMERALD = (selling, price, random, maxUses, xp, priceMultiplier) -> new MerchantOffer(
