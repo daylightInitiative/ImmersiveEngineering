@@ -1,4 +1,4 @@
-##### Version 1.21.1-12.3.2-pre
+##### Version 1.21.1-12.3.2-190
 - Add support for chance-based output to the cloche (BluSunrize) 
 - Add sounds to the drill and the buzzsaw (MalkContent)
 - Change the Coke Oven to process recipes in batches (BluSunrize)
