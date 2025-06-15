@@ -5,6 +5,8 @@
     - Up to 16 coal or 2 blocks get processed at the same time - 5 minutes
     - That means it's more efficient to process larger quantities of coal at a time
     - The manual entry has been overhauled to reflect these changes
+- Change the recipe for high explosive cartridges to actually use empty casings (BluSunrize)
+    - Kind forgot to fix this ages ago, now we've got texture parity again
 - Simplify a lot of recipe JSONs (BluSunrize)
     - The wrapping in "basePredicate" is now not needed for normal items anymore, and "count" on item stacks is optional too
 - Fix old electrode blueprints crashing in the workbench (BluSunrize)

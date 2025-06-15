@@ -4,7 +4,7 @@
   "inputs": [
     {
       "basePredicate": {
-        "item": "immersiveengineering:empty_shell"
+        "item": "immersiveengineering:empty_casing"
       },
       "count": 4
     },

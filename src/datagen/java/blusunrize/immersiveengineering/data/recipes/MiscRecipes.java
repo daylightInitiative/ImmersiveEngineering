@@ -195,7 +195,7 @@ public class MiscRecipes extends IERecipeProvider
 		BlueprintCraftingRecipeBuilder.builder()
 				.category("specialBullet")
 				.output(new ItemStack(BulletHandler.getBulletItem(IEBullets.HIGH_EXPLOSIVE), 4))
-				.input(BulletHandler.emptyShell, 4)
+				.input(BulletHandler.emptyCasing, 4)
 				.input(Tags.Items.GUNPOWDERS)
 				.input(Items.TNT)
 				.build(out, toRL("blueprint/bullet_explosive"));
