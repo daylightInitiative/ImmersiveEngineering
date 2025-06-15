@@ -7,6 +7,13 @@
     - The manual entry has been overhauled to reflect these changes
 - Change the recipe for high explosive cartridges to actually use empty casings (BluSunrize)
     - Kind forgot to fix this ages ago, now we've got texture parity again
+- Change all engineer villager trades (BluSunrize)
+    - Now used fixed costs, like vanilla villagers
+    - Structural Engineer: Now offers more scaffolds and catwalks, and purchases clinker bricks later
+    - Machinist: Deals in component items and multiblock pieces instead of tool upgrades
+    - Electrician: Purchases more wires, all faraday armor pieces moved to tier 3, sells electron tubes on tier 5
+    - Gunsmith: Sells gunpowder barrels, has more purchasing options, ammo trades now require players to provide empties
+    - Outfitter: Purchases various "fancy" materials to allow getting emeralds
 - Simplify a lot of recipe JSONs (BluSunrize)
     - The wrapping in "basePredicate" is now not needed for normal items anymore, and "count" on item stacks is optional too
 - Fix old electrode blueprints crashing in the workbench (BluSunrize)
