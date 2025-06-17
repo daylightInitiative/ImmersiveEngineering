@@ -9,6 +9,7 @@
 
 package blusunrize.immersiveengineering.client.fx;
 
+import blusunrize.immersiveengineering.api.Lib;
 import blusunrize.immersiveengineering.api.utils.Color4;
 import blusunrize.immersiveengineering.api.utils.codec.IEDualCodecs;
 import blusunrize.immersiveengineering.common.register.IEParticles;
@@ -33,6 +34,10 @@ public record FractalOptions(
 			Color4.CODECS.fieldOf("innerColor"), d -> d.colourIn,
 			FractalOptions::new
 	);
+
+	public static final Color4[] COLOUR_RED = {new Color4(.79f, .31f, .31f, .5f), new Color4(1, .97f, .87f, .75f)};
+	public static final Color4[] COLOUR_ORANGE = {new Color4(Lib.COLOUR_F_ImmersiveOrange[0], Lib.COLOUR_F_ImmersiveOrange[1], Lib.COLOUR_F_ImmersiveOrange[2], .5f), new Color4(1, .97f, .87f, .75f)};
+	public static final Color4[] COLOUR_LIGHTNING = {new Color4(77/255f, 74/255f, 152/255f, .75f), new Color4(1, 1, 1, 1)};
 
 	@Override
 	public ParticleType<?> getType()
