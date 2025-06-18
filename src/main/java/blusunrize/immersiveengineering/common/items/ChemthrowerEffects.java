@@ -132,7 +132,7 @@ public class ChemthrowerEffects
 					shot.discard();
 				world.setBlockAndUpdate(pos, StoneDecoration.CONCRETE_SPRAYED.defaultBlockState());
 				for(LivingEntity living : world.getEntitiesOfClass(LivingEntity.class, aabb))
-					living.addEffect(new MobEffectInstance(IEPotions.CONCRETE_FEET, Integer.MAX_VALUE));
+					living.addEffect(new MobEffectInstance(IEPotions.CONCRETE_FEET, -1));
 			}
 		});
 
