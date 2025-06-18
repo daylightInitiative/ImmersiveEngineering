@@ -644,6 +644,7 @@ public class ClientEventHandler implements ResourceManagerReloadListener
 		if(event.getEntity() instanceof Player player&&player.isCrouching()&&player.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof CrateItem crateItem)
 			if(player.getEffect(IEPotions.INCOGNITO) instanceof MobEffectInstance effect&&effect.getAmplifier() > 0)
 			{
+				ClientUtils.mc().getEntityRenderDispatcher().setRenderShadow(false);
 				event.setCanceled(true);
 				PoseStack pose = event.getPoseStack();
 				pose.pushPose();
@@ -678,7 +679,10 @@ public class ClientEventHandler implements ResourceManagerReloadListener
 		if(event.getEntity().getPersistentData().contains("headshot"))
 			enableHead(event.getRenderer(), true);
 		if(event.getEntity() instanceof Player player&&player.isCrouching()&&player.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof CrateItem)
+		{
+			ClientUtils.mc().getEntityRenderDispatcher().setRenderShadow(true);
 			enableUpperBody(event.getRenderer(), true);
+		}
 	}
 
 	private static void enableHead(LivingEntityRenderer<?, ?> renderer, boolean shouldEnable)
