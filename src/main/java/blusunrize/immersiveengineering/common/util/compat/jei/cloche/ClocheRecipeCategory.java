@@ -64,7 +64,7 @@ public class ClocheRecipeCategory extends IERecipeCategory<ClocheRecipe>
 		builder.addSlot(RecipeIngredientRole.INPUT, 62, 34)
 				.addItemStacks(Arrays.asList(recipe.seed.getItems()));
 
-		builder.addSlot(RecipeIngredientRole.INPUT, 62, 54)
+		builder.addSlot(RecipeIngredientRole.CATALYST, 62, 54)
 				.addItemStacks(Arrays.asList(recipe.soil.getItems()));
 
 		for(int i = 0; i < recipe.outputs.size(); i++)
@@ -91,7 +91,7 @@ public class ClocheRecipeCategory extends IERecipeCategory<ClocheRecipe>
 		for(RecipeHolder<ClocheFertilizer> fertilizerList : ClocheFertilizer.RECIPES.getRecipes(Minecraft.getInstance().level))
 			fertilizers.addAll(Arrays.stream(fertilizerList.value().input.getItems()).toList());
 
-		builder.addSlot(RecipeIngredientRole.INPUT, 8, 59)
+		builder.addSlot(RecipeIngredientRole.RENDER_ONLY, 8, 59)
 				.addItemStacks(fertilizers);
 	}
 

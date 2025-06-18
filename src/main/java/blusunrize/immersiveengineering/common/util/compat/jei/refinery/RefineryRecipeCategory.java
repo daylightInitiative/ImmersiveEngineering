@@ -53,7 +53,7 @@ public class RefineryRecipeCategory extends IERecipeCategory<RefineryRecipe>
 					.addIngredients(NeoForgeTypes.FLUID_STACK, Arrays.asList(recipe.input1.getFluids()));
 		if(!recipe.catalyst.isEmpty())
 		{
-			builder.addSlot(RecipeIngredientRole.INPUT, 67, 16)
+			builder.addSlot(RecipeIngredientRole.CATALYST, 67, 16)
 					.addItemStacks(Arrays.asList(recipe.catalyst.getItems()));
 		}
 		builder.addSlot(RecipeIngredientRole.OUTPUT, 103, 10)

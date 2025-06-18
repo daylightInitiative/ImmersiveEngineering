@@ -2,6 +2,7 @@
 - Add a silly Metal Gear Solid reference to crates (BluSunrize)
 - Fix crashes related to the IKELOS shader on servers (BluSunrize)
 - Fix feedthrough insulator not adopting its source block's hardness (BluSunrize)
+- Fix tagging of certain slots in JEI as catalyst or render, to allow proper recipe tree calculation (BluSunrize)
 
 ##### Version 1.21.1-12.3.2-190
 - Add support for chance-based output to the cloche (BluSunrize) 
