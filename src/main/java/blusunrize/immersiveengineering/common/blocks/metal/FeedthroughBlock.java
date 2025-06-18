@@ -17,7 +17,9 @@ import blusunrize.immersiveengineering.common.blocks.generic.ConnectorBlock;
 import blusunrize.immersiveengineering.common.register.IEBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab.Output;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
@@ -52,6 +54,15 @@ public class FeedthroughBlock extends ConnectorBlock<FeedthroughBlockEntity>
 		super.createBlockStateDefinition(builder);
 		// TODO Axis instead of FACING_ALL?
 		builder.add(IEProperties.FACING_ALL, BlockStateProperties.WATERLOGGED);
+	}
+
+	@Override
+	protected float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos)
+	{
+		BlockEntity tile = level.getBlockEntity(pos);
+		if(tile instanceof FeedthroughBlockEntity feedthrough)
+			return feedthrough.stateForMiddle.getDestroyProgress(player, level, pos);
+		return super.getDestroyProgress(state, player, level, pos);
 	}
 
 	@Override
