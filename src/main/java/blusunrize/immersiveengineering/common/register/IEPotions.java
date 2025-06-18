@@ -53,6 +53,10 @@ public class IEPotions
 			"flashed", () -> new IEPotion(MobEffectCategory.HARMFUL, 0x624a98, 0, false, 6, true, true)
 					.addAttributeModifier(Attributes.MOVEMENT_SPEED, IEApi.ieLoc("flashed_movement"), -0.15, Operation.ADD_MULTIPLIED_TOTAL)
 	);
+	public static final Holder<MobEffect> INCOGNITO = REGISTER.register(
+			"incognito", () -> new IEPotion(MobEffectCategory.BENEFICIAL, 0x624a98, 0, false, 6, true, true)
+					.addAttributeModifier(Attributes.KNOCKBACK_RESISTANCE, IEApi.ieLoc("incognito"), 1, Operation.ADD_VALUE)
+	);
 
 	public static class IEPotion extends MobEffect
 	{
@@ -76,8 +80,16 @@ public class IEPotions
 		{
 			if(tickrate < 0)
 				return false;
-			int k = tickrate >> amplifier;
+			int k = tickrate>>amplifier;
 			return k <= 0||duration%k==0;
+		}
+
+		@Override
+		public boolean shouldApplyEffectTickThisTick(int duration, int amplifier)
+		{
+			return this==IEPotions.SLIPPERY.value()
+					||this==IEPotions.CONCRETE_FEET.value()
+					||this==IEPotions.INCOGNITO.value();
 		}
 
 		@Override
@@ -99,6 +111,11 @@ public class IEPotions
 			{
 				BlockState state = living.level().getBlockState(living.blockPosition());
 				return state.is(IETags.concreteForFeet);
+			}
+			else if(this==IEPotions.INCOGNITO.value()&&(!living.isCrouching()||living.getDeltaMovement().x!=0||living.getDeltaMovement().z!=0))
+			{
+				// if user stops crouching or moves, the effect ends
+				return false;
 			}
 			// TODO infinite?
 			return true;

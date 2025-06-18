@@ -859,7 +859,7 @@ public final class IEBlocks
 			else if(entry==Connectors.TRANSFORMER)
 				toItem = TransformerBlockItem::new;
 			else if(entry==WoodenDevices.CRATE||entry==WoodenDevices.REINFORCED_CRATE)
-				toItem = b -> new BlockItemIE(b, new Item.Properties().stacksTo(1));
+				toItem = b -> new CrateItem(b, new Item.Properties().stacksTo(1));
 			else
 				toItem = BlockItemIE::new;
 			if(entry==StoneDecoration.COKE)

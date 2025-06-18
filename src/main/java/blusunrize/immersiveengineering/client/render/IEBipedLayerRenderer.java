@@ -9,10 +9,12 @@
 package blusunrize.immersiveengineering.client.render;
 
 import blusunrize.immersiveengineering.ImmersiveEngineering;
+import blusunrize.immersiveengineering.client.ClientUtils;
 import blusunrize.immersiveengineering.client.models.ModelEarmuffs;
 import blusunrize.immersiveengineering.client.models.ModelGlider;
 import blusunrize.immersiveengineering.client.models.ModelPowerpack;
 import blusunrize.immersiveengineering.client.render.entity.IEModelLayers;
+import blusunrize.immersiveengineering.common.blocks.CrateItem;
 import blusunrize.immersiveengineering.common.items.EarmuffsItem;
 import blusunrize.immersiveengineering.common.items.GliderItem;
 import blusunrize.immersiveengineering.common.items.IEItemInterfaces.IColouredItem;
@@ -28,6 +30,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -67,7 +70,7 @@ public class IEBipedLayerRenderer<E extends LivingEntity, M extends EntityModel<
 
 		ItemStack powerpack = PowerpackItem.POWERPACK_GETTER.getFrom(living);
 		if(!powerpack.isEmpty())
-			renderPowerpack(powerpack, matrixStackIn, bufferIn, packedLightIn, living, limbSwing, limbSwingAmount,partialTicks, ageInTicks, netHeadYaw, headPitch);
+			renderPowerpack(powerpack, matrixStackIn, bufferIn, packedLightIn, living, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch);
 
 		ItemStack chest = living.getItemBySlot(EquipmentSlot.CHEST);
 		if(chest.getItem() instanceof GliderItem)
@@ -76,6 +79,13 @@ public class IEBipedLayerRenderer<E extends LivingEntity, M extends EntityModel<
 			gliderModel.body.getChild("glider").visible = living.isFallFlying();
 			RenderType type = gliderModel.renderType(GLIDER_TEXTURE);
 			gliderModel.renderToBuffer(matrixStackIn, bufferIn.getBuffer(type), packedLightIn, OverlayTexture.NO_OVERLAY, -1);
+		}
+		else if(chest.getItem() instanceof CrateItem crateItem && living instanceof Player player && player.isCrouching())
+		{
+			matrixStackIn.pushPose();
+			matrixStackIn.translate(-.5f, -.3f, -.375f);
+			ClientUtils.mc().getBlockRenderer().renderSingleBlock(crateItem.getBlock().defaultBlockState(), matrixStackIn, bufferIn, packedLightIn, OverlayTexture.NO_OVERLAY);
+			matrixStackIn.popPose();
 		}
 	}
 

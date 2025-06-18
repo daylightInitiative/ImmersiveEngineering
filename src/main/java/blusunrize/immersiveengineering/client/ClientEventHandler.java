@@ -27,6 +27,7 @@ import blusunrize.immersiveengineering.client.render.tile.BlueprintRenderer;
 import blusunrize.immersiveengineering.client.render.tile.BlueprintRenderer.BlueprintLines;
 import blusunrize.immersiveengineering.client.utils.GuiHelper;
 import blusunrize.immersiveengineering.client.utils.IERenderTypes;
+import blusunrize.immersiveengineering.common.blocks.CrateItem;
 import blusunrize.immersiveengineering.common.blocks.generic.CatwalkBlock;
 import blusunrize.immersiveengineering.common.blocks.generic.WindowBlock;
 import blusunrize.immersiveengineering.common.blocks.wooden.TurntableBlockEntity;
@@ -54,12 +55,13 @@ import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.toasts.AdvancementToast;
-import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HeadedModel;
+import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
@@ -72,6 +74,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
@@ -93,6 +96,7 @@ import net.neoforged.neoforge.capabilities.Capabilities.EnergyStorage;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.event.InputEvent.MouseScrollingEvent;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
+import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
@@ -633,24 +637,67 @@ public class ClientEventHandler implements ResourceManagerReloadListener
 	}
 
 	@SubscribeEvent()
-	public void onRenderLivingPre(RenderLivingEvent.Pre event)
+	public void onRenderLivingPre(RenderLivingEvent.Pre<LivingEntity, ?> event)
 	{
 		if(event.getEntity().getPersistentData().contains("headshot"))
 			enableHead(event.getRenderer(), false);
+		if(event.getEntity() instanceof Player player&&player.isCrouching()&&player.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof CrateItem crateItem)
+			if(player.getEffect(IEPotions.INCOGNITO) instanceof MobEffectInstance effect&&effect.getAmplifier() > 0)
+			{
+				event.setCanceled(true);
+				PoseStack pose = event.getPoseStack();
+				pose.pushPose();
+
+				var partialTick = event.getPartialTick();
+				double posX = Mth.lerp(partialTick, player.xOld, player.getX());
+				double posZ = Mth.lerp(partialTick, player.zOld, player.getZ());
+
+				@SuppressWarnings("unchecked")
+				Vec3 crouchOffset = event.getRenderer().getRenderOffset(player, partialTick);
+				double x = Math.floor(posX)-posX;
+				double z = Math.floor(posZ)-posZ;
+				pose.translate(x, -crouchOffset.y, z);
+				ClientUtils.mc().getBlockRenderer().renderSingleBlock(
+						crateItem.getBlock().defaultBlockState(),
+						pose,
+						event.getMultiBufferSource(),
+						event.getPackedLight(),
+						OverlayTexture.NO_OVERLAY,
+						ModelData.EMPTY,
+						RenderType.solid()
+				);
+				pose.popPose();
+			}
+			else
+				enableUpperBody(event.getRenderer(), false);
 	}
 
 	@SubscribeEvent()
-	public void onRenderLivingPost(RenderLivingEvent.Post event)
+	public void onRenderLivingPost(RenderLivingEvent.Post<LivingEntity, ?> event)
 	{
 		if(event.getEntity().getPersistentData().contains("headshot"))
 			enableHead(event.getRenderer(), true);
+		if(event.getEntity() instanceof Player player&&player.isCrouching()&&player.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof CrateItem)
+			enableUpperBody(event.getRenderer(), true);
 	}
 
-	private static void enableHead(LivingEntityRenderer renderer, boolean shouldEnable)
+	private static void enableHead(LivingEntityRenderer<?, ?> renderer, boolean shouldEnable)
 	{
-		EntityModel m = renderer.getModel();
-		if(m instanceof HeadedModel)
-			((HeadedModel)m).getHead().visible = shouldEnable;
+		if(renderer.getModel() instanceof HeadedModel model)
+			model.getHead().visible = shouldEnable;
+	}
+
+	private static void enableUpperBody(LivingEntityRenderer<?, ?> renderer, boolean shouldEnable)
+	{
+		if(renderer.getModel() instanceof PlayerModel<?> model)
+		{
+			model.leftArm.visible = shouldEnable;
+			model.leftSleeve.visible = shouldEnable;
+			model.rightArm.visible = shouldEnable;
+			model.rightSleeve.visible = shouldEnable;
+			model.head.visible = shouldEnable;
+			model.hat.visible = shouldEnable;
+		}
 	}
 
 	@SubscribeEvent

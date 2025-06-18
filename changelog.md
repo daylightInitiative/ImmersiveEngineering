@@ -1,4 +1,5 @@
 ##### Version 1.21.1-12.3.3-pre
+- Add a silly Metal Gear Solid reference to crates (BluSunrize)
 - Fix crashes related to the IKELOS shader on servers (BluSunrize)
 
 ##### Version 1.21.1-12.3.2-190
