@@ -1,4 +1,4 @@
-// 1.21.1	2025-05-16T17:55:11.8667017	Item models
+// 1.21.1	2025-06-18T23:53:23.9217593	Item models
 8e8e1578653ae2e701aee18c524176bc5c6bcd7f assets/immersiveengineering/models/item/acetaldehyde_bucket.json
 62d8a99359a8d59d68eaae60eca3ab0da03e358f assets/immersiveengineering/models/item/advanced_blast_furnace.json
 d03faa43ead928b27068b685663fe7fdd4465d1a assets/immersiveengineering/models/item/alloy_smelter.json
@@ -183,6 +183,7 @@ aba279c2f1d727755533562d13d7a3f68c4432f1 assets/immersiveengineering/models/item
 b5397bc01238660585f19cd8389ec50dbb2ae8b8 assets/immersiveengineering/models/item/fake_icon_fried.json
 d13a73268908a3861b58462bcc2c05bda2f881b2 assets/immersiveengineering/models/item/fake_icon_lucky.json
 dd889c9ab5db8e4ba89b76aee0a3d7f4d6dc6307 assets/immersiveengineering/models/item/fake_icon_ravenholm.json
+64822d89301c816dbc77f9c8df2ee249c77dd85d assets/immersiveengineering/models/item/fake_icon_snake.json
 65ffa1a0c258ffbdd4bc86514a1634865bce09f3 assets/immersiveengineering/models/item/feedthrough.json
 e0e54962ed9e3bb4f6f11810045802e7cec325ed assets/immersiveengineering/models/item/fermenter.json
 0bddecc8c491532e03885b3751d3f1080ae1dead assets/immersiveengineering/models/item/fertilizer.json

@@ -409,5 +409,12 @@
       "immersiveengineering:note_block_resonanz"
     ],
     "subtitle": "subtitles.block.note_block.note"
+  },
+  "alert": {
+    "category": "player",
+    "sounds": [
+      "immersiveengineering:alert"
+    ],
+    "subtitle": "subtitles.immersiveengineering.alert"
   }
 }

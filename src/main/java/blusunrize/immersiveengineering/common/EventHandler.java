@@ -40,6 +40,7 @@ import blusunrize.immersiveengineering.common.util.Utils;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -67,7 +68,6 @@ import net.minecraft.world.entity.raid.Raider;
 import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.LecternBlock;
 import net.minecraft.world.level.block.NoteBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -116,9 +116,7 @@ public class EventHandler
 	public void onMinecartInteraction(EntityInteractSpecific event)
 	{
 		ItemStack stack = event.getItemStack();
-		if(!(event.getTarget() instanceof AbstractMinecart cart))
-			return;
-		if(stack.getItem() instanceof IShaderItem shaderItem)
+		if(event.getTarget() instanceof AbstractMinecart cart&&stack.getItem() instanceof IShaderItem shaderItem)
 		{
 			final ShaderWrapper wrapper = cart.getData(IEDataAttachments.MINECART_SHADER);
 			if(wrapper!=null&&!event.getLevel().isClientSide)
@@ -128,6 +126,29 @@ public class EventHandler
 			}
 			event.setCanceled(true);
 			event.setCancellationResult(InteractionResult.SUCCESS);
+		}
+		if(stack.isEmpty()&&event.getHand()==InteractionHand.MAIN_HAND&&event.getTarget() instanceof ServerPlayer targetPlayer
+				&&targetPlayer.getEffect(IEPotions.INCOGNITO) instanceof MobEffectInstance effect&&effect.getAmplifier() > 0)
+		{
+			Player user = event.getEntity();
+			// Transfer crate over
+			ItemStack crate = targetPlayer.getItemBySlot(EquipmentSlot.CHEST);
+			user.setItemSlot(EquipmentSlot.MAINHAND, crate);
+			targetPlayer.setItemSlot(EquipmentSlot.CHEST, ItemStack.EMPTY);
+			// Alert players
+			Component msg = Component.literal("!").withStyle(ChatFormatting.RED, ChatFormatting.BOLD);
+			targetPlayer.displayClientMessage(msg, true);
+			event.getEntity().displayClientMessage(msg, true);
+			event.getLevel().playSeededSound(
+					null, user.getX(), user.getY(), user.getZ(),
+					IESounds.alert, SoundSource.RECORDS, 1, 1,
+					event.getLevel().random.nextLong()
+			);
+			Utils.unlockIEAdvancement(targetPlayer, "main/secret_snake");
+			Utils.unlockIEAdvancement(event.getEntity(), "main/secret_snake");
+			// Consume event
+			event.setCanceled(true);
+			event.setCancellationResult(InteractionResult.CONSUME);
 		}
 	}
 

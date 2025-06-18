@@ -306,6 +306,7 @@ public final class IEItems
 		public static final ItemRegObject<FakeIconItem> ICON_BIRTHDAY = icon("birthday");
 		public static final ItemRegObject<FakeIconItem> ICON_LUCKY = icon("lucky");
 		public static final ItemRegObject<FakeIconItem> ICON_ACHTUNG = icon("achtung");
+		public static final ItemRegObject<FakeIconItem> ICON_SNAKE = icon("snake");
 		public static final ItemRegObject<FakeIconItem> ICON_DRILLBREAK = icon("drillbreak");
 		public static final ItemRegObject<FakeIconItem> ICON_RAVENHOLM = icon("ravenholm");
 		public static final ItemRegObject<FakeIconItem> ICON_FRIED = icon("fried");

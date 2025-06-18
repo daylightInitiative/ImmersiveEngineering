@@ -164,6 +164,8 @@ public class Advancements extends AdvancementProvider
 				.icon(Misc.ICON_LUCKY).codeTriggered().loot("shader_masterwork").save(consumer);
 		AdvancementHolder achtung = AdvancementBuilder.child("secret_achtung", rtfm).challenge().hidden()
 				.icon(Misc.ICON_ACHTUNG).codeTriggered().loot("shader_masterwork").save(consumer);
+		AdvancementHolder snake = AdvancementBuilder.child("secret_snake", treatedWood).challenge().hidden()
+				.icon(Misc.ICON_SNAKE).codeTriggered().loot("shader_masterwork").save(consumer);
 
 		/* MULTIBLOCKS */
 		AdvancementBuilder.setPage("multiblocks");
