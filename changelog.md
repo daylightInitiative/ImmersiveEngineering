@@ -1,5 +1,5 @@
 ##### Version 1.21.1-12.3.3-pre
-- Add a silly Metal Gear Solid reference to crates (BluSunrize)
+- Add a silly Metal Gear Solid reference to wooden crates (BluSunrize)
 - Fix crashes related to the IKELOS shader on servers (BluSunrize)
 - Fix feedthrough insulator not adopting its source block's hardness (BluSunrize)
 - Fix tagging of certain slots in JEI as catalyst or render, to allow proper recipe tree calculation (BluSunrize)

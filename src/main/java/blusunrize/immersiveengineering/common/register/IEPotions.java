@@ -11,6 +11,8 @@ package blusunrize.immersiveengineering.common.register;
 import blusunrize.immersiveengineering.api.IEApi;
 import blusunrize.immersiveengineering.api.IETags;
 import blusunrize.immersiveengineering.api.Lib;
+import blusunrize.immersiveengineering.common.blocks.CrateItem;
+import blusunrize.immersiveengineering.common.network.MessageIncognitoSync;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.effect.MobEffect;
@@ -23,6 +25,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class IEPotions
@@ -112,9 +115,13 @@ public class IEPotions
 				BlockState state = living.level().getBlockState(living.blockPosition());
 				return state.is(IETags.concreteForFeet);
 			}
-			else if(this==IEPotions.INCOGNITO.value()&&(!living.isCrouching()||living.getDeltaMovement().x!=0||living.getDeltaMovement().z!=0))
+			else if(this==IEPotions.INCOGNITO.value()&&(!living.isCrouching()
+					||living.getDeltaMovement().x!=0||living.getDeltaMovement().z!=0
+					||!(living.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof CrateItem)))
 			{
 				// if user stops crouching or moves, the effect ends
+				if(!living.level().isClientSide())
+					PacketDistributor.sendToAllPlayers(new MessageIncognitoSync(living.getId(), false));
 				return false;
 			}
 			// TODO infinite?

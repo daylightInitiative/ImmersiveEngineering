@@ -642,7 +642,7 @@ public class ClientEventHandler implements ResourceManagerReloadListener
 		if(event.getEntity().getPersistentData().contains("headshot"))
 			enableHead(event.getRenderer(), false);
 		if(event.getEntity() instanceof Player player&&player.isCrouching()&&player.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof CrateItem crateItem)
-			if(player.getEffect(IEPotions.INCOGNITO) instanceof MobEffectInstance effect&&effect.getAmplifier() > 0)
+			if(CrateItem.incognitoPlayers.contains(player.getId()))
 			{
 				ClientUtils.mc().getEntityRenderDispatcher().setRenderShadow(false);
 				event.setCanceled(true);

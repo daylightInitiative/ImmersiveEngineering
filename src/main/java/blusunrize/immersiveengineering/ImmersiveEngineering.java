@@ -211,6 +211,7 @@ public class ImmersiveEngineering
 		registerMessage(registrar, MessageSpeedloaderSync.ID, MessageSpeedloaderSync.CODEC, CLIENTBOUND);
 		registerMessage(registrar, MessageSkyhookSync.ID, MessageSkyhookSync.CODEC, CLIENTBOUND);
 		registerMessage(registrar, MessageMinecartShaderSync.ID, MessageMinecartShaderSync.CODEC);
+		registerMessage(registrar, MessageIncognitoSync.ID, MessageIncognitoSync.CODEC);
 		registerMessage(registrar, MessageRequestEnergyUpdate.ID, MessageRequestEnergyUpdate.CODEC, SERVERBOUND);
 		registerMessage(registrar, MessageStoredEnergy.ID, MessageStoredEnergy.CODEC, CLIENTBOUND);
 		registerMessage(registrar, MessageRequestRedstoneUpdate.ID, MessageRequestRedstoneUpdate.CODEC, SERVERBOUND);
