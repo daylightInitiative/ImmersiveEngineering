@@ -109,10 +109,10 @@ public class BlockOverlayUtils
 				BlockOverlayUtils.drawBlockOverlayText(graphics, text, scaledWidth, scaledHeight);
 			}
 		}
-		else if(mop instanceof BlockHitResult)
+		else if(mop instanceof BlockHitResult bhr)
 		{
-			BlockPos pos = ((BlockHitResult)mop).getBlockPos();
-			Direction face = ((BlockHitResult)mop).getDirection();
+			BlockPos pos = bhr.getBlockPos();
+			Direction face = bhr.getDirection();
 			BlockEntity tileEntity = player.level().getBlockEntity(pos);
 			if(tileEntity instanceof IBlockOverlayText overlayBlock)
 			{
@@ -120,7 +120,7 @@ public class BlockOverlayUtils
 				BlockOverlayUtils.drawBlockOverlayText(graphics, text, scaledWidth, scaledHeight);
 			}
 			else if(!(tileEntity instanceof IMultiblockBE<?> multiblock)||!renderMultiblockOverlay(
-					graphics, multiblock, hammer, scaledWidth, scaledHeight
+					graphics, multiblock, bhr, hammer, scaledWidth, scaledHeight
 			))
 			{
 				List<ItemFrame> list = player.level().getEntitiesOfClass(ItemFrame.class,
@@ -132,15 +132,15 @@ public class BlockOverlayUtils
 	}
 
 	private static <S extends IMultiblockState> boolean renderMultiblockOverlay(
-			GuiGraphics graphics, IMultiblockBE<S> be, boolean hammer, int scaledWidth, int scaledHeight
+			GuiGraphics graphics, IMultiblockBE<S> be, BlockHitResult absoluteHit, boolean hammer, int scaledWidth, int scaledHeight
 	)
 	{
 		final IMultiblockBEHelper<S> helper = be.getHelper();
 		if(!(helper.getMultiblock().logic() instanceof MBOverlayText<S> overlayHandler))
 			return false;
 		final List<Component> overlayText = overlayHandler.getOverlayText(
-				helper.getState(), ClientUtils.mc().player, hammer
-		);
+				helper.getState(), helper.getPositionInMB(), absoluteHit,
+				ClientUtils.mc().player, hammer);
 		if(overlayText==null)
 			return false;
 		BlockOverlayUtils.drawBlockOverlayText(graphics, overlayText, scaledWidth, scaledHeight);

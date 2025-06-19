@@ -10,8 +10,10 @@ package blusunrize.immersiveengineering.common.blocks.multiblocks.logic.interfac
 
 import blusunrize.immersiveengineering.api.multiblocks.blocks.logic.IMultiblockLogic;
 import blusunrize.immersiveengineering.api.multiblocks.blocks.logic.IMultiblockState;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.BlockHitResult;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -19,5 +21,5 @@ import java.util.List;
 public interface MBOverlayText<State extends IMultiblockState> extends IMultiblockLogic<State>
 {
 	@Nullable
-	List<Component> getOverlayText(State state, Player player, boolean hammer);
+	List<Component> getOverlayText(State state, BlockPos posInMultiblock, BlockHitResult absoluteHit, Player player, boolean hammer);
 }

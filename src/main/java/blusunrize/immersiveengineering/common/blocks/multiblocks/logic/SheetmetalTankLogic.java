@@ -101,7 +101,7 @@ public class SheetmetalTankLogic implements IServerTickableComponent<State>, MBO
 
 	@Nullable
 	@Override
-	public List<Component> getOverlayText(State state, Player player, boolean hammer)
+	public List<Component> getOverlayText(State state, BlockPos posInMultiblock, BlockHitResult absoluteHit, Player player, boolean hammer)
 	{
 		if(Utils.isFluidRelatedItemStack(player.getItemInHand(InteractionHand.MAIN_HAND)))
 			return List.of(TextUtils.formatFluidStack(state.tank.getFluid()));
