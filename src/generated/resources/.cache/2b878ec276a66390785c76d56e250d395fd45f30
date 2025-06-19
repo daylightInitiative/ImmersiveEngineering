@@ -1,4 +1,4 @@
-// 1.21.1	2025-05-04T12:59:34.5126513	Dynamic models
+// 1.21.1	2025-06-19T15:08:13.7134197	Dynamic models
 795d331732ebfdd8d4570da015590f8ef990c951 assets/immersiveengineering/models/dynamic/advanced_blast_furnace.json
 86e862861b2deb9b5e69bc5aef963b07debfbece assets/immersiveengineering/models/dynamic/alloy_smelter.json
 5c8e897ab8dd0a9e6824b4cc18a2a9078d610c47 assets/immersiveengineering/models/dynamic/arc_furnace.json
@@ -35,6 +35,7 @@ a7682161fe4214ef530c8e487690a131f5646721 assets/immersiveengineering/models/dyna
 eccb2fc44a4cc4ae36bcf28af82c2cba4716f68b assets/immersiveengineering/models/dynamic/sawblade_entity.json
 ac003d5225dbfb710b8e029b51786cd3bedd98e8 assets/immersiveengineering/models/dynamic/sawmill.json
 ed9fc7602d2518a3bfeaec21774ffd8c7bc3b18c assets/immersiveengineering/models/dynamic/sawmill_blade.json
+b84ba425b362f56fa93ed923cd3d8486cd4646d6 assets/immersiveengineering/models/dynamic/shelf.json
 2db988bc70f2cca19cdfbd67c6b0c753ff2d2e3e assets/immersiveengineering/models/dynamic/silo.json
 407202c0816a72f981292443a0c00c03a4f2553c assets/immersiveengineering/models/dynamic/squeezer.json
 76464c66483f83e99ec5413882da1d9ec56bda0e assets/immersiveengineering/models/dynamic/squeezer_piston.json

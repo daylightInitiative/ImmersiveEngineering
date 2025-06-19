@@ -154,6 +154,8 @@ public class ItemModels extends TRSRItemModelProvider
 				.transforms(rl("item/tank"));
 		obj(IEMultiblockLogic.SILO.blockItem().get(), rl("block/metal_multiblock/silo.obj"))
 				.transforms(rl("item/silo"));
+		obj(IEMultiblockLogic.SHELF.blockItem().get(), rl("block/metal_multiblock/shelf.obj.ie"))
+				.transforms(rl("item/shelf"));
 		obj(IEMultiblockLogic.ASSEMBLER.blockItem().get(), rl("block/metal_multiblock/assembler.obj"))
 				.transforms(rl("item/multiblock"));
 		obj(IEMultiblockLogic.AUTO_WORKBENCH.blockItem().get(), rl("block/metal_multiblock/auto_workbench.obj"))

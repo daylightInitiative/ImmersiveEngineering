@@ -421,7 +421,8 @@ public class IEBlockTags extends BlockTagsProvider
 				IEMultiblocks.AUTO_WORKBENCH.getBlock(), IEMultiblocks.BOTTLING_MACHINE.getBlock(), IEMultiblocks.BUCKET_WHEEL.getBlock(),
 				IEMultiblocks.DIESEL_GENERATOR.getBlock(), IEMultiblocks.EXCAVATOR.getBlock(), IEMultiblocks.FERMENTER.getBlock(), IEMultiblocks.LIGHTNING_ROD.getBlock(),
 				IEMultiblocks.METAL_PRESS.getBlock(), IEMultiblocks.MIXER.getBlock(), IEMultiblocks.REFINERY.getBlock(), IEMultiblocks.SHEETMETAL_TANK.getBlock(),
-				IEMultiblocks.SILO.getBlock(), IEMultiblocks.SQUEEZER.getBlock(), IEMultiblocks.RADIO_TOWER.getBlock(), IEMultiblocks.CHUNK_LOADER.getBlock());
+				IEMultiblocks.SILO.getBlock(), IEMultiblocks.SHELF.getBlock(), IEMultiblocks.SQUEEZER.getBlock(), IEMultiblocks.RADIO_TOWER.getBlock(),
+				IEMultiblocks.CHUNK_LOADER.getBlock());
 	}
 
 	private void registerAxeMineable()
@@ -517,6 +518,7 @@ public class IEBlockTags extends BlockTagsProvider
 				IEMultiblockLogic.SAWMILL,
 				IEMultiblockLogic.TANK,
 				IEMultiblockLogic.SILO,
+				IEMultiblockLogic.SHELF,
 				IEMultiblockLogic.ASSEMBLER,
 				IEMultiblockLogic.AUTO_WORKBENCH,
 				IEMultiblockLogic.BOTTLING_MACHINE,

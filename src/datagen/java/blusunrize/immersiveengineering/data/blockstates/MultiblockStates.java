@@ -10,10 +10,7 @@ package blusunrize.immersiveengineering.data.blockstates;
 
 import blusunrize.immersiveengineering.api.IEProperties;
 import blusunrize.immersiveengineering.api.multiblocks.TemplateMultiblock;
-import blusunrize.immersiveengineering.client.models.obj.callback.block.BottlingMachineCallbacks;
-import blusunrize.immersiveengineering.client.models.obj.callback.block.ChunkLoaderCallbacks;
-import blusunrize.immersiveengineering.client.models.obj.callback.block.ClocheCallbacks;
-import blusunrize.immersiveengineering.client.models.obj.callback.block.WorkbenchCallbacks;
+import blusunrize.immersiveengineering.client.models.obj.callback.block.*;
 import blusunrize.immersiveengineering.common.blocks.multiblocks.IEMultiblocks;
 import blusunrize.immersiveengineering.common.blocks.multiblocks.IETemplateMultiblock;
 import blusunrize.immersiveengineering.common.blocks.wooden.ModWorkbenchBlockEntity;
@@ -162,8 +159,12 @@ public class MultiblockStates extends ExtendedBlockstateProvider
 		createMultiblock(innerObj("block/metal_multiblock/arc_furnace.obj"), IEMultiblocks.ARC_FURNACE);
 
 		createMultiblock(innerObj("block/blastfurnace_advanced.obj"), IEMultiblocks.ADVANCED_BLAST_FURNACE);
-		createMultiblock(innerObj("block/metal_multiblock/silo.obj"), IEMultiblocks.SILO);
 		createMultiblock(innerObj("block/metal_multiblock/tank.obj", cutoutMipped()), IEMultiblocks.SHEETMETAL_TANK);
+		createMultiblock(innerObj("block/metal_multiblock/silo.obj"), IEMultiblocks.SILO);
+		createDynamicMultiblock(
+				ieObjBuilder("block/metal_multiblock/shelf.obj.ie", innerModels).callback(ShelfCallbacks.INSTANCE).end(),
+				IEMultiblocks.SHELF
+		);
 		createDynamicMultiblock(
 				ieObjBuilder("block/metal_multiblock/bottling_machine.obj.ie", innerModels)
 						.callback(BottlingMachineCallbacks.INSTANCE)

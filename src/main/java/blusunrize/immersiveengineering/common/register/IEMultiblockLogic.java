@@ -117,6 +117,11 @@ public class IEMultiblockLogic
 			.notMirrored()
 			.build();
 
+	public static final MultiblockRegistration<ShelfLogic.State> SHELF = metal(new ShelfLogic(), "shelf")
+			.structure(() -> IEMultiblocks.SHELF)
+			.notMirrored()
+			.build();
+
 	public static final MultiblockRegistration<SheetmetalTankLogic.State> TANK = metal(new SheetmetalTankLogic(), "tank")
 			.structure(() -> IEMultiblocks.SHEETMETAL_TANK)
 			.redstone(s -> s.rsState, SheetmetalTankLogic.IO_POS)

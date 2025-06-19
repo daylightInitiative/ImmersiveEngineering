@@ -54,6 +54,7 @@ public class IEMultiblocks
 	public static IETemplateMultiblock REFINERY;
 	public static IETemplateMultiblock SHEETMETAL_TANK;
 	public static IETemplateMultiblock SILO;
+	public static IETemplateMultiblock SHELF;
 	public static IETemplateMultiblock SQUEEZER;
 	public static IETemplateMultiblock RADIO_TOWER;
 	public static IETemplateMultiblock CHUNK_LOADER;
@@ -140,6 +141,7 @@ public class IEMultiblocks
 		REFINERY = register(new RefineryMultiblock());
 		SHEETMETAL_TANK = register(new SheetmetalTankMultiblock());
 		SILO = register(new SiloMultiblock());
+		SHELF = register(new ShelfMultiblock());
 		SQUEEZER = register(new SqueezerMultiblock());
 		EXCAVATOR_DEMO = register(new UnionMultiblock(IEApi.ieLoc("excavator_demo"),
 				ImmutableList.of(

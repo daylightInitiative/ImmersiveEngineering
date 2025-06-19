@@ -166,6 +166,7 @@ public class BlockLoot implements LootTableSubProvider
 		registerMultiblock(IEMultiblockLogic.SAWMILL);
 		registerMultiblock(IEMultiblockLogic.TANK);
 		registerMultiblock(IEMultiblockLogic.SILO);
+		registerMultiblock(IEMultiblockLogic.SHELF);
 		registerMultiblock(IEMultiblockLogic.ASSEMBLER);
 		registerMultiblock(IEMultiblockLogic.AUTO_WORKBENCH);
 		registerMultiblock(IEMultiblockLogic.BOTTLING_MACHINE);
