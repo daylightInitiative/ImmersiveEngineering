@@ -17,6 +17,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.capabilities.BlockCapabilityCache;
 import org.jetbrains.annotations.Nullable;
@@ -60,6 +61,19 @@ public record InitialMultiblockContext<State extends IMultiblockState>(
 	public Runnable getSyncRunnable()
 	{
 		return () -> MultiblockContext.requestBESync(masterBE);
+	}
+
+	@Override
+	public Runnable getBlockUpdateRunnable()
+	{
+		return () ->{
+			Level level = masterBE.getLevel();
+			if(level==null)
+				return;
+			BlockState state = masterBE.getBlockState();
+			level.sendBlockUpdated(masterBE.getBlockPos(), state, state, 3);
+			level.updateNeighborsAt(masterBE.getBlockPos(), state.getBlock());
+		};
 	}
 
 	public static <T, C> Supplier<@Nullable T> getCapabilityAt(

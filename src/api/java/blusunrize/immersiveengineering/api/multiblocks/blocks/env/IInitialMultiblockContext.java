@@ -23,4 +23,6 @@ public interface IInitialMultiblockContext<State extends IMultiblockState> exten
 	Runnable getMarkDirtyRunnable();
 
 	Runnable getSyncRunnable();
+
+	Runnable getBlockUpdateRunnable();
 }
