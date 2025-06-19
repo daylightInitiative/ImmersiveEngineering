@@ -1,4 +1,4 @@
-// 1.21.1	2025-06-15T17:18:32.3137546	Recipes
+// 1.21.1	2025-06-19T10:09:22.0334857	Recipes
 e46a17053b96b7062a3dbf804ed3e25c134fc397 data/immersiveengineering/advancement/recipes/misc/crafting/alloybrick.json
 6a92fb93f1478200a7237b19770f94285cc3d955 data/immersiveengineering/advancement/recipes/misc/crafting/alloybrick_from_slab.json
 bba88ea9b8e42c09c4e5df2344ccef6ad7ed4b8d data/immersiveengineering/advancement/recipes/misc/crafting/alloybrick_to_slab.json
@@ -932,7 +932,7 @@ f6d31355fd712503bd42f5c858fdbcafe77be02b data/immersiveengineering/recipe/crafti
 aff3cd6b5e919df36cb309f2e48a4b1e23d990a9 data/immersiveengineering/recipe/crafting/blastfurnace_preheater.json
 425c2e9887f0805c1f3f7183d48d4abd23e90a8a data/immersiveengineering/recipe/crafting/blueprint_bannerpatterns.json
 bdb8a51980458eba042754b1cd3cf5fb99c13ef9 data/immersiveengineering/recipe/crafting/blueprint_bullets.json
-b417b7ac8ba8e8cb3e938d3492a8c2fbaa95a74b data/immersiveengineering/recipe/crafting/blueprint_components.json
+9b9b883f11ca940f2c0c373fa1a8436b031630d0 data/immersiveengineering/recipe/crafting/blueprint_components.json
 be095b069df07c4302bad98498f444a0558a620e data/immersiveengineering/recipe/crafting/blueprint_molds.json
 d3e2e8485a2730e48d5e1ae4cd5494cfb6ea9507 data/immersiveengineering/recipe/crafting/blueprint_shelf.json
 f1d22e6ef1a8287de5050649b85edfc27167b27a data/immersiveengineering/recipe/crafting/blueprint_warning_sign.json

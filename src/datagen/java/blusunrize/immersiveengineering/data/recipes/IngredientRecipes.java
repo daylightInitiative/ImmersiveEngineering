@@ -434,7 +434,7 @@ public class IngredientRecipes extends IERecipeProvider
 				.pattern("ppp")
 				.define('j', IETags.getTagsFor(EnumMetals.COPPER).ingot)
 				.define('l', IETags.getTagsFor(EnumMetals.IRON).ingot)
-				.define('k', IETags.getTagsFor(EnumMetals.ALUMINUM).ingot)
+				.define('k', IETags.getTagsFor(EnumMetals.LEAD).ingot)
 				.define('d', Tags.Items.DYES_BLUE)
 				.define('p', IETags.paper)
 				.unlockedBy("has_paper", has(IETags.paper))
