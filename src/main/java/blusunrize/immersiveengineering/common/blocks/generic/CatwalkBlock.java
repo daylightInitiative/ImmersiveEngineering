@@ -23,11 +23,13 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.PipeBlock;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -81,7 +83,7 @@ public class CatwalkBlock extends IEBaseBlock implements IColouredBlock
 	@Override
 	@SuppressWarnings("deprecation")
 	public ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand,
-								 BlockHitResult hit)
+										   BlockHitResult hit)
 	{
 		if(this.isDyeable&&Utils.isDye(stack))
 		{
@@ -157,6 +159,20 @@ public class CatwalkBlock extends IEBaseBlock implements IColouredBlock
 	public VoxelShape getCollisionShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context)
 	{
 		return SHAPES.get(new RailingsKey(state, true));
+	}
+
+	@Override
+	public BlockState rotate(BlockState state, Rotation rot)
+	{
+		boolean north = state.getValue(PipeBlock.NORTH);
+		boolean east = state.getValue(PipeBlock.EAST);
+		boolean south = state.getValue(PipeBlock.SOUTH);
+		boolean west = state.getValue(PipeBlock.WEST);
+		return state
+				.setValue(RAILING_PROPERTIES.get(rot.rotate(Direction.NORTH)), north)
+				.setValue(RAILING_PROPERTIES.get(rot.rotate(Direction.EAST)), east)
+				.setValue(RAILING_PROPERTIES.get(rot.rotate(Direction.SOUTH)), south)
+				.setValue(RAILING_PROPERTIES.get(rot.rotate(Direction.WEST)), west);
 	}
 
 	private record RailingsKey(boolean north, boolean east, boolean south, boolean west, boolean collision)
