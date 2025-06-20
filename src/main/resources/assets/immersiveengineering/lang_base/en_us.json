@@ -397,6 +397,7 @@
   "gui.immersiveengineering.config.radio_tower.load": "Shift + click to load",
   "gui.immersiveengineering.config.radio_tower.range": "Range",
   "gui.immersiveengineering.config.radio_tower.range_m": "%1$s m",
+  "gui.immersiveengineering.config.shelf.swap": "Swap to other side",
   "gui.immersiveengineering.toast.eureka": "EUREKA!!",
   "gui.immersiveengineering.toast.manual_unlocked": "Manual Entry Unlocked!",
   "chat.immersiveengineering.warning.wrongCable": "You cannot attach this wire here",

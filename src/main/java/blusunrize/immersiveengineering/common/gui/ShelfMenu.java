@@ -21,6 +21,8 @@ import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
@@ -40,6 +42,7 @@ public class ShelfMenu extends IEContainerMenu
 
 	private final Inventory inventoryPlayer;
 	public final GetterAndSetter<List<ItemStack>> crates;
+	public final GetterAndSetter<Boolean> backside;
 
 	public static ShelfMenu makeServer(
 			MenuType<?> type, int id, Inventory invPlayer, MultiblockMenuContext<ShelfLogic.State> ctx
@@ -47,9 +50,11 @@ public class ShelfMenu extends IEContainerMenu
 	{
 		final ShelfLogic.State state = ctx.mbContext().getState();
 		BlockPos pos = ctx.mbContext().getLevel().toRelative(ctx.clickedPos());
+		final GetterAndSetter<Boolean> backside = GetterAndSetter.standalone(false);
 		return new ShelfMenu(
 				multiblockCtx(type, id, ctx), invPlayer,
-				GetterAndSetter.getterOnly(() -> state.getCrates(pos))
+				GetterAndSetter.getterOnly(() -> state.getCrates(pos, backside.get())),
+				backside
 		);
 	}
 
@@ -58,25 +63,37 @@ public class ShelfMenu extends IEContainerMenu
 		return new ShelfMenu(
 				clientCtx(type, id),
 				invPlayer,
-				GetterAndSetter.standalone(List.of())
+				GetterAndSetter.standalone(List.of()),
+				GetterAndSetter.standalone(false)
 		);
 	}
 
 	public ShelfMenu(
-			MenuContext ctx, Inventory inventoryPlayer, GetterAndSetter<List<ItemStack>> crates
+			MenuContext ctx, Inventory inventoryPlayer, GetterAndSetter<List<ItemStack>> crates, GetterAndSetter<Boolean> backside
 	)
 	{
 		super(ctx);
 		this.inventoryPlayer = inventoryPlayer;
 		this.crates = crates;
+		this.backside = backside;
 		this.rebindSlots();
 		addGenericData(new GenericContainerData<>(GenericDataSerializers.ITEM_STACKS, crates));
+		addGenericData(new GenericContainerData<>(GenericDataSerializers.BOOLEAN, backside));
 	}
 
 	@Override
 	public void receiveSync(List<Pair<Integer, DataPair<?>>> synced)
 	{
 		super.receiveSync(synced);
+		this.rebindSlots();
+	}
+
+	@Override
+	public void receiveMessageFromScreen(CompoundTag nbt)
+	{
+		super.receiveMessageFromScreen(nbt);
+		if(nbt.contains("backside", Tag.TAG_BYTE))
+			backside.set(nbt.getBoolean("backside"));
 		this.rebindSlots();
 	}
 

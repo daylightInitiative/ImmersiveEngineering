@@ -1512,6 +1512,7 @@
   "gui.immersiveengineering.config.redstone_color_set": "Setting Signal Color:",
   "gui.immersiveengineering.config.redstone_iomode": "Redstone IO Mode:",
   "gui.immersiveengineering.config.redstone_require_control_signal": "Require control signal",
+  "gui.immersiveengineering.config.shelf.swap": "Swap to other side",
   "gui.immersiveengineering.config.siren.sound.buzzer": "Buzzer",
   "gui.immersiveengineering.config.siren.sound.klaxon": "Klaxon",
   "gui.immersiveengineering.config.siren.sound.siren": "Siren",
