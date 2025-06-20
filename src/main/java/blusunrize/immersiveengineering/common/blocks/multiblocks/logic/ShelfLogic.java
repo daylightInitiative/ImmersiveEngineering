@@ -8,16 +8,18 @@
 
 package blusunrize.immersiveengineering.common.blocks.multiblocks.logic;
 
+import blusunrize.immersiveengineering.api.IEApi;
 import blusunrize.immersiveengineering.api.multiblocks.blocks.env.IInitialMultiblockContext;
 import blusunrize.immersiveengineering.api.multiblocks.blocks.env.IMultiblockContext;
 import blusunrize.immersiveengineering.api.multiblocks.blocks.logic.IMultiblockLogic;
 import blusunrize.immersiveengineering.api.multiblocks.blocks.logic.IMultiblockState;
 import blusunrize.immersiveengineering.api.multiblocks.blocks.util.ShapeType;
-import blusunrize.immersiveengineering.common.blocks.CrateItem;
 import blusunrize.immersiveengineering.common.blocks.multiblocks.logic.ShelfLogic.State;
 import blusunrize.immersiveengineering.common.blocks.multiblocks.logic.interfaces.MBOverlayText;
 import blusunrize.immersiveengineering.common.blocks.multiblocks.shapes.ShelfShapes;
+import blusunrize.immersiveengineering.common.register.IEBlocks.WoodenDevices;
 import blusunrize.immersiveengineering.common.register.IEMenuTypes;
+import com.google.common.base.Suppliers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.core.NonNullList;
@@ -34,16 +36,25 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.common.Tags;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class ShelfLogic implements IMultiblockLogic<State>, MBOverlayText<State>
 {
 	public static int NUM_CRATES = 24;
+
+	public static final Supplier<Map<Item, ResourceLocation>> CRATE_VARIANTS = Suppliers.memoize(() -> {
+		Map<Item, ResourceLocation> map = new HashMap<>();
+		map.put(WoodenDevices.CRATE.asItem(), IEApi.ieLoc("block/multiblocks/shelf_crate"));
+		map.put(WoodenDevices.REINFORCED_CRATE.asItem(), IEApi.ieLoc("block/multiblocks/shelf_crate_reinforced"));
+		return map;
+	});
 
 	@Override
 	public State createInitialState(IInitialMultiblockContext<State> capabilitySource)
@@ -72,6 +83,7 @@ public class ShelfLogic implements IMultiblockLogic<State>, MBOverlayText<State>
 		{
 			int crateIndex = (posInMultiblock.getY()-1)*8+posInMultiblock.getX()*2+posInMultiblock.getZ();
 			final ItemStack heldItem = player.getItemInHand(hand);
+			boolean isHoldingCrate = CRATE_VARIANTS.get().containsKey(heldItem.getItem());
 			final State state = ctx.getState();
 			final ItemStack storedCrate = state.crates.get(crateIndex);
 
@@ -83,7 +95,7 @@ public class ShelfLogic implements IMultiblockLogic<State>, MBOverlayText<State>
 				ctx.markMasterDirty();
 				ctx.requestMasterBESync();
 			}
-			else if(heldItem.getItem() instanceof CrateItem&&storedCrate.isEmpty())
+			else if(isHoldingCrate&&storedCrate.isEmpty())
 			{
 				// Place crate on shelf
 				state.crates.set(crateIndex, heldItem);
@@ -119,7 +131,7 @@ public class ShelfLogic implements IMultiblockLogic<State>, MBOverlayText<State>
 	{
 		public final NonNullList<ItemStack> crates = NonNullList.withSize(NUM_CRATES, ItemStack.EMPTY);
 
-		public Item[] renderCrates = new Item[NUM_CRATES];
+		public ResourceLocation[] renderCrates = new ResourceLocation[NUM_CRATES];
 		public Component[] names = new Component[NUM_CRATES];
 		private final Runnable doUpdate;
 
@@ -169,7 +181,8 @@ public class ShelfLogic implements IMultiblockLogic<State>, MBOverlayText<State>
 			for(int i = 0; i < NUM_CRATES; i++)
 			{
 				CompoundTag tag = names.getCompound(i);
-				this.renderCrates[i] = BuiltInRegistries.ITEM.get(ResourceLocation.parse(tag.getString("id")));
+				Item item = BuiltInRegistries.ITEM.get(ResourceLocation.parse(tag.getString("id")));
+				this.renderCrates[i] = CRATE_VARIANTS.get().get(item);
 				this.names[i] = Component.Serializer.fromJson(tag.getString("name"), provider);
 			}
 			this.doUpdate.run();
