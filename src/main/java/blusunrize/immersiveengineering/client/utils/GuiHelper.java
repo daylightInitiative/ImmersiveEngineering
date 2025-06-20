@@ -10,9 +10,11 @@ package blusunrize.immersiveengineering.client.utils;
 
 import blusunrize.immersiveengineering.common.util.Utils;
 import com.mojang.blaze3d.platform.Lighting;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.*;
+import com.mojang.blaze3d.vertex.VertexFormat.Mode;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -20,6 +22,7 @@ import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
@@ -43,6 +46,22 @@ public class GuiHelper
 		bufferbuilder.addVertex(mat, x+w, y, 0).setColor(color.x, color.y, color.z, 1);
 		bufferbuilder.addVertex(mat, x, y, 0).setColor(color.x, color.y, color.z, 1);
 	}
+
+	public static void colouredBlit(GuiGraphics graphics, ResourceLocation atlasLocation, int x, int y, int blitOffset, int width, int height, int u, int v, float red, float green, float blue, float alpha)
+	{
+		RenderSystem.setShaderTexture(0, atlasLocation);
+		RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
+		RenderSystem.enableBlend();
+		Matrix4f matrix4f = graphics.pose().last().pose();
+		BufferBuilder bufferbuilder = Tesselator.getInstance().begin(Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
+		bufferbuilder.addVertex(matrix4f, x, y, blitOffset).setUv(u/256f, v/256f).setColor(red, green, blue, alpha);
+		bufferbuilder.addVertex(matrix4f, x, y+height, blitOffset).setUv(u/256f, (v+height)/256f).setColor(red, green, blue, alpha);
+		bufferbuilder.addVertex(matrix4f, x+width, y+height, blitOffset).setUv((u+width)/256f, (v+height)/256f).setColor(red, green, blue, alpha);
+		bufferbuilder.addVertex(matrix4f, x+width, y, blitOffset).setUv((u+width)/256f, v/256f).setColor(red, green, blue, alpha);
+		BufferUploader.drawWithShader(bufferbuilder.buildOrThrow());
+		RenderSystem.disableBlend();
+	}
+
 
 	public static void drawTexturedColoredRect(
 			VertexConsumer builder, PoseStack transform,
@@ -177,7 +196,7 @@ public class GuiHelper
 			int width = stack.getItem().getBarWidth(stack);
 			int color = stack.getItem().getBarColor(stack);
 			draw(transform, buffer, 2, 13, 13, 2, 0, 0, 0);
-			draw(transform, buffer, 2, 13, width, 1, (color >> 16)&255, (color >> 8)&255, color&255);
+			draw(transform, buffer, 2, 13, width, 1, (color>>16)&255, (color>>8)&255, color&255);
 		}
 	}
 

@@ -9,14 +9,20 @@
 package blusunrize.immersiveengineering.client.gui;
 
 import blusunrize.immersiveengineering.api.Lib;
+import blusunrize.immersiveengineering.api.utils.Color4;
+import blusunrize.immersiveengineering.client.utils.GuiHelper;
+import blusunrize.immersiveengineering.common.blocks.multiblocks.logic.ShelfLogic;
+import blusunrize.immersiveengineering.common.blocks.multiblocks.logic.ShelfLogic.CrateVariant;
 import blusunrize.immersiveengineering.common.gui.ShelfMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
+import java.util.Map;
 
 import static blusunrize.immersiveengineering.common.gui.ShelfMenu.*;
 
@@ -62,11 +68,26 @@ public class ShelfScreen extends IEContainerScreen<ShelfMenu>
 	{
 		// Crates
 		List<ItemStack> crates = this.menu.crates.get();
+		Map<Item, CrateVariant> variants = ShelfLogic.CRATE_VARIANTS.get();
 		for(int i = 0; i < crates.size(); i++)
 		{
+			CrateVariant variant = variants.get(crates.get(i).getItem());
 			int x = i%2*COLUMN_WIDTH;
 			int y = i/2*CRATE_SEGMENT;
-			graphics.blit(background, leftPos+x, topPos+y, 0, INV_SEGMENT, COLUMN_WIDTH, CRATE_SEGMENT);
+			if(variant.color()!=-1)
+			{
+				Color4 color = Color4.fromRGB(variant.color());
+				GuiHelper.colouredBlit(
+						graphics, background, leftPos+x, topPos+y, 0,
+						COLUMN_WIDTH, CRATE_SEGMENT, 0, INV_SEGMENT+variant.screenVOffset(),
+						color.r(), color.g(), color.b(), color.a()
+				);
+			}
+			else
+				graphics.blit(
+						background, leftPos+x, topPos+y,
+						0, INV_SEGMENT+variant.screenVOffset(), COLUMN_WIDTH, CRATE_SEGMENT
+				);
 		}
 		// Player Inventory
 		graphics.blit(background, leftPos+playerInvX, topPos+playerInvY, 0, 0, COLUMN_WIDTH, INV_SEGMENT);
@@ -83,13 +104,13 @@ public class ShelfScreen extends IEContainerScreen<ShelfMenu>
 			graphics.drawString(
 					this.font, crates.get(i).getHoverName(),
 					x+titleLabelX, y+titleLabelY,
-					Lib.COLOUR_I_ImmersiveOrange, true
+					Lib.COLOUR_I_ImmersiveOrange, false
 			);
 		}
 		graphics.drawString(
 				this.font, playerInventoryTitle,
 				playerInvX+inventoryLabelX, inventoryLabelY,
-				Lib.COLOUR_I_ImmersiveOrange, true
+				Lib.COLOUR_I_ImmersiveOrange, false
 		);
 	}
 }
