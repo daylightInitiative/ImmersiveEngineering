@@ -25,6 +25,7 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.client.model.data.ModelData;
@@ -65,7 +66,7 @@ public class BlueprintRenderer
 			BakedModel ibakedmodel = ClientUtils.mc().getItemRenderer().getModel(stack, world, player, 0);
 			Set<ResourceLocation> textures = new HashSet<>();
 			Collection<BakedQuad> quads = ibakedmodel.getQuads(null, null, world.random, ModelData.EMPTY, null);
-			final Function<ResourceLocation, TextureAtlasSprite> blockAtlas = ClientUtils.mc().getTextureAtlas(TextureAtlas.LOCATION_BLOCKS);
+			final Function<ResourceLocation, TextureAtlasSprite> blockAtlas = ClientUtils.mc().getTextureAtlas(InventoryMenu.BLOCK_ATLAS);
 			for(BakedQuad quad : quads)
 			{
 				final ResourceLocation texture = quad.getSprite().contents().name();

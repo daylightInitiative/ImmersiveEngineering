@@ -17,20 +17,24 @@ import blusunrize.immersiveengineering.common.blocks.CrateItem;
 import blusunrize.immersiveengineering.common.blocks.multiblocks.logic.ShelfLogic.State;
 import blusunrize.immersiveengineering.common.blocks.multiblocks.logic.interfaces.MBOverlayText;
 import blusunrize.immersiveengineering.common.blocks.multiblocks.shapes.ShelfShapes;
+import blusunrize.immersiveengineering.common.register.IEMenuTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.StringTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.neoforged.neoforge.common.Tags;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -115,7 +119,7 @@ public class ShelfLogic implements IMultiblockLogic<State>, MBOverlayText<State>
 	{
 		public final NonNullList<ItemStack> crates = NonNullList.withSize(NUM_CRATES, ItemStack.EMPTY);
 
-		public int renderCrates = 0;
+		public Item[] renderCrates = new Item[NUM_CRATES];
 		public Component[] names = new Component[NUM_CRATES];
 		private final Runnable doUpdate;
 
@@ -144,25 +148,30 @@ public class ShelfLogic implements IMultiblockLogic<State>, MBOverlayText<State>
 		@Override
 		public void writeSyncNBT(CompoundTag nbt, Provider provider)
 		{
-			ListTag names = new ListTag();
+			ListTag crates = new ListTag();
 			int cratesAsInt = 0;
 			for(ItemStack stack : this.crates)
 			{
+				CompoundTag tag = new CompoundTag();
 				Component name = stack.isEmpty()?Component.empty(): stack.getHoverName();
-				names.add(StringTag.valueOf(Component.Serializer.toJson(name, provider)));
+				tag.putString("name", Component.Serializer.toJson(name, provider));
+				tag.putString("id", stack.getItemHolder().getKey().location().toString());
+				crates.add(tag);
 				cratesAsInt = (cratesAsInt<<1)|(stack.isEmpty()?0: 1);
 			}
-			nbt.put("names", names);
-			nbt.putInt("renderCrates", cratesAsInt);
+			nbt.put("crates", crates);
 		}
 
 		@Override
 		public void readSyncNBT(CompoundTag nbt, Provider provider)
 		{
-			ListTag names = nbt.getList("names", 8);
+			ListTag names = nbt.getList("crates", 10);
 			for(int i = 0; i < NUM_CRATES; i++)
-				this.names[i] = Component.Serializer.fromJson(names.getString(i), provider);
-			this.renderCrates = nbt.getInt("renderCrates");
+			{
+				CompoundTag tag = names.getCompound(i);
+				this.renderCrates[i] = BuiltInRegistries.ITEM.get(ResourceLocation.parse(tag.getString("id")));
+				this.names[i] = Component.Serializer.fromJson(tag.getString("name"), provider);
+			}
 			this.doUpdate.run();
 		}
 	}
