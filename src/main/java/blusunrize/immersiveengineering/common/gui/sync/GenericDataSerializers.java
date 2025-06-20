@@ -47,6 +47,9 @@ public class GenericDataSerializers
 	public static final DataSerializer<ItemStack> ITEM_STACK = register(
 			ItemStack.OPTIONAL_STREAM_CODEC, ItemStack::copy, ItemStack::matches
 	);
+	public static final DataSerializer<List<ItemStack>> ITEM_STACKS = register(
+			ItemStack.OPTIONAL_STREAM_CODEC.apply(ByteBufCodecs.list())
+	);
 	public static final DataSerializer<byte[]> BYTE_ARRAY = register(
 			ByteBufCodecs.BYTE_ARRAY, arr -> Arrays.copyOf(arr, arr.length), Arrays::equals
 	);

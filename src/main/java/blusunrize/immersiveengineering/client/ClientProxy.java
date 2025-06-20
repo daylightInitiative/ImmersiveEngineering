@@ -433,6 +433,7 @@ public class ClientProxy extends CommonProxy
 		ev.register(IEMenuTypes.SORTER.getType(), SorterScreen::new);
 		ev.register(IEMenuTypes.ITEM_BATCHER.getType(), ItemBatcherScreen::new);
 		ev.register(IEMenuTypes.LOGIC_UNIT.getType(), LogicUnitScreen::new);
+		ev.register(IEMenuTypes.SHELF.getType(), ShelfScreen::new);
 		ev.register(IEMenuTypes.SQUEEZER.getType(), SqueezerScreen::new);
 		ev.register(IEMenuTypes.FERMENTER.getType(), FermenterScreen::new);
 		ev.register(IEMenuTypes.REFINERY.getType(), RefineryScreen::new);

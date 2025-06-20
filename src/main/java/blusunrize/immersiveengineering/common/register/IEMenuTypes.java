@@ -83,6 +83,9 @@ public class IEMenuTypes
 	public static final ArgContainer<LogicUnitBlockEntity, LogicUnitMenu> LOGIC_UNIT = registerArg(
 			Lib.GUIID_LogicUnit, LogicUnitMenu::makeServer, LogicUnitMenu::makeClient
 	);
+	public static final MultiblockContainer<ShelfLogic.State, ShelfMenu> SHELF = registerMultiblock(
+			Lib.GUIID_Shelf, ShelfMenu::makeServer, ShelfMenu::makeClient
+	);
 	public static final MultiblockContainer<SqueezerLogic.State, SqueezerMenu> SQUEEZER = registerMultiblock(
 			Lib.GUIID_Squeezer, SqueezerMenu::makeServer, SqueezerMenu::makeClient
 	);

@@ -87,6 +87,8 @@ public class ShelfLogic implements IMultiblockLogic<State>, MBOverlayText<State>
 				ctx.markMasterDirty();
 				ctx.requestMasterBESync();
 			}
+			else
+				player.openMenu(IEMenuTypes.SHELF.provide(ctx, posInMultiblock));
 		}
 		return ItemInteractionResult.sidedSuccess(isClient);
 	}
@@ -120,6 +122,11 @@ public class ShelfLogic implements IMultiblockLogic<State>, MBOverlayText<State>
 		public State(IInitialMultiblockContext<State> ctx)
 		{
 			doUpdate = ctx.getBlockUpdateRunnable();
+		}
+
+		public List<ItemStack> getCrates(int level)
+		{
+			return crates.subList(level*8, (level+1)*8).stream().filter(s -> !s.isEmpty()).toList();
 		}
 
 		@Override
