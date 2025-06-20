@@ -44,6 +44,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 public class ShelfLogic implements IMultiblockLogic<State>, MBOverlayText<State>
 {
@@ -140,9 +141,15 @@ public class ShelfLogic implements IMultiblockLogic<State>, MBOverlayText<State>
 			doUpdate = ctx.getBlockUpdateRunnable();
 		}
 
-		public List<ItemStack> getCrates(int level)
+		public List<ItemStack> getCrates(BlockPos posInMultiblock)
 		{
-			return crates.subList(level*8, (level+1)*8).stream().filter(s -> !s.isEmpty()).toList();
+			int startIdx = (posInMultiblock.getY()-1)*8+posInMultiblock.getZ();
+			return Stream.of(
+					crates.get(startIdx),
+					crates.get(startIdx+2),
+					crates.get(startIdx+4),
+					crates.get(startIdx+6)
+			).filter(s -> !s.isEmpty()).toList();
 		}
 
 		@Override

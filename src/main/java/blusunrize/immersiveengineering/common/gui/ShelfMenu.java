@@ -33,7 +33,10 @@ import java.util.List;
 
 public class ShelfMenu extends IEContainerMenu
 {
-	public static final int MAX_SLOTS = 8*WoodenCrateBlockEntity.CONTAINER_SIZE;
+	public static final int MAX_SLOTS = 4*WoodenCrateBlockEntity.CONTAINER_SIZE;
+	public static final int COLUMN_WIDTH = 176;
+	public static final int CRATE_SEGMENT = 69;
+	public static final int INV_SEGMENT = 94;
 
 	private final Inventory inventoryPlayer;
 	public final GetterAndSetter<List<ItemStack>> crates;
@@ -44,10 +47,9 @@ public class ShelfMenu extends IEContainerMenu
 	{
 		final ShelfLogic.State state = ctx.mbContext().getState();
 		BlockPos pos = ctx.mbContext().getLevel().toRelative(ctx.clickedPos());
-		int level = pos.getY()-1;
 		return new ShelfMenu(
 				multiblockCtx(type, id, ctx), invPlayer,
-				GetterAndSetter.getterOnly(() -> state.getCrates(level))
+				GetterAndSetter.getterOnly(() -> state.getCrates(pos))
 		);
 	}
 
@@ -103,10 +105,10 @@ public class ShelfMenu extends IEContainerMenu
 				}
 			};
 
-			int x = iCrate%2*176;
-			int y = iCrate/2*64;
+			int x = iCrate%2*COLUMN_WIDTH;
+			int y = iCrate/2*CRATE_SEGMENT;
 			for(int iSlot = 0; iSlot < crateInventory.getSlots(); iSlot++)
-				this.addSlot(new SlotItemHandler(crateInventory, iSlot, 8+x+(iSlot%9)*18, 18+y+(iSlot/9)*18)
+				this.addSlot(new SlotItemHandler(crateInventory, iSlot, 8+x+(iSlot%9)*18, 13+y+(iSlot/9)*18)
 				{
 					@Override
 					public boolean mayPlace(ItemStack stack)
@@ -124,15 +126,17 @@ public class ShelfMenu extends IEContainerMenu
 		for(; ownSlotCount < MAX_SLOTS; ++ownSlotCount)
 			addSlot(new IESlot.AlwaysEmptySlot(this));
 
-		int playerInvX = iCrate > 1?96: 8;
-		int playerInvY = (iCrate+1)/2*64+10+13;
-
+		// Bind player inventory
+		iCrate = Math.max(iCrate, 1);
+		int playerInvX = iCrate > 1?COLUMN_WIDTH/2: 0;
+		int playerInvY = (iCrate+1)/2*CRATE_SEGMENT;
 		for(int i = 0; i < 3; i++)
 			for(int j = 0; j < 9; j++)
-				addSlot(new Slot(inventoryPlayer, j+i*9+9, playerInvX+j*18, playerInvY+i*18));
+				addSlot(new Slot(inventoryPlayer, j+i*9+9, 8+playerInvX+j*18, 13+playerInvY+i*18));
 		for(int i = 0; i < 9; i++)
-			addSlot(new Slot(inventoryPlayer, i, playerInvX+i*18, playerInvY+58));
+			addSlot(new Slot(inventoryPlayer, i, 8+playerInvX+i*18, 71+playerInvY));
 
+		// Re-trigger init function on the screen, to allow calculating new height
 		ImmersiveEngineering.proxy.reInitGui();
 	}
 
