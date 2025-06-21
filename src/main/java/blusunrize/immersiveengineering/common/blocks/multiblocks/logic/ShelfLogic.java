@@ -102,10 +102,10 @@ public class ShelfLogic implements IMultiblockLogic<State>, MBOverlayText<State>
 			return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 		if(!isClient)
 		{
-			int crateIndex = (posInMultiblock.getY()-1)*8+posInMultiblock.getX()*2+posInMultiblock.getZ();
+			final State state = ctx.getState();
+			int crateIndex = state.getCrateIndex(posInMultiblock);
 			final ItemStack heldItem = player.getItemInHand(hand);
 			boolean isHoldingCrate = CRATE_VARIANTS.get().containsKey(heldItem.getItem());
-			final State state = ctx.getState();
 			final ItemStack storedCrate = state.crates.get(crateIndex);
 
 			if(player.isCrouching()&&heldItem.isEmpty()&&!storedCrate.isEmpty())
@@ -172,6 +172,11 @@ public class ShelfLogic implements IMultiblockLogic<State>, MBOverlayText<State>
 					crates.get(startIdx+4),
 					crates.get(startIdx+6)
 			).filter(s -> !s.isEmpty()).toList();
+		}
+
+		public int getCrateIndex(BlockPos posInMultiblock)
+		{
+			return (posInMultiblock.getY()-1)*8+posInMultiblock.getX()*2+posInMultiblock.getZ();
 		}
 
 		@Override
