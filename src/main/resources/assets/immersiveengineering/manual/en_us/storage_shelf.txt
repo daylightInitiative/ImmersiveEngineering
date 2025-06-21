@@ -1,0 +1,6 @@
+Storage Shelf
+Crative solutions
+<&multiblock>The storage shelf helps with organization in the workshop, allowing multiple <link;storage_crates;crates>, reinforced crates and even shulker boxes to be stored on it.<np>
+Crates are added to the shelf by right-clicking them onto empty spaces, and can be removed again by sneaking and right-clicking with an empty hand.<br>
+The contents of the blocks can be accessed through the shelf's interface, with each level of the shelf having a separate one.<br>
+Pressing the button in the bottom right of the interface switches between the crates on the close side and the far side of the shelf.

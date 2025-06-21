@@ -1,5 +1,9 @@
 ##### Version 1.21.1-12.4.0-pre
+- Add the Crate Storage Shelf (voidsong-dragonfly, BluSunrize)
+    - Allows storing and accessing multiple crates at the same time in one GUI
+    - Can also fit reinforced crates and shulker boxes!
 - Allow catwalks to be rotated with a hammer
+- Fix generated wall models for multi8 blocks not having randomized textures (voidsong-dragonfly)
 
 ##### Version 1.21.1-12.3.3-191
 - Add a silly Metal Gear Solid reference to wooden crates (BluSunrize)
