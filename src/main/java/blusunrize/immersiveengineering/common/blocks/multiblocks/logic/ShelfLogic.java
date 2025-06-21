@@ -161,11 +161,11 @@ public class ShelfLogic implements IMultiblockLogic<State>, MBOverlayText<State>
 			doUpdate = ctx.getBlockUpdateRunnable();
 		}
 
-		public List<ItemStack> getCrates(BlockPos posInMultiblock, boolean backside)
+		public List<ItemStack> getCratesForMenu(BlockPos posInMultiblock, boolean backside)
 		{
 			int startIdx = (posInMultiblock.getY()-1)*8+posInMultiblock.getZ();
 			if(backside)
-				startIdx += posInMultiblock.getZ()>0?-1:+1;
+				startIdx += posInMultiblock.getZ() > 0?-1: +1;
 			return Stream.of(
 					crates.get(startIdx),
 					crates.get(startIdx+2),

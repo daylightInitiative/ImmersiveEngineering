@@ -53,7 +53,7 @@ public class ShelfMenu extends IEContainerMenu
 		final GetterAndSetter<Boolean> backside = GetterAndSetter.standalone(false);
 		return new ShelfMenu(
 				multiblockCtx(type, id, ctx), invPlayer,
-				GetterAndSetter.getterOnly(() -> state.getCrates(pos, backside.get())),
+				GetterAndSetter.getterOnly(() -> state.getCratesForMenu(pos, backside.get())),
 				backside
 		);
 	}
