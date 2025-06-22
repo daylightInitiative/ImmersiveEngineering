@@ -49,23 +49,9 @@ public class ShelfScreen extends IEContainerScreen<ShelfMenu>
 	@Override
 	protected void init()
 	{
-		int crates = this.menu.crates.get().size();
-		int leftCount;
-		int rightCount = 0;
-		if(crates > 1)
-		{
-			leftCount = (crates+1)/2;
-			rightCount = crates/2;
-			this.playerInvX = COLUMN_WIDTH/2;
-			this.imageWidth = COLUMN_WIDTH*2;
-		}
-		else
-		{
-			leftCount = 1;
-			this.playerInvX = 0;
-			this.imageWidth = COLUMN_WIDTH+18;
-		}
-		this.playerInvY = Math.max(leftCount, rightCount)*CRATE_SEGMENT;
+		this.playerInvX = COLUMN_WIDTH/2;
+		this.imageWidth = COLUMN_WIDTH*2;
+		this.playerInvY = 2*CRATE_SEGMENT;
 		this.imageHeight = this.playerInvY+INV_SEGMENT;
 		super.init();
 
@@ -95,28 +81,29 @@ public class ShelfScreen extends IEContainerScreen<ShelfMenu>
 	protected void drawBackgroundTexture(GuiGraphics graphics)
 	{
 		// Crates
-		List<ItemStack> crates = this.menu.crates.get();
+		List<ItemStack> crates = this.menu.backside.get()?this.menu.cratesBack.get(): this.menu.cratesFront.get();
 		Map<Item, CrateVariant> variants = ShelfLogic.CRATE_VARIANTS.get();
 		for(int i = 0; i < crates.size(); i++)
-		{
-			CrateVariant variant = variants.get(crates.get(i).getItem());
-			int x = i%2*COLUMN_WIDTH;
-			int y = i/2*CRATE_SEGMENT;
-			if(variant.color()!=-1)
+			if(!crates.get(i).isEmpty())
 			{
-				Color4 color = Color4.fromRGB(variant.color());
-				GuiHelper.colouredBlit(
-						graphics, background, leftPos+x, topPos+y, 0,
-						COLUMN_WIDTH, CRATE_SEGMENT, 0, INV_SEGMENT+variant.screenVOffset(),
-						color.r(), color.g(), color.b(), color.a()
-				);
+				CrateVariant variant = variants.get(crates.get(i).getItem());
+				int x = i%2*COLUMN_WIDTH;
+				int y = i/2*CRATE_SEGMENT;
+				if(variant.color()!=-1)
+				{
+					Color4 color = Color4.fromRGB(variant.color());
+					GuiHelper.colouredBlit(
+							graphics, background, leftPos+x, topPos+y, 0,
+							COLUMN_WIDTH, CRATE_SEGMENT, 0, INV_SEGMENT+variant.screenVOffset(),
+							color.r(), color.g(), color.b(), color.a()
+					);
+				}
+				else
+					graphics.blit(
+							background, leftPos+x, topPos+y,
+							0, INV_SEGMENT+variant.screenVOffset(), COLUMN_WIDTH, CRATE_SEGMENT
+					);
 			}
-			else
-				graphics.blit(
-						background, leftPos+x, topPos+y,
-						0, INV_SEGMENT+variant.screenVOffset(), COLUMN_WIDTH, CRATE_SEGMENT
-				);
-		}
 		// Player Inventory
 		graphics.blit(background, leftPos+playerInvX, topPos+playerInvY, 0, 0, COLUMN_WIDTH, INV_SEGMENT);
 	}
@@ -124,17 +111,18 @@ public class ShelfScreen extends IEContainerScreen<ShelfMenu>
 	@Override
 	protected void renderLabels(GuiGraphics graphics, int mouseX, int mouseY)
 	{
-		List<ItemStack> crates = this.menu.crates.get();
+		List<ItemStack> crates = this.menu.backside.get()?this.menu.cratesBack.get(): this.menu.cratesFront.get();
 		for(int i = 0; i < crates.size(); i++)
-		{
-			int x = i%2*COLUMN_WIDTH;
-			int y = i/2*CRATE_SEGMENT;
-			graphics.drawString(
-					this.font, crates.get(i).getHoverName(),
-					x+titleLabelX, y+titleLabelY,
-					Lib.COLOUR_I_ImmersiveOrange, false
-			);
-		}
+			if(!crates.get(i).isEmpty())
+			{
+				int x = i%2*COLUMN_WIDTH;
+				int y = i/2*CRATE_SEGMENT;
+				graphics.drawString(
+						this.font, crates.get(i).getHoverName(),
+						x+titleLabelX, y+titleLabelY,
+						Lib.COLOUR_I_ImmersiveOrange, false
+				);
+			}
 		graphics.drawString(
 				this.font, playerInventoryTitle,
 				playerInvX+inventoryLabelX, inventoryLabelY,

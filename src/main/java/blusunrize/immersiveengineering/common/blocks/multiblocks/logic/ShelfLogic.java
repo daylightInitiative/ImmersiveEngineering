@@ -46,7 +46,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.capabilities.Capabilities.ItemHandler;
-import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -195,6 +195,16 @@ public class ShelfLogic implements IMultiblockLogic<State>, MBOverlayText<State>
 			);
 		}
 
+		public ShelfItemHandler getMenuItemHandler(BlockPos posInMultiblock)
+		{
+			final int idxFront = (posInMultiblock.getY()-1)*8+posInMultiblock.getZ();
+			final int idxBack = idxFront+(posInMultiblock.getZ() > 0?-1: +1);
+			return new ShelfItemHandler(() -> IntStream.of(
+					idxFront, idxFront+2, idxFront+4, idxFront+6,
+					idxBack, idxBack+2, idxBack+4, idxBack+6
+			).mapToObj(crates::get).toList());
+		}
+
 		public List<ItemStack> getCratesForMenu(BlockPos posInMultiblock, boolean backside)
 		{
 			int startIdx = (posInMultiblock.getY()-1)*8+posInMultiblock.getZ();
@@ -205,7 +215,7 @@ public class ShelfLogic implements IMultiblockLogic<State>, MBOverlayText<State>
 					crates.get(startIdx+2),
 					crates.get(startIdx+4),
 					crates.get(startIdx+6)
-			).filter(s -> !s.isEmpty()).toList();
+			).toList();
 		}
 
 		public int getCrateIndex(BlockPos posInMultiblock)
@@ -271,7 +281,7 @@ public class ShelfLogic implements IMultiblockLogic<State>, MBOverlayText<State>
 		}
 	}
 
-	public record ShelfItemHandler(Supplier<List<ItemStack>> crates) implements IItemHandler
+	public record ShelfItemHandler(Supplier<List<ItemStack>> crates) implements IItemHandlerModifiable
 	{
 		@Override
 		public int getSlots()
@@ -290,6 +300,22 @@ public class ShelfLogic implements IMultiblockLogic<State>, MBOverlayText<State>
 			if(contents==null||innerSlot >= contents.getSlots())
 				return ItemStack.EMPTY;
 			return contents.getStackInSlot(innerSlot);
+		}
+
+		@Override
+		public void setStackInSlot(int slot, ItemStack itemStack)
+		{
+			if(slot < 0||slot >= getSlots()||!isItemValid(slot, itemStack))
+				return;
+			int crateIndex = slot/WoodenCrateBlockEntity.CONTAINER_SIZE;
+			int innerSlot = slot%WoodenCrateBlockEntity.CONTAINER_SIZE;
+
+			final ItemContainerContents contents = crates.get().get(crateIndex).get(DataComponents.CONTAINER);
+			NonNullList<ItemStack> edited = NonNullList.withSize(WoodenCrateBlockEntity.CONTAINER_SIZE, ItemStack.EMPTY);
+			if(contents!=null)
+				contents.copyInto(edited);
+			edited.set(innerSlot, itemStack.copy());
+			crates.get().get(crateIndex).set(DataComponents.CONTAINER, ItemContainerContents.fromItems(edited));
 		}
 
 		@Override
