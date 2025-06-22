@@ -13,10 +13,13 @@ import blusunrize.immersiveengineering.api.multiblocks.blocks.env.IInitialMultib
 import blusunrize.immersiveengineering.api.multiblocks.blocks.env.IMultiblockContext;
 import blusunrize.immersiveengineering.api.multiblocks.blocks.logic.IMultiblockLogic;
 import blusunrize.immersiveengineering.api.multiblocks.blocks.logic.IMultiblockState;
+import blusunrize.immersiveengineering.api.multiblocks.blocks.util.CapabilityPosition;
+import blusunrize.immersiveengineering.api.multiblocks.blocks.util.RelativeBlockFace;
 import blusunrize.immersiveengineering.api.multiblocks.blocks.util.ShapeType;
 import blusunrize.immersiveengineering.common.blocks.multiblocks.logic.ShelfLogic.State;
 import blusunrize.immersiveengineering.common.blocks.multiblocks.logic.interfaces.MBOverlayText;
 import blusunrize.immersiveengineering.common.blocks.multiblocks.shapes.ShelfShapes;
+import blusunrize.immersiveengineering.common.blocks.wooden.WoodenCrateBlockEntity;
 import blusunrize.immersiveengineering.common.gui.ShelfMenu;
 import blusunrize.immersiveengineering.common.register.IEBlocks.WoodenDevices;
 import blusunrize.immersiveengineering.common.register.IEMenuTypes;
@@ -24,10 +27,12 @@ import com.google.common.base.Suppliers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Component.Serializer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.InteractionHand;
@@ -36,9 +41,13 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.neoforged.neoforge.capabilities.Capabilities.ItemHandler;
+import net.neoforged.neoforge.items.IItemHandler;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -47,6 +56,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class ShelfLogic implements IMultiblockLogic<State>, MBOverlayText<State>
@@ -81,6 +91,12 @@ public class ShelfLogic implements IMultiblockLogic<State>, MBOverlayText<State>
 	public State createInitialState(IInitialMultiblockContext<State> capabilitySource)
 	{
 		return new State(capabilitySource);
+	}
+
+	@Override
+	public void registerCapabilities(CapabilityRegistrar<State> register)
+	{
+		register.register(ItemHandler.BLOCK, State::getItemHandler);
 	}
 
 	@Override
@@ -161,6 +177,24 @@ public class ShelfLogic implements IMultiblockLogic<State>, MBOverlayText<State>
 			doUpdate = ctx.getBlockUpdateRunnable();
 		}
 
+		public ShelfItemHandler getItemHandler(CapabilityPosition position)
+		{
+			var dir = position.side();
+			if(position.posInMultiblock().getY()==0||dir==null||dir==RelativeBlockFace.UP||dir==RelativeBlockFace.DOWN)
+				return null;
+			int length = switch(dir)
+			{
+				case FRONT, BACK -> 2;
+				case LEFT, RIGHT -> 4;
+				default -> 0;
+			};
+			return new ShelfItemHandler(() -> IntStream.range(0, length)
+					.mapToObj(value -> dir.offsetRelative(position.posInMultiblock(), -value))
+					.map(cratePos -> crates.get(getCrateIndex(cratePos)))
+					.filter(stack -> !stack.isEmpty()).toList()
+			);
+		}
+
 		public List<ItemStack> getCratesForMenu(BlockPos posInMultiblock, boolean backside)
 		{
 			int startIdx = (posInMultiblock.getY()-1)*8+posInMultiblock.getZ();
@@ -200,7 +234,7 @@ public class ShelfLogic implements IMultiblockLogic<State>, MBOverlayText<State>
 			{
 				CompoundTag tag = new CompoundTag();
 				Component name = stack.isEmpty()?Component.empty(): stack.getHoverName();
-				tag.putString("name", Component.Serializer.toJson(name, provider));
+				tag.putString("name", Serializer.toJson(name, provider));
 				tag.putString("id", stack.getItemHolder().getKey().location().toString());
 				crates.add(tag);
 				cratesAsInt = (cratesAsInt<<1)|(stack.isEmpty()?0: 1);
@@ -218,7 +252,7 @@ public class ShelfLogic implements IMultiblockLogic<State>, MBOverlayText<State>
 				Item item = BuiltInRegistries.ITEM.get(ResourceLocation.parse(tag.getString("id")));
 				CrateVariant variant = CRATE_VARIANTS.get().get(item);
 				this.renderCrates[i] = variant!=null?variant.crateTexture(): null;
-				this.names[i] = Component.Serializer.fromJson(tag.getString("name"), provider);
+				this.names[i] = Serializer.fromJson(tag.getString("name"), provider);
 			}
 			this.doUpdate.run();
 		}
@@ -234,6 +268,109 @@ public class ShelfLogic implements IMultiblockLogic<State>, MBOverlayText<State>
 		public CrateVariant(String crateTexture, int color)
 		{
 			this(ResourceLocation.withDefaultNamespace(crateTexture), ShelfMenu.CRATE_SEGMENT, color);
+		}
+	}
+
+	public record ShelfItemHandler(Supplier<List<ItemStack>> crates) implements IItemHandler
+	{
+		@Override
+		public int getSlots()
+		{
+			return crates.get().size()*WoodenCrateBlockEntity.CONTAINER_SIZE;
+		}
+
+		@Override
+		public @NotNull ItemStack getStackInSlot(int slot)
+		{
+			if(slot < 0||slot >= getSlots())
+				return ItemStack.EMPTY;
+			int crateIndex = slot/WoodenCrateBlockEntity.CONTAINER_SIZE;
+			int innerSlot = slot%WoodenCrateBlockEntity.CONTAINER_SIZE;
+			final ItemContainerContents contents = crates.get().get(crateIndex).get(DataComponents.CONTAINER);
+			if(contents==null||innerSlot >= contents.getSlots())
+				return ItemStack.EMPTY;
+			return contents.getStackInSlot(innerSlot);
+		}
+
+		@Override
+		public @NotNull ItemStack insertItem(int slot, ItemStack stackToInsert, boolean simulate)
+		{
+			if(slot < 0||slot >= getSlots()||!isItemValid(slot, stackToInsert))
+				return stackToInsert;
+			int crateIndex = slot/WoodenCrateBlockEntity.CONTAINER_SIZE;
+			int innerSlot = slot%WoodenCrateBlockEntity.CONTAINER_SIZE;
+
+			final ItemContainerContents contents = crates.get().get(crateIndex).get(DataComponents.CONTAINER);
+			NonNullList<ItemStack> edited = NonNullList.withSize(WoodenCrateBlockEntity.CONTAINER_SIZE, ItemStack.EMPTY);
+			if(contents!=null)
+				contents.copyInto(edited);
+			final ItemStack stackInSlot = edited.get(innerSlot);
+			if(stackInSlot.isEmpty())
+			{
+				if(!simulate)
+				{
+					edited.set(innerSlot, stackToInsert.copy());
+					crates.get().get(crateIndex).set(DataComponents.CONTAINER, ItemContainerContents.fromItems(edited));
+				}
+				return ItemStack.EMPTY;
+			}
+			else if(ItemStack.isSameItemSameComponents(stackInSlot, stackToInsert))
+			{
+				int maxStack = Math.min(stackInSlot.getMaxStackSize(), 64);
+				int accepted = Math.min(maxStack-stackInSlot.getCount(), stackToInsert.getCount());
+				if(accepted > 0)
+				{
+					if(!simulate)
+					{
+						stackInSlot.grow(accepted);
+						crates.get().get(crateIndex).set(DataComponents.CONTAINER, ItemContainerContents.fromItems(edited));
+					}
+					ItemStack remainder = stackToInsert.copy();
+					remainder.shrink(accepted);
+					if(remainder.isEmpty())
+						remainder = ItemStack.EMPTY;
+					return remainder;
+				}
+			}
+			return stackToInsert;
+		}
+
+		@Override
+		public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate)
+		{
+			if(slot < 0||slot >= getSlots())
+				return ItemStack.EMPTY;
+			int crateIndex = slot/WoodenCrateBlockEntity.CONTAINER_SIZE;
+			int innerSlot = slot%WoodenCrateBlockEntity.CONTAINER_SIZE;
+
+			final ItemContainerContents contents = crates.get().get(crateIndex).get(DataComponents.CONTAINER);
+			NonNullList<ItemStack> edited = NonNullList.withSize(WoodenCrateBlockEntity.CONTAINER_SIZE, ItemStack.EMPTY);
+			if(contents!=null)
+				contents.copyInto(edited);
+			final ItemStack stackInSlot = edited.get(innerSlot);
+			if(stackInSlot.isEmpty())
+				return ItemStack.EMPTY;
+
+			amount = Math.min(amount, stackInSlot.getCount());
+			ItemStack result = stackInSlot.copyWithCount(amount);
+			if(!simulate)
+			{
+				stackInSlot.shrink(amount);
+				crates.get().get(crateIndex).set(DataComponents.CONTAINER, ItemContainerContents.fromItems(edited));
+			}
+			return result;
+		}
+
+		@Override
+		public int getSlotLimit(int i)
+		{
+			return 64;
+		}
+
+		@Override
+		public boolean isItemValid(int i, ItemStack stack)
+		{
+			return IEApi.isAllowedInCrate(stack);
 		}
 	}
 }
