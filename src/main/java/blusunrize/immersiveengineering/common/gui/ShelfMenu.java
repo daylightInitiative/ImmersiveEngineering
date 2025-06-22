@@ -20,11 +20,13 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import net.neoforged.neoforge.items.ItemHandlerCopySlot;
 import net.neoforged.neoforge.items.ItemStackHandler;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 public class ShelfMenu extends IEContainerMenu
 {
@@ -89,29 +91,9 @@ public class ShelfMenu extends IEContainerMenu
 			for(int iSlot = 0; iSlot < WoodenCrateBlockEntity.CONTAINER_SIZE; iSlot++)
 			{
 				int frontIndex = iCrate*WoodenCrateBlockEntity.CONTAINER_SIZE+iSlot;
-				this.addSlot(new ItemHandlerCopySlot(inventory, frontIndex, 8+x+(iSlot%9)*18, 13+y+(iSlot/9)*18)
-				{
-					@Override
-					public boolean isActive()
-					{
-						if(backside.get())
-							return false;
-						List<ItemStack> crates = cratesFront.get();
-						return crateIdx < crates.size()&&!crates.get(crateIdx).isEmpty();
-					}
-				});
+				this.addSlot(new ShelfSlot(inventory, frontIndex, 8+x+(iSlot%9)*18, 13+y+(iSlot/9)*18, crateIdx, () -> !backside.get(), cratesFront));
 				int backIndex = (4+iCrate)*WoodenCrateBlockEntity.CONTAINER_SIZE+iSlot;
-				this.addSlot(new ItemHandlerCopySlot(inventory, backIndex, 8+x+(iSlot%9)*18, 13+y+(iSlot/9)*18)
-				{
-					@Override
-					public boolean isActive()
-					{
-						if(!backside.get())
-							return false;
-						List<ItemStack> crates = cratesBack.get();
-						return crateIdx < crates.size()&&!crates.get(crateIdx).isEmpty();
-					}
-				});
+				this.addSlot(new ShelfSlot(inventory, backIndex, 8+x+(iSlot%9)*18, 13+y+(iSlot/9)*18, crateIdx, backside, cratesBack));
 			}
 		}
 		ownSlotCount = MAX_SLOTS;
@@ -132,5 +114,35 @@ public class ShelfMenu extends IEContainerMenu
 		super.receiveMessageFromScreen(nbt);
 		if(nbt.contains("backside", Tag.TAG_BYTE))
 			backside.set(nbt.getBoolean("backside"));
+	}
+
+	private static final class ShelfSlot extends ItemHandlerCopySlot
+	{
+		private final int crateIndex;
+		private final Supplier<Boolean> isActive;
+		private final Supplier<List<ItemStack>> getCrates;
+
+		public ShelfSlot(IItemHandler itemHandler, int index, int xPosition, int yPosition, int crateIndex, Supplier<Boolean> isActive, Supplier<List<ItemStack>> getCrates)
+		{
+			super(itemHandler, index, xPosition, yPosition);
+			this.crateIndex = crateIndex;
+			this.isActive = isActive;
+			this.getCrates = getCrates;
+		}
+
+		@Override
+		public boolean isActive()
+		{
+			if(!isActive.get())
+				return false;
+			List<ItemStack> crates = getCrates.get();
+			return crateIndex < crates.size()&&!crates.get(crateIndex).isEmpty();
+		}
+
+		@Override
+		public boolean mayPlace(ItemStack stack)
+		{
+			return super.mayPlace(stack)&&isActive();
+		}
 	}
 }
