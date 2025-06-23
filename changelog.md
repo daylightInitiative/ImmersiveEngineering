@@ -2,6 +2,7 @@
 - Add the Crate Storage Shelf (voidsong-dragonfly, BluSunrize)
     - Allows storing and accessing multiple crates at the same time in one GUI
     - Can also fit reinforced crates and shulker boxes!
+    - Items can be inserted and extracted along the three axis, grabbing from rows of crates in the process
 - Allow catwalks to be rotated with a hammer
 - Fix generated wall models for multi8 blocks not having randomized textures (voidsong-dragonfly)
 
