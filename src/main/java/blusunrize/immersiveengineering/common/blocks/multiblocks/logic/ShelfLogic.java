@@ -199,10 +199,17 @@ public class ShelfLogic implements IMultiblockLogic<State>, MBOverlayText<State>
 		{
 			final int idxFront = (posInMultiblock.getY()-1)*8+posInMultiblock.getZ();
 			final int idxBack = idxFront+(posInMultiblock.getZ() > 0?-1: +1);
-			return new ShelfItemHandler(() -> IntStream.of(
-					idxFront, idxFront+2, idxFront+4, idxFront+6,
-					idxBack, idxBack+2, idxBack+4, idxBack+6
-			).mapToObj(crates::get).toList());
+			// access left to right, no matter from which side the shelf is accessed
+			if(posInMultiblock.getZ() > 0)
+				return new ShelfItemHandler(() -> IntStream.of(
+						idxFront, idxFront+2, idxFront+4, idxFront+6,
+						idxBack, idxBack+2, idxBack+4, idxBack+6
+				).mapToObj(crates::get).toList());
+			else // access right to left
+				return new ShelfItemHandler(() -> IntStream.of(
+						idxFront+6, idxFront+4, idxFront+2, idxFront,
+						idxBack+6, idxBack+4, idxBack+2, idxBack
+				).mapToObj(crates::get).toList());
 		}
 
 		public List<ItemStack> getCratesForMenu(BlockPos posInMultiblock, boolean backside)
@@ -210,12 +217,15 @@ public class ShelfLogic implements IMultiblockLogic<State>, MBOverlayText<State>
 			int startIdx = (posInMultiblock.getY()-1)*8+posInMultiblock.getZ();
 			if(backside)
 				startIdx += posInMultiblock.getZ() > 0?-1: +1;
-			return Stream.of(
-					crates.get(startIdx),
-					crates.get(startIdx+2),
-					crates.get(startIdx+4),
-					crates.get(startIdx+6)
-			).toList();
+			// access left to right, no matter from which side the shelf is accessed
+			if(posInMultiblock.getZ() > 0)
+				return Stream.of(
+						crates.get(startIdx), crates.get(startIdx+2), crates.get(startIdx+4), crates.get(startIdx+6)
+				).toList();
+			else
+				return Stream.of(
+						crates.get(startIdx+6), crates.get(startIdx+4), crates.get(startIdx+2), crates.get(startIdx)
+				).toList();
 		}
 
 		public int getCrateIndex(BlockPos posInMultiblock)
