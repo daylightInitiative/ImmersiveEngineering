@@ -180,10 +180,11 @@ public class ShelfLogic implements IMultiblockLogic<State>, MBOverlayText<State>
 		public ShelfItemHandler getItemHandler(CapabilityPosition position)
 		{
 			var dir = position.side();
-			if(position.posInMultiblock().getY()==0||dir==null||dir==RelativeBlockFace.UP||dir==RelativeBlockFace.DOWN)
+			if(position.posInMultiblock().getY()==0||dir==null||dir==RelativeBlockFace.DOWN)
 				return null;
 			int length = switch(dir)
 			{
+				case UP -> 3;
 				case FRONT, BACK -> 2;
 				case LEFT, RIGHT -> 4;
 				default -> 0;
