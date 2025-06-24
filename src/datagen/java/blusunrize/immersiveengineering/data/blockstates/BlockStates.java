@@ -165,7 +165,7 @@ public class BlockStates extends ExtendedBlockstateProvider
 				"clinker_brick_sill",
 				modLoc("block/stone_decoration/clinker_brick/clinker_brick_sill_side"),
 				modLoc("block/stone_decoration/clinker_brick/clinker_brick0"),
-				modLoc("block/stone_decoration/clinker_brick/clinker_brick_sill_top")
+				mcLoc("block/white_terracotta")
 		)));
 		multiEightCubeAll(StoneDecoration.SLAG_GRAVEL, rl("block/stone_decoration/slag_gravel/slag_gravel"));
 		multiEightCubeAll(StoneDecoration.GRIT_SAND, rl("block/stone_decoration/grit_sand/grit_sand"));
