@@ -31,6 +31,7 @@ import blusunrize.immersiveengineering.common.blocks.wooden.TreatedWoodStyles;
 import blusunrize.immersiveengineering.common.register.IEBlocks;
 import blusunrize.immersiveengineering.common.register.IEBlocks.*;
 import blusunrize.immersiveengineering.common.register.IEFluids;
+import blusunrize.immersiveengineering.common.register.IEFluids.FluidEntry;
 import blusunrize.immersiveengineering.common.register.IEMultiblockLogic;
 import blusunrize.immersiveengineering.data.DataGenUtils;
 import blusunrize.immersiveengineering.data.models.ConveyorModelBuilder;
@@ -39,6 +40,7 @@ import blusunrize.immersiveengineering.data.models.NongeneratedModels.Nongenerat
 import blusunrize.immersiveengineering.data.models.SideConfigBuilder;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableList.Builder;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
@@ -88,7 +90,7 @@ public class BlockStates extends ExtendedBlockstateProvider
 	private void postBlock(Supplier<? extends Block> b, ResourceLocation texture)
 	{
 		ResourceLocation model = rl("block/wooden_device/wooden_post.obj.ie");
-		ImmutableList.Builder<Vec3i> parts = ImmutableList.builder();
+		Builder<Vec3i> parts = ImmutableList.builder();
 		parts.add(new Vec3i(0, 0, 0))
 				.add(new Vec3i(0, 1, 0))
 				.add(new Vec3i(0, 2, 0))
@@ -161,12 +163,20 @@ public class BlockStates extends ExtendedBlockstateProvider
 		cubeAll(StoneDecoration.BLASTBRICK_REINFORCED, rl("block/stone_decoration/blastbrick_reinforced"));
 		multiEightCubeAll(StoneDecoration.SLAG_BRICK, rl("block/stone_decoration/slag_brick/slag_brick"));
 		multiEightCubeAll(StoneDecoration.CLINKER_BRICK, rl("block/stone_decoration/clinker_brick/clinker_brick"));
-		simpleBlockAndItem(StoneDecoration.CLINKER_BRICK_SILL, new ConfiguredModel(models().cubeBottomTop(
-				"clinker_brick_sill",
-				modLoc("block/stone_decoration/clinker_brick/clinker_brick_sill_side"),
-				modLoc("block/stone_decoration/clinker_brick/clinker_brick0"),
-				mcLoc("block/white_terracotta")
-		)));
+		createForAllStates(StoneDecoration.CLINKER_BRICK_SILL, state -> switch(state.getValue(IEProperties.FACING_TOP_DOWN))
+		{
+			case DOWN -> models().cubeBottomTop("clinker_brick_sill_down",
+					modLoc("block/stone_decoration/clinker_brick/clinker_brick_sill_side_down"),
+					mcLoc("block/white_terracotta"),
+					modLoc("block/stone_decoration/clinker_brick/clinker_brick0")
+			);
+			case UP -> models().cubeBottomTop("clinker_brick_sill_up",
+					modLoc("block/stone_decoration/clinker_brick/clinker_brick_sill_side_up"),
+					modLoc("block/stone_decoration/clinker_brick/clinker_brick0"),
+					mcLoc("block/white_terracotta")
+			);
+			default -> null;
+		});
 		multiEightCubeAll(StoneDecoration.SLAG_GRAVEL, rl("block/stone_decoration/slag_gravel/slag_gravel"));
 		multiEightCubeAll(StoneDecoration.GRIT_SAND, rl("block/stone_decoration/grit_sand/grit_sand"));
 		cubeAll(StoneDecoration.COKE, rl("block/stone_decoration/coke"));
@@ -607,7 +617,7 @@ public class BlockStates extends ExtendedBlockstateProvider
 					.texture("block_all", rl("block/metal_device/furnace_heater"))
 					.texture("block_north", rl("block/metal_device/furnace_heater_socket"))
 					.texture("overlay_all", rl("block/metal_device/furnace_heater_overlay"));
-			setRenderType(RenderType.cutout(), furnaceHeaterOn, furnaceHeaterOff);
+			setRenderType(cutout(), furnaceHeaterOn, furnaceHeaterOff);
 			createRotatedBlock(MetalDevices.FURNACE_HEATER, props -> {
 				if(props.getSetStates().get(IEProperties.ACTIVE)==Boolean.TRUE)
 					return furnaceHeaterOn;
@@ -670,7 +680,7 @@ public class BlockStates extends ExtendedBlockstateProvider
 		}
 		createSawdust();
 
-		for(IEFluids.FluidEntry entry : IEFluids.ALL_ENTRIES)
+		for(FluidEntry entry : IEFluids.ALL_ENTRIES)
 		{
 			Fluid still = entry.getStill();
 			ModelFile model = models().getBuilder("block/fluid/"+BuiltInRegistries.FLUID.getKey(still).getPath())
@@ -808,7 +818,7 @@ public class BlockStates extends ExtendedBlockstateProvider
 		for(Direction d : DirectionUtils.BY_HORIZONTAL_INDEX)
 		{
 			int rotation = getAngle(d, 0);
-			for(WallmountBlock.Orientation or : Orientation.values())
+			for(Orientation or : Orientation.values())
 			{
 				ResourceLocation modelLoc = rl("block/wooden_device/wallmount"+or.modelSuffix()+".obj");
 				ModelFile model = obj(BuiltInRegistries.BLOCK.getKey(b.get()).getPath()+or.modelSuffix(), modelLoc,
@@ -928,7 +938,7 @@ public class BlockStates extends ExtendedBlockstateProvider
 		itemModel(block, models().getExistingFile(rl(BuiltInRegistries.BLOCK.getKey(block.get()).getPath()+"_bottom")));
 	}
 
-	private void createSigns(IEBlocks.SignHolder holder, String particle)
+	private void createSigns(SignHolder holder, String particle)
 	{
 		signBlock(holder.sign().get(), holder.wall().get(), rl(particle));
 		hangingSignBlock(holder.hanging().get(), holder.wallHanging().get(), rl(particle));

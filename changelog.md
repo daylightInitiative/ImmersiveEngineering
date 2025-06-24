@@ -5,6 +5,7 @@
     - Items can be inserted and extracted along the three axis, grabbing from rows of crates in the process
 - Allow catwalks to be rotated with a hammer
 - Change clinker sill and quoin blocks to match vanilla's white terracotta in texture (BluSunrize)
+    - Also allow clinker sill blocks to be placed upside down
 - Fix generated wall models for multi8 blocks not having randomized textures (voidsong-dragonfly)
 
 ##### Version 1.21.1-12.3.3-191

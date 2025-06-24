@@ -33,6 +33,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.WallBlock;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.*;
 import net.neoforged.neoforge.client.model.generators.*;
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel.Builder;
@@ -47,6 +48,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -353,10 +355,10 @@ public abstract class ExtendedBlockstateProvider extends BlockStateProvider
 	{
 		MultiPartBlockStateBuilder builder = getMultipartBuilder(block);
 		Builder<PartBuilder> part = builder.part();
-		for (int i = 0; i < posts.length; i++)
+		for(int i = 0; i < posts.length; i++)
 		{
 			part = part.modelFile(posts[i]);
-			if ((i + 1) < posts.length)
+			if((i+1) < posts.length)
 				part = part.nextModel();
 		}
 		part.addModel().condition(WallBlock.UP, true);
@@ -372,12 +374,12 @@ public abstract class ExtendedBlockstateProvider extends BlockStateProvider
 	private void wallSidePart(MultiPartBlockStateBuilder builder, ModelFile[] models, Entry<Direction, Property<WallSide>> entry, WallSide height)
 	{
 		Builder<MultiPartBlockStateBuilder.PartBuilder> part = builder.part();
-		for (int i = 0; i < models.length; i++)
+		for(int i = 0; i < models.length; i++)
 		{
 			part = part.modelFile(models[i])
 					.rotationY((((int)entry.getKey().toYRot())+180)%360)
 					.uvLock(true);
-			if ((i + 1) < models.length)
+			if((i+1) < models.length)
 				part = part.nextModel();
 		}
 		part.addModel().condition(entry.getValue(), height);
@@ -643,6 +645,17 @@ public abstract class ExtendedBlockstateProvider extends BlockStateProvider
 				}
 				state.with(facing, d).setModels(new ConfiguredModel(modelLoc, x+offsetRotX, y, false));
 			}
+		});
+	}
+
+	protected <T extends Comparable<T>> void createForAllStates(Supplier<? extends Block> b, Function<BlockState, ModelFile> modelFunction)
+	{
+		AtomicBoolean hasItemModel = new AtomicBoolean();
+		getVariantBuilder(b.get()).forAllStates(state -> {
+			ModelFile variant = modelFunction.apply(state);
+			if(hasItemModel.compareAndSet(false, true))
+				itemModel(b, variant);
+			return new ConfiguredModel[]{new ConfiguredModel(variant)};
 		});
 	}
 
