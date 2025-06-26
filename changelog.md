@@ -1,3 +1,6 @@
+##### Version 1.21.1-12.4.1-pre
+- Fix catwalk stairs crashing when rotated with a hammer (BluSunrize)
+
 ##### Version 1.21.1-12.4.0-192
 - Add the Crate Storage Shelf (voidsong-dragonfly, BluSunrize)
     - Allows storing and accessing multiple crates at the same time in one GUI
