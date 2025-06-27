@@ -121,6 +121,11 @@ public class BlockOverlayUtils
 				Component[] text = overlayBlock.getOverlayText(blockState, player, mop, hammer);
 				BlockOverlayUtils.drawBlockOverlayText(graphics, text, scaledWidth, scaledHeight);
 			}
+			else if(blockState.getBlock() instanceof IBlockOverlayText overlayBlock)
+			{
+				Component[] text = overlayBlock.getOverlayText(blockState, player, mop, hammer);
+				BlockOverlayUtils.drawBlockOverlayText(graphics, text, scaledWidth, scaledHeight);
+			}
 			else if(!(tileEntity instanceof IMultiblockBE<?> multiblock)||!renderMultiblockOverlay(
 					graphics, multiblock, bhr, hammer, scaledWidth, scaledHeight
 			))
@@ -129,11 +134,6 @@ public class BlockOverlayUtils
 						new AABB(pos.relative(face)), entity -> entity!=null&&entity.getDirection()==face);
 				if(list.size()==1)
 					BlockOverlayUtils.renderOreveinMapOverlays(graphics, list.get(0), mop, scaledWidth, scaledHeight);
-			}
-			else if(blockState.getBlock() instanceof IBlockOverlayText overlayBlock)
-			{
-				Component[] text = overlayBlock.getOverlayText(blockState, player, mop, hammer);
-				BlockOverlayUtils.drawBlockOverlayText(graphics, text, scaledWidth, scaledHeight);
 			}
 		}
 	}

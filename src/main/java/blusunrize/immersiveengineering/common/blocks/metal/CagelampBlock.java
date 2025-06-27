@@ -9,10 +9,14 @@
 package blusunrize.immersiveengineering.common.blocks.metal;
 
 import blusunrize.immersiveengineering.api.IEProperties;
+import blusunrize.immersiveengineering.api.Lib;
 import blusunrize.immersiveengineering.common.blocks.IEBaseBlock;
+import blusunrize.immersiveengineering.common.blocks.IEBlockInterfaces.IBlockOverlayText;
+import blusunrize.immersiveengineering.common.util.Utils;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -29,6 +33,7 @@ import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -37,18 +42,24 @@ import javax.annotation.Nullable;
 import java.util.Map;
 import java.util.function.Supplier;
 
-public class CagelampBlock extends IEBaseBlock
+public class CagelampBlock extends IEBaseBlock implements IBlockOverlayText
 {
 	public static final Supplier<Properties> PROPERTIES = () -> Properties.of()
 			.mapColor(MapColor.METAL)
 			.sound(SoundType.METAL)
 			.strength(3, 15)
-			.lightLevel(b -> b.getValue(IEProperties.ACTIVE)?14: 0)
+			.lightLevel(b -> b.getValue(IEProperties.ACTIVE)?b.getValue(IEProperties.INT_16): 0)
 			.noOcclusion();
 
 	public CagelampBlock(Properties props)
 	{
 		super(props);
+	}
+
+	@Override
+	protected BlockState getInitDefaultState()
+	{
+		return super.getInitDefaultState().setValue(IEProperties.INT_16, 14);
 	}
 
 	@Nullable
@@ -84,9 +95,20 @@ public class CagelampBlock extends IEBaseBlock
 		if(level instanceof ServerLevel serverlevel)
 		{
 			BlockState state = level.getBlockState(pos);
-			updateActiveState(state.cycle(IEProperties.INVERTED), serverlevel, pos);
+			if(player.isCrouching())
+				updateActiveState(state.cycle(IEProperties.INVERTED), serverlevel, pos);
+			else
+				level.setBlock(pos, state.cycle(IEProperties.INT_16), 3);
 		}
 		return ItemInteractionResult.sidedSuccess(level.isClientSide());
+	}
+
+	@Override
+	public Component[] getOverlayText(@Nullable BlockState blockState, Player player, HitResult mop, boolean hammer)
+	{
+		if(blockState!=null&&Utils.isScrewdriver(player.getMainHandItem()))
+			return new Component[]{Component.translatable(Lib.CHAT_INFO+"light_level", blockState.getValue(IEProperties.INT_16))};
+		return null;
 	}
 
 	public void updateActiveState(BlockState state, ServerLevel level, BlockPos pos)
@@ -108,7 +130,7 @@ public class CagelampBlock extends IEBaseBlock
 	protected void createBlockStateDefinition(Builder<Block, BlockState> builder)
 	{
 		super.createBlockStateDefinition(builder);
-		builder.add(IEProperties.FACING_ALL, BlockStateProperties.WATERLOGGED, IEProperties.ACTIVE, IEProperties.INVERTED);
+		builder.add(IEProperties.FACING_ALL, BlockStateProperties.WATERLOGGED, IEProperties.ACTIVE, IEProperties.INVERTED, IEProperties.INT_16);
 	}
 
 	private static final Map<Direction, VoxelShape> SHAPES = ImmutableMap.<Direction, VoxelShape>builder()
@@ -125,5 +147,4 @@ public class CagelampBlock extends IEBaseBlock
 	{
 		return SHAPES.get(state.getValue(IEProperties.FACING_ALL));
 	}
-
 }

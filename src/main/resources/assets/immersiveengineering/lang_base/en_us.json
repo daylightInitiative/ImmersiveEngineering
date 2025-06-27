@@ -413,6 +413,7 @@
   "chat.immersiveengineering.info.averageLoss": "Average loss between points: %1$s%%",
   "chat.immersiveengineering.info.energyStorage": "Energy Stored: %1$s/%2$s Flux",
   "chat.immersiveengineering.info.redstone_level": "Redstone Level: %1$s",
+  "chat.immersiveengineering.info.light_level": "Light Level: %1$s",
   "chat.immersiveengineering.info.tooHot": "This fluid is too hot for the container!",
   "chat.immersiveengineering.info.crate_sealed": "The crate is now sealed and can be picked up",
   "chat.immersiveengineering.info.noGasAllowed": "This container can't store gasses!",

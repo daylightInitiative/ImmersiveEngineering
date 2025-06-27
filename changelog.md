@@ -1,4 +1,7 @@
 ##### Version 1.21.1-12.4.1-pre
+- Add variable lightlevel for lanterns and cage lamps (BluSunrize)
+    - This can be configured with a screwdriver
+    - This allows for more mood lighting in the factory!
 - Fix catwalk stairs crashing when rotated with a hammer (BluSunrize)
 
 ##### Version 1.21.1-12.4.0-192
