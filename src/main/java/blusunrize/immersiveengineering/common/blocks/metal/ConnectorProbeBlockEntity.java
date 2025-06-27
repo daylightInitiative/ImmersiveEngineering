@@ -27,7 +27,6 @@ import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.decoration.ItemFrame;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
@@ -187,7 +186,7 @@ public class ConnectorProbeBlockEntity extends ConnectorRedstoneBlockEntity
 	}
 
 	@Override
-	public Component[] getOverlayText(Player player, HitResult mop, boolean hammer)
+	public Component[] getOverlayText(@Nullable BlockState blockState, Player player, HitResult mop, boolean hammer)
 	{
 		if(Utils.isScrewdriver(player.getMainHandItem()))
 			return new Component[]{
@@ -195,11 +194,5 @@ public class ConnectorProbeBlockEntity extends ConnectorRedstoneBlockEntity
 					getChannelComponent("_sending", redstoneChannelSending),
 			};
 		return null;
-	}
-
-	@Override
-	public boolean useNixieFont(Player player, HitResult mop)
-	{
-		return false;
 	}
 }

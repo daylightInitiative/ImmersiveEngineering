@@ -209,7 +209,7 @@ public class SirenBlockEntity extends ImmersiveConnectableBlockEntity
 	}
 
 	@Override
-	public Component[] getOverlayText(Player player, HitResult mop, boolean hammer)
+	public Component[] getOverlayText(@Nullable BlockState blockState, Player player, HitResult mop, boolean hammer)
 	{
 		if(!Utils.isScrewdriver(player.getItemInHand(InteractionHand.MAIN_HAND)))
 			return null;

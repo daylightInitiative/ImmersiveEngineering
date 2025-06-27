@@ -57,6 +57,7 @@ import net.minecraft.world.item.component.MapDecorations;
 import net.minecraft.world.item.component.MapDecorations.Entry;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import net.minecraft.world.phys.*;
 import net.neoforged.api.distmarker.Dist;
@@ -105,7 +106,7 @@ public class BlockOverlayUtils
 				BlockOverlayUtils.renderOreveinMapOverlays(graphics, (ItemFrame)entity, mop, scaledWidth, scaledHeight);
 			else if(entity instanceof IEMinecartEntity<?> ieMinecart&&ieMinecart.getContainedBlockEntity() instanceof IBlockOverlayText overlayText)
 			{
-				Component[] text = overlayText.getOverlayText(player, mop, false);
+				Component[] text = overlayText.getOverlayText(null, player, mop, false);
 				BlockOverlayUtils.drawBlockOverlayText(graphics, text, scaledWidth, scaledHeight);
 			}
 		}
@@ -113,10 +114,11 @@ public class BlockOverlayUtils
 		{
 			BlockPos pos = bhr.getBlockPos();
 			Direction face = bhr.getDirection();
+			BlockState blockState = player.level().getBlockState(pos);
 			BlockEntity tileEntity = player.level().getBlockEntity(pos);
 			if(tileEntity instanceof IBlockOverlayText overlayBlock)
 			{
-				Component[] text = overlayBlock.getOverlayText(ClientUtils.mc().player, mop, hammer);
+				Component[] text = overlayBlock.getOverlayText(blockState, player, mop, hammer);
 				BlockOverlayUtils.drawBlockOverlayText(graphics, text, scaledWidth, scaledHeight);
 			}
 			else if(!(tileEntity instanceof IMultiblockBE<?> multiblock)||!renderMultiblockOverlay(
@@ -127,6 +129,11 @@ public class BlockOverlayUtils
 						new AABB(pos.relative(face)), entity -> entity!=null&&entity.getDirection()==face);
 				if(list.size()==1)
 					BlockOverlayUtils.renderOreveinMapOverlays(graphics, list.get(0), mop, scaledWidth, scaledHeight);
+			}
+			else if(blockState.getBlock() instanceof IBlockOverlayText overlayBlock)
+			{
+				Component[] text = overlayBlock.getOverlayText(blockState, player, mop, hammer);
+				BlockOverlayUtils.drawBlockOverlayText(graphics, text, scaledWidth, scaledHeight);
 			}
 		}
 	}

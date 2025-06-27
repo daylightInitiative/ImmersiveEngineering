@@ -198,21 +198,15 @@ public class CoresampleBlockEntity extends IEBaseBlockEntity implements IStateBa
 	private Component[] overlay = null;
 
 	@Override
-	public Component[] getOverlayText(Player player, HitResult mop, boolean hammer)
+	public Component[] getOverlayText(@Nullable BlockState blockState, Player player, HitResult mop, boolean hammer)
 	{
 		if(overlay==null)
 		{
 			List<Component> list = new ArrayList<>();
-			CoresampleItem.getCoresampleInfo(containedSample, list, ChatFormatting.WHITE, level, false, false);
+			CoresampleItem.getCoresampleInfo(containedSample, list, ChatFormatting.WHITE, this.level, false, false);
 			overlay = list.toArray(new Component[0]);
 		}
 		return overlay;
-	}
-
-	@Override
-	public boolean useNixieFont(Player player, HitResult mop)
-	{
-		return false;
 	}
 
 	private static final VoxelShape AABB_CORESAMPLE_X = Shapes.box(0, 0, .28125f, 1, 1, .71875f);

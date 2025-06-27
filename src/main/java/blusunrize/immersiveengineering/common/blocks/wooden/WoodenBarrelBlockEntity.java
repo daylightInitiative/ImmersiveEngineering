@@ -120,7 +120,7 @@ public class WoodenBarrelBlockEntity extends IEBaseBlockEntity implements IEServ
 	}
 
 	@Override
-	public Component[] getOverlayText(Player player, HitResult rtr, boolean hammer)
+	public Component[] getOverlayText(@Nullable BlockState blockState, Player player, HitResult rtr, boolean hammer)
 	{
 		if(rtr.getType()==Type.MISS)
 			return null;
@@ -138,12 +138,6 @@ public class WoodenBarrelBlockEntity extends IEBaseBlockEntity implements IEServ
 			return TextUtils.sideConfigWithOpposite(Lib.DESC_INFO+"blockSide.connectFluid.", side, opposite);
 		}
 		return null;
-	}
-
-	@Override
-	public boolean useNixieFont(Player player, HitResult mop)
-	{
-		return false;
 	}
 
 	@Override

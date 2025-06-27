@@ -248,7 +248,7 @@ public class ConnectorRedstoneBlockEntity extends ImmersiveConnectableBlockEntit
 	}
 
 	@Override
-	public Component[] getOverlayText(Player player, HitResult mop, boolean hammer)
+	public Component[] getOverlayText(@Nullable BlockState blockState, Player player, HitResult mop, boolean hammer)
 	{
 		if(!Utils.isScrewdriver(player.getItemInHand(InteractionHand.MAIN_HAND)))
 			return null;
@@ -264,12 +264,6 @@ public class ConnectorRedstoneBlockEntity extends ImmersiveConnectableBlockEntit
 				.append(Component.translatable(Lib.GUI_CONFIG+"redstone_color"+subtype))
 				.append(Component.literal(" "))
 				.append(Lib.getRedstoneColorComponent(channel));
-	}
-
-	@Override
-	public boolean useNixieFont(Player player, HitResult mop)
-	{
-		return false;
 	}
 
 	@Override

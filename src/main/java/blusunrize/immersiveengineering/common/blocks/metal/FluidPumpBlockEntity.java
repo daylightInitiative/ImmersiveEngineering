@@ -450,7 +450,7 @@ public class FluidPumpBlockEntity extends IEBaseBlockEntity implements IEServerT
 	}
 
 	@Override
-	public Component[] getOverlayText(Player player, HitResult mop, boolean hammer)
+	public Component[] getOverlayText(@Nullable BlockState blockState, Player player, HitResult mop, boolean hammer)
 	{
 		if(hammer&&IEClientConfig.showTextOverlay.get()&&!isDummy()&&mop instanceof BlockHitResult)
 		{
@@ -460,12 +460,6 @@ public class FluidPumpBlockEntity extends IEBaseBlockEntity implements IEServerT
 			return TextUtils.sideConfigWithOpposite(Lib.DESC_INFO+"blockSide.connectFluid.", i, j);
 		}
 		return null;
-	}
-
-	@Override
-	public boolean useNixieFont(Player player, HitResult mop)
-	{
-		return false;
 	}
 
 	public void setDummy(boolean dummy)

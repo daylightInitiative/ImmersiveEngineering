@@ -170,7 +170,7 @@ public class BlueprintShelfBlockEntity extends IEBaseBlockEntity implements IIEI
 
 	@Nullable
 	@Override
-	public Component[] getOverlayText(Player player, HitResult mop, boolean hammer)
+	public Component[] getOverlayText(@Nullable BlockState blockState, Player player, HitResult mop, boolean hammer)
 	{
 		if(mop instanceof BlockHitResult bhr)
 		{

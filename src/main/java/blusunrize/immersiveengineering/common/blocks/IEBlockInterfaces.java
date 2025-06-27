@@ -57,15 +57,7 @@ public class IEBlockInterfaces
 	public interface IBlockOverlayText
 	{
 		@Nullable
-		Component[] getOverlayText(Player player, HitResult mop, boolean hammer);
-
-		@Deprecated
-		default boolean useNixieFont(Player player, HitResult mop)
-		{
-			return false;
-		}
-
-		;
+		Component[] getOverlayText(@Nullable BlockState blockState, Player player, HitResult mop, boolean hammer);
 	}
 
 	public interface ISoundBE

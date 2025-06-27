@@ -49,6 +49,7 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.energy.EnergyStorage;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 
+import javax.annotation.Nullable;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -191,7 +192,7 @@ public class CapacitorBlockEntity extends IEBaseBlockEntity implements IEServerT
 	}
 
 	@Override
-	public Component[] getOverlayText(Player player, HitResult mop, boolean hammer)
+	public Component[] getOverlayText(@Nullable BlockState blockState, Player player, HitResult mop, boolean hammer)
 	{
 		if(hammer&&IEClientConfig.showTextOverlay.get()&&mop instanceof BlockHitResult bmop)
 		{
@@ -200,12 +201,6 @@ public class CapacitorBlockEntity extends IEBaseBlockEntity implements IEServerT
 			return TextUtils.sideConfigWithOpposite(Lib.DESC_INFO+"blockSide.connectEnergy.", here, opposite);
 		}
 		return null;
-	}
-
-	@Override
-	public boolean useNixieFont(Player player, HitResult mop)
-	{
-		return false;
 	}
 
 	@Override

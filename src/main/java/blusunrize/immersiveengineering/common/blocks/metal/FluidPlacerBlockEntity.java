@@ -45,6 +45,7 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler.FluidAction;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 
+import javax.annotation.Nullable;
 import java.util.*;
 
 public class FluidPlacerBlockEntity extends IEBaseBlockEntity implements IEServerTickableBE, IConfigurableSides,
@@ -265,7 +266,7 @@ public class FluidPlacerBlockEntity extends IEBaseBlockEntity implements IEServe
 	}
 
 	@Override
-	public Component[] getOverlayText(Player player, HitResult rtr, boolean hammer)
+	public Component[] getOverlayText(@Nullable BlockState blockState, Player player, HitResult rtr, boolean hammer)
 	{
 		if(hammer&&IEClientConfig.showTextOverlay.get()&&rtr instanceof BlockHitResult)
 		{
@@ -275,11 +276,5 @@ public class FluidPlacerBlockEntity extends IEBaseBlockEntity implements IEServe
 			return TextUtils.sideConfigWithOpposite(Lib.DESC_INFO+"blockSide.connectFluid.", here, opposite);
 		}
 		return null;
-	}
-
-	@Override
-	public boolean useNixieFont(Player player, HitResult mop)
-	{
-		return false;
 	}
 }
