@@ -83,7 +83,7 @@ public class ClocheRecipeCategory extends IERecipeCategory<ClocheRecipe>
 		builder.addSlot(RecipeIngredientRole.INPUT, 6, 6)
 				.setFluidRenderer(4000, false, 20, 51)
 				.setOverlay(tankOverlay, 0, 0)
-				.addIngredient(NeoForgeTypes.FLUID_STACK, new FluidStack(Fluids.WATER, 4000))
+				.addIngredients(NeoForgeTypes.FLUID_STACK, Arrays.asList(recipe.requiredFluid.getStacks()))
 				.addRichTooltipCallback(JEIHelper.fluidTooltipCallback);
 
 		// TODO: Fix this to not be this unperformant and just bad, if there is a better way to do it
