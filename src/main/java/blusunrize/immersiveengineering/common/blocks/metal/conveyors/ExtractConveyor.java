@@ -48,8 +48,10 @@ public class ExtractConveyor extends ConveyorBase
 	public static final IConveyorType<ExtractConveyor> TYPE = new BasicConveyorType<>(
 			NAME, true, true, ExtractConveyor::new, () -> new ExtractConveyorRender(texture_on, texture_off)
 	);
+	private static final int[] EXTRACTION_SIZE = {1, 2, 4, 8, 16};
+
 	private int transferCooldown = -1;
-	private int transferTickrate = 8;
+	private int extractionSizeIndex = 0;
 	private double extension = -1;
 	private Rotation relativeExtractDir = Rotation.CLOCKWISE_180;
 
@@ -145,12 +147,13 @@ public class ExtractConveyor extends ConveyorBase
 				IItemHandler itemHandler = CapabilityUtils.findItemHandlerAtPos(world, neighbour, this.getExtractDirection().getOpposite(), true);
 				if(itemHandler!=null)
 				{
+					final int extracted_size = EXTRACTION_SIZE[this.extractionSizeIndex];
 					for(int i = 0; i < itemHandler.getSlots(); i++)
 					{
-						ItemStack extractItem = itemHandler.extractItem(i, 1, true);
+						ItemStack extractItem = itemHandler.extractItem(i, extracted_size, true);
 						if(!extractItem.isEmpty())
 						{
-							extractItem = itemHandler.extractItem(i, 1, false);
+							extractItem = itemHandler.extractItem(i, extracted_size, false);
 							ItemEntity entity = new ItemEntity(world,
 									getBlockEntity().getBlockPos().getX()+.5,
 									getBlockEntity().getBlockPos().getY()+.1875,
@@ -158,7 +161,7 @@ public class ExtractConveyor extends ConveyorBase
 							entity.setDeltaMovement(Vec3.ZERO);
 							world.addFreshEntity(entity);
 							this.onItemDeployed(entity);
-							this.transferCooldown = this.transferTickrate;
+							this.transferCooldown = 20;
 							return;
 						}
 					}
@@ -182,15 +185,13 @@ public class ExtractConveyor extends ConveyorBase
 		}
 		if(Utils.isScrewdriver(heldItem))
 		{
-			if(this.transferTickrate==4)
-				this.transferTickrate = 8;
-			else if(this.transferTickrate==8)
-				this.transferTickrate = 16;
-			else if(this.transferTickrate==16)
-				this.transferTickrate = 20;
-			else if(this.transferTickrate==20)
-				this.transferTickrate = 4;
-			player.displayClientMessage(Component.translatable(Lib.CHAT_INFO+"tickrate", this.transferTickrate), true);
+			this.extractionSizeIndex++;
+			if(this.extractionSizeIndex >= EXTRACTION_SIZE.length)
+				this.extractionSizeIndex = 0;
+			player.displayClientMessage(
+					Component.translatable(Lib.CHAT_INFO+"conveyor.stacksize", EXTRACTION_SIZE[this.extractionSizeIndex]),
+					true
+			);
 			return true;
 		}
 		return false;
@@ -218,13 +219,13 @@ public class ExtractConveyor extends ConveyorBase
 		VoxelShape ret = super.getSelectionShape();
 		double extension = getCurrentExtension();
 		VoxelShape extensionShape = switch(getExtractDirection())
-				{
-					case NORTH -> Shapes.box(.0625, .125, -extension, .9375, .75, .375-extension);
-					case SOUTH -> Shapes.box(.0625, .125, .625+extension, .9375, .75, 1+extension);
-					case WEST -> Shapes.box(-extension, .125, .0625, .375-extension, .75, .9375);
-					case EAST -> Shapes.box(.625+extension, .125, .0625, 1+extension, .75, .9375);
-					default -> null;
-				};
+		{
+			case NORTH -> Shapes.box(.0625, .125, -extension, .9375, .75, .375-extension);
+			case SOUTH -> Shapes.box(.0625, .125, .625+extension, .9375, .75, 1+extension);
+			case WEST -> Shapes.box(-extension, .125, .0625, .375-extension, .75, .9375);
+			case EAST -> Shapes.box(.625+extension, .125, .0625, 1+extension, .75, .9375);
+			default -> null;
+		};
 		if(extensionShape!=null)
 			ret = Shapes.join(ret, extensionShape, BooleanOp.OR);
 		return ret;
@@ -235,7 +236,7 @@ public class ExtractConveyor extends ConveyorBase
 	{
 		CompoundTag nbt = super.writeConveyorNBT();
 		nbt.putInt("transferCooldown", transferCooldown);
-		nbt.putInt("transferTickrate", transferTickrate);
+		nbt.putInt("extractionSizeIndex", extractionSizeIndex);
 		nbt.putInt("relativeExtractDir", relativeExtractDir.ordinal());
 		return nbt;
 	}
@@ -245,7 +246,10 @@ public class ExtractConveyor extends ConveyorBase
 	{
 		super.readConveyorNBT(nbt);
 		transferCooldown = nbt.getInt("transferCooldown");
-		transferTickrate = nbt.getInt("transferTickrate");
+		if(nbt.contains("transferTickrate"))
+			extractionSizeIndex = 0;
+		else
+			extractionSizeIndex = nbt.getInt("extractionSizeIndex");
 		relativeExtractDir = Rotation.values()[nbt.getInt("relativeExtractDir")];
 		if(relativeExtractDir==Rotation.NONE)
 			relativeExtractDir = Rotation.CLOCKWISE_180;
