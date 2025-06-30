@@ -91,7 +91,7 @@ public class CraftingTableMenu extends IEContainerMenu
 				}
 			});
 
-		this.ownSlotCount = storageInventory.getSlots()+craftingItems.size();
+		this.ownSlotCount = storageInventory.getSlots()+craftingItems.size()+1;
 
 		for(int i = 0; i < 3; i++)
 			for(int j = 0; j < 9; j++)

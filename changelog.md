@@ -1,6 +1,7 @@
 ##### Version 1.21.1-12.4.2-pre
 - Fix mixer accidentally crafting a lingering awkward potion (BluSunrize)
 - Fix catwalks not working properly when using a hammer (BluSunrize)
+- Fix shift-click behavior in the Engineer's Crafting Table (BluSunrize)
 
 ##### Version 1.21.1-12.4.1-193
 - Add variable lightlevel for lanterns and cage lamps (BluSunrize)
