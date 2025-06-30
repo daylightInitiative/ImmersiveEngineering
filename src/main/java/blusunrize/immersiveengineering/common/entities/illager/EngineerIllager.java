@@ -26,6 +26,8 @@ public abstract class EngineerIllager extends AbstractIllager
 	@Override
 	protected float getEquipmentDropChance(EquipmentSlot slot)
 	{
+		if(slot==EquipmentSlot.HEAD)
+			return 2f;
 		return 0;
 	}
 
