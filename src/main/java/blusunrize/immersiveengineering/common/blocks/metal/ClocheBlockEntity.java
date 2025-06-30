@@ -42,7 +42,6 @@ import net.minecraft.core.Vec3i;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.player.Player;
@@ -92,14 +91,14 @@ public class ClocheBlockEntity extends IEBaseBlockEntity implements IEServerTick
 		@Override
 		public boolean isFluidValid(FluidStack fluid)
 		{
-			return fluid.getFluid().is(FluidTags.WATER);
+			return ClocheRecipe.getValidFluids(getLevel()).anyMatch(req -> req.test(fluid));
 		}
 	};
 	public MutableEnergyStorage energyStorage = new MutableEnergyStorage(
 			ENERGY_CAPACITY, Math.max(256, getOrDefault(IEServerConfig.MACHINES.cloche_consumption))
 	);
 	public final Supplier<ClocheRecipe> cachedRecipe = CachedRecipe.cached(
-			ClocheRecipe::findRecipe, () -> level, () -> inventory.get(SLOT_SEED), () -> inventory.get(SLOT_SOIL)
+			ClocheRecipe::findRecipe, () -> level, () -> inventory.get(SLOT_SEED), () -> inventory.get(SLOT_SOIL), tank::getFluid
 	);
 
 	public int fertilizerAmount = 0;
@@ -143,7 +142,7 @@ public class ClocheBlockEntity extends IEBaseBlockEntity implements IEServerTick
 					renderGrowth = 0;
 				if(ApiUtils.RANDOM.nextInt(8)==0)
 				{
-					Particle p = ((ParticleManagerAccess)Minecraft.getInstance().particleEngine).invokeMakeParticle(new DustParticleOptions(new Vector3f(.55f, .1f, .1f), 1), getBlockPos().getX() + .5, getBlockPos().getY() + 2.6875, getBlockPos().getZ() + .5, .25, .25, .25);
+					Particle p = ((ParticleManagerAccess)Minecraft.getInstance().particleEngine).invokeMakeParticle(new DustParticleOptions(new Vector3f(.55f, .1f, .1f), 1), getBlockPos().getX()+.5, getBlockPos().getY()+2.6875, getBlockPos().getZ()+.5, .25, .25, .25);
 					p.setLifetime(20);
 					Minecraft.getInstance().particleEngine.add(p);
 				}
@@ -313,10 +312,10 @@ public class ClocheBlockEntity extends IEBaseBlockEntity implements IEServerTick
 		ContainerHelper.loadAllItems(nbt, inventory, provider);
 		fertilizerAmount = nbt.getInt("fertilizerAmount");
 		fertilizerMod = nbt.getFloat("fertilizerMod");
+		tank.readFromNBT(provider, nbt.getCompound("tank"));
 		if(!descPacket)
 		{
 			EnergyHelper.deserializeFrom(energyStorage, nbt, provider);
-			tank.readFromNBT(provider, nbt.getCompound("tank"));
 			growth = nbt.getFloat("growth");
 		}
 		renderBB = null;
@@ -331,11 +330,11 @@ public class ClocheBlockEntity extends IEBaseBlockEntity implements IEServerTick
 		ContainerHelper.saveAllItems(nbt, inventory, provider);
 		nbt.putInt("fertilizerAmount", fertilizerAmount);
 		nbt.putFloat("fertilizerMod", fertilizerMod);
+		CompoundTag tankTag = tank.writeToNBT(provider, new CompoundTag());
+		nbt.put("tank", tankTag);
 		if(!descPacket)
 		{
 			EnergyHelper.serializeTo(energyStorage, nbt, provider);
-			CompoundTag tankTag = tank.writeToNBT(provider, new CompoundTag());
-			nbt.put("tank", tankTag);
 			nbt.putFloat("growth", growth);
 		}
 	}

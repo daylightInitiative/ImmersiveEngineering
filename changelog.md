@@ -1,5 +1,8 @@
 ##### Version 1.21.1-12.4.2-pre
 - Add feature for the item router to filter by mod in addition to tags (BluSunrize)
+- Add "fluid" as an optional element in cloche recipes (BluSunrize)
+    - This allows limiting certain plants to only grow with lava, for instance
+    - If not specified, the recipe will use water
 - Change extracting conveyors to have configurable stack-size instead of configurable tickrate (BluSunrize)
     - This requires existing conveyors to be adjusted again
 - Change insertion logic for the storage shelf (BluSunrize)

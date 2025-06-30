@@ -20,11 +20,14 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.crafting.FluidIngredient;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class ClocheRecipe extends IESerializableRecipe
 {
@@ -34,12 +37,13 @@ public class ClocheRecipe extends IESerializableRecipe
 	public final Ingredient seed;
 	public final Ingredient soil;
 	public final int time;
+	public final FluidIngredient requiredFluid;
 	public final ClocheRenderFunction renderFunction;
 
 	public static final CachedRecipeList<ClocheRecipe> RECIPES = new CachedRecipeList<>(IERecipeTypes.CLOCHE);
 	private static final List<Pair<Ingredient, ResourceLocation>> soilTextureList = new ArrayList<>();
 
-	public ClocheRecipe(List<StackWithChance> outputs, Ingredient seed, Ingredient soil, int time, ClocheRenderFunction renderFunction)
+	public ClocheRecipe(List<StackWithChance> outputs, Ingredient seed, Ingredient soil, int time, FluidIngredient requiredFluid, ClocheRenderFunction renderFunction)
 	{
 		super(outputs.get(0).stack(), IERecipeTypes.CLOCHE);
 		this.outputs = outputs;
@@ -47,11 +51,12 @@ public class ClocheRecipe extends IESerializableRecipe
 		this.soil = soil;
 		this.time = time;
 		this.renderFunction = renderFunction;
+		this.requiredFluid = requiredFluid;
 	}
 
-	public ClocheRecipe(TagOutput output, Ingredient seed, Ingredient soil, int time, ClocheRenderFunction renderFunction)
+	public ClocheRecipe(TagOutput output, Ingredient seed, Ingredient soil, int time, FluidIngredient requiredFluid, ClocheRenderFunction renderFunction)
 	{
-		this(List.of(new StackWithChance(output, 1)), seed, soil, time, renderFunction);
+		this(List.of(new StackWithChance(output, 1)), seed, soil, time, requiredFluid, renderFunction);
 	}
 
 	// Allow for more dynamic recipes in subclasses
@@ -93,21 +98,21 @@ public class ClocheRecipe extends IESerializableRecipe
 		return this.outputs.get(0).stack().get();
 	}
 
-	public static ClocheRecipe findRecipe(Level level, ItemStack seed, ItemStack soil, @Nullable ClocheRecipe hint)
+	public static ClocheRecipe findRecipe(Level level, ItemStack seed, ItemStack soil, FluidStack fluid, @Nullable ClocheRecipe hint)
 	{
 		if(seed.isEmpty()||soil.isEmpty())
 			return null;
-		if(hint!=null&&hint.matches(seed, soil))
+		if(hint!=null&&hint.matches(seed, soil, fluid))
 			return hint;
 		for(RecipeHolder<ClocheRecipe> recipe : RECIPES.getRecipes(level))
-			if(recipe.value().matches(seed, soil))
+			if(recipe.value().matches(seed, soil, fluid))
 				return recipe.value();
 		return null;
 	}
 
-	public boolean matches(ItemStack seed, ItemStack soil)
+	public boolean matches(ItemStack seed, ItemStack soil, FluidStack fluid)
 	{
-		return this.seed.test(seed)&&this.soil.test(soil);
+		return this.seed.test(seed)&&this.soil.test(soil)&&this.requiredFluid.test(fluid);
 	}
 
 	public static boolean isValidCombinationInMenu(ItemStack seed, ItemStack soil, Level level)
@@ -116,6 +121,11 @@ public class ClocheRecipe extends IESerializableRecipe
 			if((seed.isEmpty()||recipe.value().seed.test(seed))&&(soil.isEmpty()||recipe.value().soil.test(soil)))
 				return true;
 		return false;
+	}
+
+	public static Stream<FluidIngredient> getValidFluids(Level level)
+	{
+		return RECIPES.getRecipes(level).stream().map(r -> r.value().requiredFluid).distinct();
 	}
 
 	/* ========== SOIL TEXTURE ========== */

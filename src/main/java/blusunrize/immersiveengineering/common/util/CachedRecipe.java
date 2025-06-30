@@ -10,6 +10,7 @@ package blusunrize.immersiveengineering.common.util;
 
 import com.mojang.datafixers.util.Function3;
 import com.mojang.datafixers.util.Function4;
+import com.mojang.datafixers.util.Function5;
 import org.apache.commons.lang3.mutable.Mutable;
 import org.apache.commons.lang3.mutable.MutableObject;
 
@@ -81,6 +82,24 @@ public class CachedRecipe
 		Mutable<R> cached = new MutableObject<>();
 		return (k1, k2, k3) -> {
 			R result = getRecipeWithHint.apply(k1, k2, k3, cached.getValue());
+			cached.setValue(result);
+			return result;
+		};
+	}
+
+	public static <K1, K2, K3, K4, R>
+	Supplier<R> cached(
+			Function5<K1, K2, K3, K4, R, R> getRecipeWithHint, Supplier<K1> get1, Supplier<K2> get2, Supplier<K3> get3, Supplier<K4> get4
+	) {
+		Function4<K1, K2, K3, K4, R> cached = cached(getRecipeWithHint);
+		return () -> cached.apply(get1.get(), get2.get(), get3.get(), get4.get());
+	}
+
+	public static <K1, K2, K3, K4, R>
+	Function4<K1, K2, K3, K4, R> cached(Function5<K1, K2, K3, K4, R, R> getRecipeWithHint) {
+		Mutable<R> cached = new MutableObject<>();
+		return (k1, k2, k3, k4) -> {
+			R result = getRecipeWithHint.apply(k1, k2, k3, k4, cached.getValue());
 			cached.setValue(result);
 			return result;
 		};

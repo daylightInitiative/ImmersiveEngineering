@@ -9,6 +9,7 @@
 package blusunrize.immersiveengineering.data.recipes.builder;
 
 import blusunrize.immersiveengineering.api.crafting.*;
+import blusunrize.immersiveengineering.common.crafting.serializers.ClocheRecipeSerializer;
 import blusunrize.immersiveengineering.data.recipes.builder.BaseHelpers.ItemOutput;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -16,7 +17,9 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.common.conditions.ICondition;
+import net.neoforged.neoforge.fluids.crafting.FluidIngredient;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,6 +32,7 @@ public class ClocheRecipeBuilder extends IERecipeBuilder<ClocheRecipeBuilder>
 	private Ingredient seed;
 	private Ingredient soil;
 	private int time;
+	private FluidIngredient requiredFluid = ClocheRecipeSerializer.DEFAULT_FLUID;
 	private ClocheRenderFunction renderReference;
 
 	private ClocheRecipeBuilder()
@@ -96,6 +100,18 @@ public class ClocheRecipeBuilder extends IERecipeBuilder<ClocheRecipeBuilder>
 		return this;
 	}
 
+	public ClocheRecipeBuilder setRequiredFluid(TagKey<Fluid> fluidTag)
+	{
+		this.requiredFluid = FluidIngredient.tag(fluidTag);
+		return this;
+	}
+
+	public ClocheRecipeBuilder setRequiredFluid(Fluid... fluids)
+	{
+		this.requiredFluid = FluidIngredient.of(fluids);
+		return this;
+	}
+
 	public ClocheRecipeBuilder setRender(ClocheRenderFunction renderReference)
 	{
 		this.renderReference = renderReference;
@@ -104,7 +120,7 @@ public class ClocheRecipeBuilder extends IERecipeBuilder<ClocheRecipeBuilder>
 
 	public void build(RecipeOutput out, ResourceLocation name)
 	{
-		ClocheRecipe recipe = new ClocheRecipe(outputs, seed, soil, time, renderReference);
+		ClocheRecipe recipe = new ClocheRecipe(outputs, seed, soil, time, requiredFluid, renderReference);
 		out.accept(name, recipe, null, getConditions());
 	}
 }
