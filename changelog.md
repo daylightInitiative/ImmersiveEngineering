@@ -2,6 +2,10 @@
 - Add feature for the item router to filter by mod in addition to tags (BluSunrize)
 - Change extracting conveyors to have configurable stack-size instead of configurable tickrate (BluSunrize)
     - This requires existing conveyors to be adjusted again
+- Change insertion logic for the storage shelf (BluSunrize)
+    - Will now try to fill slots with the same item, otherwise place in slots immediately after that item
+    - This should keep individual crates on the shelf more organized
+    - Works for shift-clicking and automatic insertion!
 - Fix mixer accidentally crafting a lingering awkward potion (BluSunrize)
 - Fix catwalks not working properly when using a hammer (BluSunrize)
 - Fix shift-click behavior in the Engineer's Crafting Table (BluSunrize)

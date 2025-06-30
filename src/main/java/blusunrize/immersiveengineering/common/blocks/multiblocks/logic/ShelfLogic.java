@@ -334,6 +334,34 @@ public class ShelfLogic implements IMultiblockLogic<State>, MBOverlayText<State>
 		{
 			if(slot < 0||slot >= getSlots()||!isItemValid(slot, stackToInsert))
 				return stackToInsert;
+
+			final ItemContainerContents[] crateContents = crates.get().stream().map(s -> s.get(DataComponents.CONTAINER)).toArray(ItemContainerContents[]::new);
+			final int totalSlots = getSlots();
+			int lastMatchingSlot = slot;
+			for(int iSlot = slot; iSlot < totalSlots; iSlot++)
+			{
+				int crateIndex = iSlot/WoodenCrateBlockEntity.CONTAINER_SIZE;
+				int innerSlot = iSlot%WoodenCrateBlockEntity.CONTAINER_SIZE;
+				ItemStack inSlot = (crateContents[crateIndex]==null||innerSlot >= crateContents[crateIndex].getSlots())?ItemStack.EMPTY:
+						crateContents[crateIndex].getStackInSlot(innerSlot);
+				if(!inSlot.isEmpty()&&ItemStack.isSameItemSameComponents(stackToInsert, inSlot))
+				{
+					lastMatchingSlot = iSlot;
+					if(stackToInsert.isStackable()&&inSlot.getCount() < inSlot.getMaxStackSize())
+						return insertItemInternal(iSlot, stackToInsert, simulate);
+				}
+			}
+			for(int iSlot = lastMatchingSlot; iSlot < totalSlots; iSlot++)
+			{
+				ItemStack ret = insertItemInternal(iSlot, stackToInsert, simulate);
+				if(ret.isEmpty()||ret.getCount() < stackToInsert.getCount())
+					return ret;
+			}
+			return insertItemInternal(slot, stackToInsert, simulate);
+		}
+
+		private ItemStack insertItemInternal(int slot, ItemStack stackToInsert, boolean simulate)
+		{
 			int crateIndex = slot/WoodenCrateBlockEntity.CONTAINER_SIZE;
 			int innerSlot = slot%WoodenCrateBlockEntity.CONTAINER_SIZE;
 

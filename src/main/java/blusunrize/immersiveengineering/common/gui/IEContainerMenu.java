@@ -186,6 +186,83 @@ public abstract class IEContainerMenu extends AbstractContainerMenu implements I
 		return inAllowedRange&&move.moveItemStackTo(pStack, allowedStart, pEndIndex, false);
 	}
 
+	/**
+	 * Tries to place an item in a slot which already contains the item.
+	 * If any of those slots are full, try to place it in a slot immediately after, or if those are full, a slot
+	 * immediately before the matching slot.
+	 * This logic is currently used by the storage shelf.
+	 *
+	 * @param stack the stack to be inserted
+	 * @param startIndex the first slot to check
+	 * @param endIndex the final slot to check
+	 * @return true if the stack was fully consumed
+	 */
+	public boolean moveToMatchingSlotOrAdjacent(ItemStack stack, int startIndex, int endIndex)
+	{
+		boolean flag = false;
+		int slotIndex = startIndex;
+
+		int lastMatchingSlot = startIndex;
+
+		Slot slot;
+		ItemStack itemstack;
+		while(!stack.isEmpty())
+		{
+			if(slotIndex >= endIndex)
+				break;
+			slot = this.slots.get(slotIndex);
+			itemstack = slot.getItem();
+			if(!itemstack.isEmpty()&&ItemStack.isSameItemSameComponents(stack, itemstack))
+			{
+				lastMatchingSlot = slotIndex;
+				if(itemstack.isStackable())
+				{
+					int totalCount = itemstack.getCount()+stack.getCount();
+					int maxStackSize = slot.getMaxStackSize(itemstack);
+					if(totalCount <= maxStackSize)
+					{
+						stack.setCount(0);
+						itemstack.setCount(totalCount);
+						slot.setChanged();
+						flag = true;
+					}
+					else if(itemstack.getCount() < maxStackSize)
+					{
+						stack.shrink(maxStackSize-itemstack.getCount());
+						itemstack.setCount(maxStackSize);
+						slot.setChanged();
+						flag = true;
+					}
+				}
+			}
+			slotIndex++;
+		}
+
+		if(!stack.isEmpty())
+		{
+			slotIndex = lastMatchingSlot;
+			while(true)
+			{
+				if(slotIndex >= endIndex)
+					break;
+				slot = this.slots.get(slotIndex);
+				itemstack = slot.getItem();
+				if(itemstack.isEmpty()&&slot.mayPlace(stack))
+				{
+					int maxStackSize = slot.getMaxStackSize(stack);
+					slot.setByPlayer(stack.split(Math.min(stack.getCount(), maxStackSize)));
+					slot.setChanged();
+					flag = true;
+					break;
+				}
+				slotIndex++;
+			}
+		}
+		if(stack.isEmpty())
+			return flag;
+		return this.moveItemStackTo(stack, startIndex, Math.max(lastMatchingSlot, endIndex), true);
+	}
+
 	@Override
 	public void removed(@Nonnull Player player)
 	{

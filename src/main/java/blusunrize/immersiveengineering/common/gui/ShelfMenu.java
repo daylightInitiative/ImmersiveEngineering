@@ -17,6 +17,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
@@ -25,6 +26,7 @@ import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import net.neoforged.neoforge.items.ItemHandlerCopySlot;
 import net.neoforged.neoforge.items.ItemStackHandler;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -114,6 +116,32 @@ public class ShelfMenu extends IEContainerMenu
 		super.receiveMessageFromScreen(nbt);
 		if(nbt.contains("backside", Tag.TAG_BYTE))
 			backside.set(nbt.getBoolean("backside"));
+	}
+
+	@Nonnull
+	@Override
+	public ItemStack quickMoveStack(Player player, int slot)
+	{
+		ItemStack itemstack = ItemStack.EMPTY;
+		Slot slotObject = this.slots.get(slot);
+		if(slotObject.hasItem())
+		{
+			ItemStack itemstack1 = slotObject.getItem();
+			itemstack = itemstack1.copy();
+			if(slot < ownSlotCount)
+			{
+				if(!this.moveItemStackTo(itemstack1, ownSlotCount, this.slots.size(), true))
+					return ItemStack.EMPTY;
+			}
+			else if(!this.moveToMatchingSlotOrAdjacent(itemstack1, 0, ownSlotCount))
+				return ItemStack.EMPTY;
+
+			if(itemstack1.isEmpty())
+				slotObject.set(ItemStack.EMPTY);
+			else
+				slotObject.setChanged();
+		}
+		return itemstack;
 	}
 
 	private static final class ShelfSlot extends ItemHandlerCopySlot
