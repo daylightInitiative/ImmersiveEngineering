@@ -185,7 +185,7 @@ public class ChuteBlockEntity extends IEBaseBlockEntity implements IStateBasedDi
 
 	private boolean isValidTargetInventory(@Nullable BlockEntity inventoryTile)
 	{
-		if(inventoryTile!=null)
+		if(inventoryTile!=null && !(inventoryTile instanceof ChuteBlockEntity))
 		{
 			if(inventoryTile instanceof IConveyorBlockEntity<?> conveyorTile)
 				return isCovered(conveyorTile.getConveyorInstance());
@@ -376,7 +376,7 @@ public class ChuteBlockEntity extends IEBaseBlockEntity implements IStateBasedDi
 
 	public static void registerCapabilities(BECapabilityRegistrar<ChuteBlockEntity> registrar)
 	{
-		registrar.registerOnContext(ItemHandler.BLOCK, be -> be.insertionCap, Direction.UP);
+		registrar.registerAllContexts(ItemHandler.BLOCK, be -> be.insertionCap);
 	}
 
 	public static class ChuteInventoryHandler implements IItemHandler
