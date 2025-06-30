@@ -21,6 +21,7 @@ import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer.Builder;
+import net.minecraft.world.level.storage.loot.functions.EnchantedCountIncreaseFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemKilledByPlayerCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
@@ -32,8 +33,11 @@ import static blusunrize.immersiveengineering.data.loot.GeneralLoot.key;
 
 public class EntityLoot implements LootTableSubProvider
 {
+	private final Provider provider;
+
 	public EntityLoot(Provider p)
 	{
+		this.provider = p;
 	}
 
 	@Override
@@ -44,6 +48,7 @@ public class EntityLoot implements LootTableSubProvider
 				.setBonusRolls(ConstantValue.exactly(1))
 				.add(createEntry(Items.EMERALD)
 						.apply(SetItemCountFunction.setCount(UniformGenerator.between(0, 1)))
+						.apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.provider, UniformGenerator.between(0.0F, 1.0F)))
 				).add(createEntry(Ingredients.STICK_STEEL)
 						.apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 4)))
 				));
@@ -51,9 +56,7 @@ public class EntityLoot implements LootTableSubProvider
 
 		builder = LootTable.lootTable().withPool(LootPool.lootPool()
 				.setRolls(ConstantValue.exactly(1))
-				.add(createEntry(Items.EMERALD)
-						.apply(SetItemCountFunction.setCount(UniformGenerator.between(0, 1)))
-				).add(createEntry(Ingredients.GUNPART_BARREL)
+				.add(createEntry(Ingredients.GUNPART_BARREL)
 						.apply(SetItemCountFunction.setCount(UniformGenerator.between(0, 1)))
 						.apply(RevolverperkLootFunction.builder())
 				).add(createEntry(Ingredients.GUNPART_DRUM)
@@ -70,6 +73,7 @@ public class EntityLoot implements LootTableSubProvider
 				.setBonusRolls(ConstantValue.exactly(1))
 				.add(createEntry(Items.EMERALD)
 						.apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2)))
+						.apply(EnchantedCountIncreaseFunction.lootingMultiplier(this.provider, UniformGenerator.between(0.0F, 1.0F)))
 				).add(createEntry(Misc.SHADER_BAG.get(Lib.RARITY_MASTERWORK.getValue()))
 						.apply(SetItemCountFunction.setCount(UniformGenerator.between(0, 1)))
 				));

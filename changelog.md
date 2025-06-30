@@ -6,6 +6,9 @@
     - Will now try to fill slots with the same item, otherwise place in slots immediately after that item
     - This should keep individual crates on the shelf more organized
     - Works for shift-clicking and automatic insertion!
+- Change illager loot tables
+    - Fusiliers and bulwarks now respect looting
+    - Commandos no longer drop emeralds
 - Fix mixer accidentally crafting a lingering awkward potion (BluSunrize)
 - Fix catwalks not working properly when using a hammer (BluSunrize)
 - Fix shift-click behavior in the Engineer's Crafting Table (BluSunrize)
