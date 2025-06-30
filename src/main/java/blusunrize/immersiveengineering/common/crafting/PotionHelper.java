@@ -43,7 +43,7 @@ public class PotionHelper
 
 	public static SizedFluidIngredient getFluidIngredientForType(Holder<Potion> type, int amount, PotionBottleType potionBottleType)
 	{
-		if(type==Potions.WATER||type==null)
+		if((type==Potions.WATER||type==null)&&potionBottleType==PotionBottleType.REGULAR)
 			return SizedFluidIngredient.of(FluidTags.WATER, amount);
 		else
 		{

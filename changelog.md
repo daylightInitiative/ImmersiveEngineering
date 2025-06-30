@@ -1,3 +1,6 @@
+##### Version 1.21.1-12.4.2-pre
+- Fix mixer accidentally crafting a lingering awkward potion (BluSunrize)
+
 ##### Version 1.21.1-12.4.1-193
 - Add variable lightlevel for lanterns and cage lamps (BluSunrize)
     - This can be configured with a screwdriver
