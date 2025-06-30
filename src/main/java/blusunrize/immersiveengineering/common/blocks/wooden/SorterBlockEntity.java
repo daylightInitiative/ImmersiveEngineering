@@ -9,6 +9,7 @@
 package blusunrize.immersiveengineering.common.blocks.wooden;
 
 import blusunrize.immersiveengineering.api.ApiUtils;
+import blusunrize.immersiveengineering.api.Lib;
 import blusunrize.immersiveengineering.api.utils.DirectionUtils;
 import blusunrize.immersiveengineering.api.utils.codec.IEDualCodecs;
 import blusunrize.immersiveengineering.common.blocks.BlockCapabilityRegistration.BECapabilityRegistrar;
@@ -22,6 +23,7 @@ import blusunrize.immersiveengineering.common.util.IEBlockCapabilityCaches;
 import blusunrize.immersiveengineering.common.util.IEBlockCapabilityCaches.IEBlockCapabilityCache;
 import blusunrize.immersiveengineering.common.util.Utils;
 import com.google.common.collect.Iterators;
+import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.ints.IntIterators;
@@ -37,6 +39,7 @@ import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.player.Player;
@@ -47,6 +50,7 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.neoforged.neoforge.capabilities.Capabilities.ItemHandler;
+import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import net.neoforged.neoforge.items.ItemStackHandler;
@@ -55,7 +59,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.*;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.Stream.Builder;
 
@@ -220,7 +226,7 @@ public class SorterBlockEntity extends IEBaseBlockEntity implements IInteraction
 	private EnumFilterResult checkStackAgainstFilter(ItemStack stack, Direction side)
 	{
 		boolean unmapped = true;
-		for(Pair<ItemStack, TagKey<Item>> filterStack : filter.getFilterStacksOnSide(side))
+		for(Pair<ItemStack, FilterTag> filterStack : filter.getFilterStacksOnSide(side))
 			if(!filterStack.getFirst().isEmpty())
 			{
 				unmapped = false;
@@ -242,12 +248,12 @@ public class SorterBlockEntity extends IEBaseBlockEntity implements IInteraction
 		final var filterTo = sideFilter.get(sideTo);
 
 		// Build lists without emtpies
-		final List<Pair<ItemStack, TagKey<Item>>> stacksFrom = new ArrayList<>();
-		for(Pair<ItemStack, TagKey<Item>> filterStack : filter.getFilterStacksOnSide(sideFrom))
+		final List<Pair<ItemStack, FilterTag>> stacksFrom = new ArrayList<>();
+		for(Pair<ItemStack, FilterTag> filterStack : filter.getFilterStacksOnSide(sideFrom))
 			if(!filterStack.getFirst().isEmpty())
 				stacksFrom.add(filterStack);
-		final List<Pair<ItemStack, TagKey<Item>>> stacksTo = new ArrayList<>();
-		for(Pair<ItemStack, TagKey<Item>> filterStack : filter.getFilterStacksOnSide(sideTo))
+		final List<Pair<ItemStack, FilterTag>> stacksTo = new ArrayList<>();
+		for(Pair<ItemStack, FilterTag> filterStack : filter.getFilterStacksOnSide(sideTo))
 			if(!filterStack.getFirst().isEmpty())
 				stacksTo.add(filterStack);
 
@@ -402,7 +408,7 @@ public class SorterBlockEntity extends IEBaseBlockEntity implements IInteraction
 
 	public static class SorterInventory extends ItemStackHandler
 	{
-		private final TagKey<Item>[] selectedTags = new TagKey[TOTAL_SLOTS];
+		private final FilterTag[] selectedTags = new FilterTag[TOTAL_SLOTS];
 
 		public SorterInventory()
 		{
@@ -425,7 +431,7 @@ public class SorterBlockEntity extends IEBaseBlockEntity implements IInteraction
 			return 1;
 		}
 
-		public Iterable<Pair<ItemStack, TagKey<Item>>> getFilterStacksOnSide(Direction side)
+		public Iterable<Pair<ItemStack, FilterTag>> getFilterStacksOnSide(Direction side)
 		{
 			return () -> Iterators.transform(
 					IntIterators.fromTo(0, FILTER_SLOTS_PER_SIDE), i -> Pair.of(
@@ -447,18 +453,13 @@ public class SorterBlockEntity extends IEBaseBlockEntity implements IInteraction
 
 		public void setSelectedTag(int slot, @Nullable final ResourceLocation location)
 		{
-			if(location==null)
-				this.selectedTags[slot] = null;
-			this.selectedTags[slot] = this.getStackInSlot(slot).getTags()
-					.filter(t -> t.location().equals(location))
-					.findFirst().orElse(null);
+			this.selectedTags[slot] = FilterTag.deserialize(this.getStackInSlot(slot), location);
 		}
 
 		@Nullable
 		public ResourceLocation getSelectedTag(int slot)
 		{
-			TagKey<Item> tag = this.selectedTags[slot];
-			return tag==null?null: tag.location();
+			return this.selectedTags[slot]==null?null: this.selectedTags[slot].serialize();
 		}
 
 		public void writeToNBT(Provider provider, ListTag list)
@@ -471,7 +472,7 @@ public class SorterBlockEntity extends IEBaseBlockEntity implements IInteraction
 					CompoundTag slotTag = new CompoundTag();
 					slotTag.putByte("Slot", (byte)i);
 					if(this.selectedTags[i]!=null)
-						slotTag.putString("selectedTag", this.selectedTags[i].location().toString());
+						this.selectedTags[i].writeToNbt(slotTag);
 					list.add(stackInSlot.save(provider, slotTag));
 				}
 			}
@@ -487,11 +488,7 @@ public class SorterBlockEntity extends IEBaseBlockEntity implements IInteraction
 				{
 					ItemStack stack = ItemStack.parseOptional(provider, slotTag);
 					setStackInSlot(slot, stack);
-					if(slotTag.contains("selectedTag"))
-					{
-						ResourceLocation rl = ResourceLocation.parse(slotTag.getString("selectedTag"));
-						stack.getTags().filter(t -> t.location().equals(rl)).forEach(t -> this.selectedTags[slot] = t);
-					}
+					this.selectedTags[slot] = FilterTag.readFromNbt(slotTag, stack);
 				}
 			}
 		}
@@ -514,12 +511,12 @@ public class SorterBlockEntity extends IEBaseBlockEntity implements IInteraction
 				FilterConfig::new
 		);
 
-		public boolean compareStackToFilterstack(ItemStack stack, ItemStack filterStack, @Nullable TagKey<Item> tag)
+		public boolean compareStackToFilterstack(ItemStack stack, ItemStack filterStack, @Nullable FilterTag tag)
 		{
 			// "Item level" tests
 			if(allowTags&&tag!=null)
 			{
-				if(!stack.is(tag))
+				if(!tag.test(stack))
 					return false;
 			}
 			else if(!ItemStack.isSameItem(filterStack, stack))
@@ -551,5 +548,90 @@ public class SorterBlockEntity extends IEBaseBlockEntity implements IInteraction
 		{
 			this(new ArrayList<>(6), new ArrayList<>(6));
 		}
+	}
+
+	private static final String COMMON_NAMESPACE = "c";
+	private static final Comparator<TagKey<Item>> TAG_SORTER = (o1, o2) -> {
+		ResourceLocation rl1 = o1.location();
+		ResourceLocation rl2 = o2.location();
+		// common namespace always comes first
+		if(COMMON_NAMESPACE.equals(rl1.getNamespace())&&!COMMON_NAMESPACE.equals(rl2.getNamespace()))
+			return -1;
+		if(!COMMON_NAMESPACE.equals(rl1.getNamespace())&&COMMON_NAMESPACE.equals(rl2.getNamespace()))
+			return 1;
+		return rl1.compareNamespaced(rl2);
+	};
+
+
+	public record FilterTag(Either<TagKey<Item>, String> inner) implements Predicate<ItemStack>
+	{
+		public FilterTag(TagKey<Item> tag)
+		{
+			this(Either.left(tag));
+		}
+
+		@Override
+		public boolean test(ItemStack stack)
+		{
+			return inner().map(stack::is, modId -> modId.equals(Utils.getModIdForItemStack(stack)));
+		}
+
+		public Component getComponent()
+		{
+			return inner().map((Function<TagKey<Item>, Component>)tag -> {
+				String tagTranslationKey = Tags.getTagTranslationKey(tag);
+				return Component.translatableWithFallback(tagTranslationKey, "#"+tag.location());
+			}, modId -> {
+				return Component.translatable(Lib.DESC_INFO+"filter.tag.from_mod", Utils.getModName(modId));
+			});
+		}
+
+		public ResourceLocation serialize()
+		{
+			return inner().map(TagKey::location, modid -> ResourceLocation.fromNamespaceAndPath("modid", modid));
+		}
+
+		@Nullable
+		public static FilterTag deserialize(ItemStack stack, @Nullable ResourceLocation location)
+		{
+			if(location==null)
+				return null;
+			if(location.getNamespace().equals("modid"))
+				return new FilterTag(Either.right(location.getPath()));
+			return stack.getTags().filter(t -> t.location().equals(location))
+					.findFirst().map(FilterTag::new).orElse(null);
+		}
+
+
+		@Nullable
+		public static FilterTag readFromNbt(CompoundTag slotTag, ItemStack stack)
+		{
+			if(slotTag.contains("selectedMod"))
+				return new FilterTag(Either.right(slotTag.getString("selectedMod")));
+			if(slotTag.contains("selectedTag"))
+			{
+				ResourceLocation rl = ResourceLocation.parse(slotTag.getString("selectedTag"));
+				return stack.getTags()
+						.filter(t -> t.location().equals(rl))
+						.findFirst()
+						.map(itemTagKey -> new FilterTag(Either.left(itemTagKey)))
+						.orElse(null);
+			}
+			return null;
+		}
+
+		public void writeToNbt(CompoundTag slotTag)
+		{
+			this.inner().ifLeft(tag -> slotTag.putString("selectedTag", tag.location().toString()))
+					.ifRight(mod -> slotTag.putString("selectedMod", mod));
+		}
+
+		public static List<ResourceLocation> getAvailableForItem(ItemStack stack)
+		{
+			List<ResourceLocation> list = new ArrayList<>(stack.getTags().sorted(TAG_SORTER).map(TagKey::location).toList());
+			list.add(ResourceLocation.fromNamespaceAndPath("modid", Utils.getModIdForItemStack(stack)));
+			return list;
+		}
+
 	}
 }

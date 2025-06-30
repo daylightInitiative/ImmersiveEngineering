@@ -1,4 +1,5 @@
 ##### Version 1.21.1-12.4.2-pre
+- Add feature for the item router to filter by mod in addition to tags (BluSunrize)
 - Fix mixer accidentally crafting a lingering awkward potion (BluSunrize)
 - Fix catwalks not working properly when using a hammer (BluSunrize)
 - Fix shift-click behavior in the Engineer's Crafting Table (BluSunrize)

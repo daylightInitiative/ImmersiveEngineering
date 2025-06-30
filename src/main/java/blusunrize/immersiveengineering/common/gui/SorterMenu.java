@@ -10,6 +10,7 @@ package blusunrize.immersiveengineering.common.gui;
 
 import blusunrize.immersiveengineering.common.blocks.wooden.SorterBlockEntity;
 import blusunrize.immersiveengineering.common.blocks.wooden.SorterBlockEntity.FilterConfig;
+import blusunrize.immersiveengineering.common.blocks.wooden.SorterBlockEntity.FilterTag;
 import blusunrize.immersiveengineering.common.gui.sync.GenericContainerData;
 import blusunrize.immersiveengineering.common.gui.sync.GenericDataSerializers;
 import blusunrize.immersiveengineering.common.gui.sync.GetterAndSetter;

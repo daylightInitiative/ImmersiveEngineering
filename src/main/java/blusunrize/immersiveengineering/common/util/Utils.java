@@ -30,6 +30,7 @@ import net.minecraft.core.Direction.Axis;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.PlayerAdvancements;
 import net.minecraft.server.ServerAdvancementManager;
@@ -203,11 +204,20 @@ public class Utils
 			return lvl.toString();
 	}
 
-	public static String getModName(String modid)
+	public static String getModIdForItemStack(ItemStack stack)
 	{
-		return ModList.get().getModContainerById(modid)
+		String modId = stack.getItem().getCreatorModId(stack);
+		return modId!=null?modId: BuiltInRegistries.ITEM.getKey(stack.getItem()).getNamespace();
+	}
+
+	private static final Map<String, String> MOD_NAME_CACHE = new HashMap<>();
+
+	public static String getModName(String modId)
+	{
+		return MOD_NAME_CACHE.computeIfAbsent(modId, s -> ModList.get().getModContainerById(s)
 				.map(container -> container.getModInfo().getDisplayName())
-				.orElse(modid);
+				.orElse(s)
+		);
 	}
 
 	public static <T> int findSequenceInList(List<T> list, T[] sequence, BiPredicate<T, T> equal)
@@ -418,6 +428,7 @@ public class Utils
 		}
 		return false;
 	}
+
 	public static void unlockIEAdvancement(Player player, String name)
 	{
 		if(player instanceof ServerPlayer)
@@ -483,10 +494,10 @@ public class Utils
 	public static Vector4f vec4fFromInt(int argb)
 	{
 		return new Vector4f(
-				((argb >> 16)&255)/255f,
-				((argb >> 8)&255)/255f,
+				((argb>>16)&255)/255f,
+				((argb>>8)&255)/255f,
 				(argb&255)/255f,
-				((argb >> 24)&255)/255f
+				((argb>>24)&255)/255f
 		);
 	}
 

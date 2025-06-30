@@ -15,6 +15,7 @@ import blusunrize.immersiveengineering.client.gui.elements.GuiButtonBoolean;
 import blusunrize.immersiveengineering.client.gui.elements.GuiButtonIE.ButtonTexture;
 import blusunrize.immersiveengineering.common.blocks.wooden.SorterBlockEntity;
 import blusunrize.immersiveengineering.common.blocks.wooden.SorterBlockEntity.FilterConfig;
+import blusunrize.immersiveengineering.common.blocks.wooden.SorterBlockEntity.FilterTag;
 import blusunrize.immersiveengineering.common.gui.IESlot;
 import blusunrize.immersiveengineering.common.gui.SorterMenu;
 import blusunrize.immersiveengineering.common.gui.sync.GetterAndSetter;
@@ -37,6 +38,7 @@ import net.neoforged.neoforge.common.Tags;
 
 import javax.annotation.Nonnull;
 import java.util.*;
+import java.util.function.Function;
 
 import static blusunrize.immersiveengineering.api.IEApi.ieLoc;
 
@@ -130,18 +132,18 @@ public class SorterScreen extends IEContainerScreen<SorterMenu>
 				tagTooltip.add(name);
 
 				// Add tags
-				List<TagKey<Item>> tags = item.getTags().sorted(TAG_SORTER).toList();
-				if(tags.isEmpty())
+				List<ResourceLocation> available = FilterTag.getAvailableForItem(item);
+				if(available.isEmpty())
 					tagTooltip.add(Component.translatable(Lib.DESC_INFO+"filter.tag.none_available"));
 				else
 				{
 					tagTooltip.add(Component.translatable(Lib.DESC_INFO+"filter.tag.selected_scroll"));
 					Optional<ResourceLocation> selected = this.menu.selectedTags.get(ghostSlot.getSlotIndex()).get();
-					tags.forEach(tagKey -> {
-						boolean isSelected = selected.isPresent()&&selected.get().equals(tagKey.location());
-						String tagTranslationKey = Tags.getTagTranslationKey(tagKey);
+					available.forEach(location -> {
+						boolean isSelected = selected.isPresent()&&selected.get().equals(location);
+						FilterTag filterTag = FilterTag.deserialize(item, location);
 						tagTooltip.add(Component.literal(isSelected?" -> ": " > ")
-								.append(Component.translatableWithFallback(tagTranslationKey, "#"+tagKey.location()))
+								.append(filterTag!=null?filterTag.getComponent(): Component.literal("ERROR: UNKNOWN TAG"))
 								.withStyle(isSelected?ChatFormatting.GRAY: ChatFormatting.DARK_GRAY)
 						);
 					});
@@ -163,7 +165,7 @@ public class SorterScreen extends IEContainerScreen<SorterMenu>
 			if(menu.filterMasks.get(Direction.from3DDataValue(side)).get().allowTags())
 			{
 				ItemStack item = ghostSlot.getItem();
-				List<ResourceLocation> tags = item.getTags().sorted(TAG_SORTER).map(TagKey::location).toList();
+				List<ResourceLocation> tags = FilterTag.getAvailableForItem(item);
 				if(tags.isEmpty())
 					return false;
 				// get current selected tag
@@ -184,18 +186,6 @@ public class SorterScreen extends IEContainerScreen<SorterMenu>
 		}
 		return super.mouseScrolled(mouseX, mouseY, scrollX, scrollY);
 	}
-
-	private static final String COMMON_NAMESPACE = "c";
-	Comparator<TagKey<Item>> TAG_SORTER = (o1, o2) -> {
-		ResourceLocation rl1 = o1.location();
-		ResourceLocation rl2 = o2.location();
-		// common namespace always comes first
-		if(COMMON_NAMESPACE.equals(rl1.getNamespace())&&!COMMON_NAMESPACE.equals(rl2.getNamespace()))
-			return -1;
-		if(!COMMON_NAMESPACE.equals(rl1.getNamespace())&&COMMON_NAMESPACE.equals(rl2.getNamespace()))
-			return 1;
-		return rl1.compareNamespaced(rl2);
-	};
 
 	public enum FilterBit
 	{
