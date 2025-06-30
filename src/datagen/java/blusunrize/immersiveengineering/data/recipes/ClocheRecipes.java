@@ -24,6 +24,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.common.Tags;
 
 import java.util.concurrent.CompletableFuture;
@@ -177,6 +178,7 @@ public class ClocheRecipes extends IERecipeProvider
 				.seed(Items.WARPED_FUNGUS)
 				.soil(Blocks.WARPED_NYLIUM)
 				.setTime(560)
+				.setRequiredFluid(Fluids.LAVA)
 				.setRender(new RenderFunctionGeneric(Blocks.WARPED_FUNGUS))
 				.build(out, toRL("cloche/warped_fungus"));
 		ClocheRecipeBuilder.builder()
@@ -184,6 +186,7 @@ public class ClocheRecipes extends IERecipeProvider
 				.seed(Items.CRIMSON_FUNGUS)
 				.soil(Blocks.CRIMSON_NYLIUM)
 				.setTime(560)
+				.setRequiredFluid(Fluids.LAVA)
 				.setRender(new RenderFunctionGeneric(Blocks.CRIMSON_FUNGUS))
 				.build(out, toRL("cloche/crimson_fungus"));
 		ClocheRecipeBuilder.builder()
