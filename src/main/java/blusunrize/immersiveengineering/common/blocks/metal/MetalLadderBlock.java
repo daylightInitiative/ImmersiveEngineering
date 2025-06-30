@@ -17,6 +17,7 @@ import net.minecraft.core.Direction.Axis;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -129,7 +130,7 @@ public class MetalLadderBlock extends LadderBlock implements IHammerBlockInterac
 	}
 
 	@Override
-	public InteractionResult useHammer(BlockState state, Level world, BlockPos pos, Player player)
+	public InteractionResult useHammer(BlockState state, Level world, BlockPos pos, Player player, UseOnContext context)
 	{
 		if(player==null)
 			return InteractionResult.FAIL;

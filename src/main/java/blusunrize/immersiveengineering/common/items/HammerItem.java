@@ -152,22 +152,23 @@ public class HammerItem extends IEBaseItem
 			else
 				return InteractionResult.FAIL;
 		}
-		else if(world.getBlockState(pos).getBlock() instanceof IHammerBlockInteraction block)
+
+		if(world.getBlockState(pos).getBlock() instanceof IHammerBlockInteraction block)
 		{
-			return block.useHammer(world.getBlockState(pos), world, pos, player);
+			InteractionResult result = block.useHammer(world.getBlockState(pos), world, pos, player, context);
+			if(result.consumesAction())
+				return result;
 		}
-		else
+
+		boolean rotate = !(tile instanceof IDirectionalBE)&&!(tile instanceof IHammerInteraction);
+		if(!rotate&&tile instanceof IDirectionalBE dirBE)
+			rotate = dirBE.canHammerRotate(side, context.getClickLocation().subtract(Vec3.atLowerCornerOf(pos)), player);
+		if(rotate&&RotationUtil.rotateBlock(world, pos, player!=null&&(player.isShiftKeyDown()!=side.equals(Direction.DOWN))))
+			return InteractionResult.SUCCESS;
+		else if(!rotate&&tile instanceof IHammerInteraction hammerInteraction)
 		{
-			boolean rotate = !(tile instanceof IDirectionalBE)&&!(tile instanceof IHammerInteraction);
-			if(!rotate&&tile instanceof IDirectionalBE dirBE)
-				rotate = dirBE.canHammerRotate(side, context.getClickLocation().subtract(Vec3.atLowerCornerOf(pos)), player);
-			if(rotate&&RotationUtil.rotateBlock(world, pos, player!=null&&(player.isShiftKeyDown()!=side.equals(Direction.DOWN))))
+			if(hammerInteraction.hammerUseSide(side, player, context.getHand(), context.getClickLocation()))
 				return InteractionResult.SUCCESS;
-			else if(!rotate&&tile instanceof IHammerInteraction hammerInteraction)
-			{
-				if(hammerInteraction.hammerUseSide(side, player, context.getHand(), context.getClickLocation()))
-					return InteractionResult.SUCCESS;
-			}
 		}
 		return InteractionResult.PASS;
 	}

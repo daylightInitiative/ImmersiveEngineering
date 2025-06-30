@@ -11,14 +11,17 @@ package blusunrize.immersiveengineering.common.blocks.generic;
 import blusunrize.immersiveengineering.api.utils.shapes.CachedVoxelShapes;
 import blusunrize.immersiveengineering.common.blocks.IEBaseBlock;
 import blusunrize.immersiveengineering.common.blocks.IEBlockInterfaces.IColouredBlock;
+import blusunrize.immersiveengineering.common.blocks.IEBlockInterfaces.IHammerBlockInteraction;
 import blusunrize.immersiveengineering.common.util.Utils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -29,7 +32,6 @@ import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -40,7 +42,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.EnumMap;
 
-public class CatwalkBlock extends IEBaseBlock implements IColouredBlock
+public class CatwalkBlock extends IEBaseBlock implements IColouredBlock, IHammerBlockInteraction
 {
 	public static final EnumMap<Direction, BooleanProperty> RAILING_PROPERTIES = new EnumMap<>(Direction.class);
 
@@ -97,12 +99,12 @@ public class CatwalkBlock extends IEBaseBlock implements IColouredBlock
 
 
 	@Override
-	public ItemInteractionResult hammerUseSide(Direction side, Player player, InteractionHand hand, Level w, BlockPos pos, BlockHitResult hit)
+	public InteractionResult useHammer(BlockState state, Level world, BlockPos pos, @Nullable Player player, UseOnContext context)
 	{
-		if(player.isShiftKeyDown())
+		if(player!=null && player.isShiftKeyDown())
 		{
 			Direction target;
-			Vec3 hitVec = hit.getLocation().subtract(Vec3.atCenterOf(pos));
+			Vec3 hitVec = context.getClickLocation().subtract(Vec3.atCenterOf(pos));
 			if(hitVec.x*hitVec.x > hitVec.z*hitVec.z)
 				target = hitVec.x < 0?Direction.WEST: Direction.EAST;
 			else
@@ -110,12 +112,11 @@ public class CatwalkBlock extends IEBaseBlock implements IColouredBlock
 			BooleanProperty prop = RAILING_PROPERTIES.get(target);
 			if(prop!=null)
 			{
-				BlockState state = w.getBlockState(pos);
-				w.setBlock(pos, state.setValue(prop, !state.getValue(prop)), 3);
-				return ItemInteractionResult.sidedSuccess(w.isClientSide);
+				world.setBlock(pos, state.setValue(prop, !state.getValue(prop)), 3);
+				return InteractionResult.sidedSuccess(world.isClientSide);
 			}
 		}
-		return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+		return InteractionResult.PASS;
 	}
 
 	@Override

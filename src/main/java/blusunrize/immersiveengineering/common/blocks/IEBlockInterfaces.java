@@ -30,6 +30,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -233,7 +234,7 @@ public class IEBlockInterfaces
 
 	public interface IHammerBlockInteraction
 	{
-		InteractionResult useHammer(BlockState state, Level world, BlockPos pos, Player player);
+		InteractionResult useHammer(BlockState state, Level world, BlockPos pos, @Nullable Player player, UseOnContext context);
 	}
 
 	public interface IScrewdriverInteraction

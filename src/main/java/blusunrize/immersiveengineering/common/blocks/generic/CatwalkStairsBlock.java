@@ -13,11 +13,11 @@ import blusunrize.immersiveengineering.api.utils.shapes.CachedVoxelShapes;
 import blusunrize.immersiveengineering.api.utils.shapes.ShapeUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -27,10 +27,10 @@ import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 
@@ -71,13 +71,12 @@ public class CatwalkStairsBlock extends CatwalkBlock
 	}
 
 	@Override
-	public ItemInteractionResult hammerUseSide(Direction side, Player player, InteractionHand hand, Level w, BlockPos pos, BlockHitResult hit)
+	public InteractionResult useHammer(BlockState state, Level world, BlockPos pos, @Nullable Player player, UseOnContext context)
 	{
-		BlockState state = w.getBlockState(pos);
 		Direction currentDirection = state.getValue(IEProperties.FACING_HORIZONTAL);
-		if(player.isShiftKeyDown())
+		if(player!=null && player.isShiftKeyDown())
 		{
-			Vec3 hitVec = hit.getLocation().subtract(Vec3.atCenterOf(pos));
+			Vec3 hitVec = context.getClickLocation().subtract(Vec3.atCenterOf(pos));
 			BooleanProperty railing = switch(currentDirection)
 			{
 				case DOWN, UP, NORTH -> hitVec.x < 0?RAILING_LEFT: RAILING_RIGHT;
@@ -85,23 +84,18 @@ public class CatwalkStairsBlock extends CatwalkBlock
 				case WEST -> hitVec.z < 0?RAILING_RIGHT: RAILING_LEFT;
 				case EAST -> hitVec.z < 0?RAILING_LEFT: RAILING_RIGHT;
 			};
-			w.setBlock(pos, state.setValue(railing, !state.getValue(railing)), 3);
-			return ItemInteractionResult.sidedSuccess(w.isClientSide);
+			world.setBlock(pos, state.setValue(railing, !state.getValue(railing)), 3);
+			return InteractionResult.sidedSuccess(world.isClientSide);
 		}
-		w.setBlock(pos, state.setValue(IEProperties.FACING_HORIZONTAL, currentDirection.getClockWise()), 3);
-		return ItemInteractionResult.sidedSuccess(w.isClientSide);
-	}
-
-	@Override
-	protected boolean canRotate()
-	{
-		return false;
+		return InteractionResult.PASS;
 	}
 
 	@Override
 	public BlockState rotate(BlockState state, Rotation rotation)
 	{
-		return state;
+		Direction currentDirection = state.getValue(IEProperties.FACING_HORIZONTAL);
+		Direction newDirection = rotation.rotate(currentDirection);
+		return state.setValue(IEProperties.FACING_HORIZONTAL, newDirection);
 	}
 
 	private static final CachedVoxelShapes<RailingsKey> SHAPES = new CachedVoxelShapes<>(railingsKey -> {
