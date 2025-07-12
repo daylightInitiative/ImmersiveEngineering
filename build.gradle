@@ -6,14 +6,18 @@ def buildNumber = "98"
 // For those who want the bleeding edge
 buildscript {
     repositories {
-        jcenter()
+        //jcenter() jcenter is now defunct
+        mavenCentral()
         maven {
             name = "forge"
             url = "http://files.minecraftforge.net/maven"
         }
     }
+    // update to the maintained fork of old forge gradle
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+        classpath("com.anatawa12.forge:ForgeGradle:2.3-1.0.+") {
+            changing = true
+        }
     }
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
@@ -41,6 +45,16 @@ minecraft {
 }
 
 repositories {
+    maven {
+        url = "https://maven.minecraftforge.net/"
+    }
+    maven {
+        name "CurseForge"
+        url "https://minecraft.curseforge.com/api/maven/"
+    }
+    maven { // for Immersive Engineering
+        url "https://www.cursemaven.com" // contains IE 0.12‑92
+    }
     maven { // JEI & Tinkers
         name 'DVS1 Maven FS'
         url 'https://dvs1.progwml6.com/files/maven'
@@ -57,10 +71,10 @@ repositories {
         name 'tterrag maven'
         url "http://maven.tterrag.com/"
     }
-//    maven { // McJty's CompatLayer
-//        name 'K4 maven'
-//        url "http://maven.k-4u.nl/"
-//    }
+    maven { // McJty's CompatLayer
+        name 'K4 maven'
+        url "http://maven.k-4u.nl/"
+    }
     maven { // CraftTweaker (aka MineTweaker3)
         name 'jared maven'
         url "http://maven.blamejared.com/"
@@ -75,10 +89,10 @@ repositories {
             url = "https://minecraft.curseforge.com/api/maven/"
         }
     }
-    /*maven { //IC2
+    maven { //IC2
         name = "ic2"
         url = "http://maven.ic2.player.to/"
-    }*/
+    }
     maven { // Redstone Flux
         name 'CoFH Maven'
         url "http://maven.covers1624.net/"
@@ -87,22 +101,76 @@ repositories {
     maven { // Albedo Lights
         url 'https://repo.elytradev.com/'
     }
+    maven { // JEI & Tinkers
+        name 'DVS1 Maven FS'
+        url 'https://dvs1.progwml6.com/files/maven'
+    }
+    //
+    maven { // CraftTweaker
+        name 'jared maven'
+        url 'https://maven.blamejared.com/'
+    }
+
+    maven { // ModMaven, there is a bunch of stuff on there
+        name 'ModMaven'
+        url "https://modmaven.dev/"
+    }
+
+    maven { // CTM
+        name 'tterrag maven'
+        url "https://maven.tterrag.com/"
+    }
+
+    maven {
+        name 'ComputerCraft Maven'
+        url 'https://squiddev.cc/maven/'
+    }
+
+    maven {
+        name "OpenComputers"
+        url "https://maven.cil.li/"
+    }
+
+    maven { // Baubles
+        name "MCModDev"
+        url "https://maven.mcmoddev.com/"
+    }
+
+    maven { //for Immersive Petroleum, Posts and Technology
+        name "CurseMaven"
+        url "https://www.cursemaven.com"
+    }
+
+    maven {
+        name "BuildCraft"
+        url "https://mod-buildcraft.com/maven"
+    }
+
+    maven {
+        name "CurseForge"
+        url "https://minecraft.curseforge.com/api/maven/"
+    }
+    maven { // for Immersive Engineering
+        url "https://www.cursemaven.com" // contains IE 0.12‑92
+    }
+
 }
 
 dependencies {
-    compileOnly "team.chisel.ctm:CTM:MC1.12.2-0.3.2.18"
+    //compileOnly "team.chisel.ctm:CTM:MC1.12.2-0.3.2.18"
     compileOnly "mezz.jei:jei_1.12.2:4.15.+"
     compileOnly "cofh:RedstoneFlux:1.12-2.+:deobf"
     compileOnly "slimeknights.mantle:Mantle:1.12-1.3.+"
     compileOnly "slimeknights:TConstruct:1.12.2-2.12.+"
     compileOnly "mcjty.theoneprobe:TheOneProbe-1.12:1.12-1.+"//1.1x-1.4.4-55
     compileOnly "CraftTweaker2:CraftTweaker2-MC1120-Main:1.12-4.1.8.468"
-    compileOnly "opencomputers:OpenComputers:MC1.12.2:1.7.2.67"//li.cil.oc:OpenComputers:MC1.12.1-1.7.0.+"
-    compileOnly "hwyla:Hwyla:1.8.20:B35_1.12" //compileOnly "mcp.mobius.waila:Hwyla:1.8.20-B35_1.12"
-    compileOnly 'industrial-craft:industrialcraft-2:release:ex112'//'net.industrial-craft:industrialcraft-2:2.8.+'
+    //compileOnly "opencomputers:OpenComputers:MC1.12.2:1.7.2.67"//li.cil.oc:OpenComputers:MC1.12.1-1.7.0.+"
+    //compileOnly "hwyla:Hwyla:1.8.20:B35_1.12" //compileOnly "mcp.mobius.waila:Hwyla:1.8.20-B35_1.12"
+    //compileOnly 'industrial-craft:industrialcraft-2:release:ex112'//'net.industrial-craft:industrialcraft-2:2.8.+'
     compileOnly "de.ellpeck.actuallyadditions:ActuallyAdditions:1.12.2+"
-    compileOnly 'baubles:Baubles:1.12:1.5.2'
-    deobfCompile "albedo:albedo:0.1.3"
+    //compileOnly 'baubles:Baubles:1.12:1.5.2'
+    //deobfCompile "albedo:albedo:0.1.3"
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
 }
 
 reobf {
@@ -127,37 +195,6 @@ task coreJar(type: Jar) {
     group = 'build'
 }
 
-task signCoreJar(type: SignJar) {
-    onlyIf { // Skip the task if our secret data isn't available
-        project.hasProperty('keyStore')
-    }
-    dependsOn reobfCoreJar
-    if (project.hasProperty('keyStore')) { // This needs to be a path to the keystore file
-        keyStore = project.keyStore
-        alias = project.storeAlias
-        storePass = project.storePass
-        keyPass = project.storePass
-        inputFile = coreJar.archivePath
-        outputFile = coreJar.archivePath
-    }
-}
-
-task signMainJar(type: SignJar) {
-    onlyIf { // Skip the task if our secret data isn't available
-        project.hasProperty('keyStore')
-    }
-    dependsOn reobfJar
-    if (project.hasProperty('keyStore')) { // This needs to be a path to the keystore file
-        keyStore = project.keyStore
-        alias = project.storeAlias
-        storePass = project.storePass
-        keyPass = project.storePass
-        inputFile = jar.archivePath
-        outputFile = jar.archivePath
-    }
-}
-build.dependsOn signMainJar
-jar.dependsOn signCoreJar
 def libPrefix = 'META-INF/libraries'
 jar {
     manifest {
@@ -384,3 +421,7 @@ class GenerateUpdateJSON extends DefaultTask {
 task updateJson(type: GenerateUpdateJSON)
 
 processResources.dependsOn updateJson
+
+sourceSets.all {
+    it.output.resourcesDir = it.output.classesDirs.getFiles().iterator().next()
+}
